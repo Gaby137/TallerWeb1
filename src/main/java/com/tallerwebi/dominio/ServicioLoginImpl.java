@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+*/hola
+
 @Service("servicioLogin")
 @Transactional
 public class ServicioLoginImpl implements ServicioLogin {
