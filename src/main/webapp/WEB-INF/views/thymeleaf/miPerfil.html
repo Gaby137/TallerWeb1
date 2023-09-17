@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>miPerfil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/miPerfil.css}"/>
+    <script src="https://kit.fontawesome.com/1fc088d494.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+<header>
+<nav class="navbar" style="background-color: #e3f2fd;">
+    <a>Unlam</a>
+</nav>
+</header>
+
+<style>
+    .navbar-brand{
+        margin:0 2rem;
+    }
+
+    .nombreYFoto {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        background: #e3f2fd;
+    }
+    .nombreYFoto p{
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+    .nombreYFoto img{
+        width: 100px;
+        height: 90px;
+        margin-right: 15px;
+    }
+    .col button{
+        background: #e3f2fd;
+        padding: 20px;
+        padding-left: 33%;
+        padding-right: 33%;
+    }
+    i{
+        font-size: 25px;
+        text-align: left;
+        justify-content: left;
+    }
+</style>
+
+<main>
+    <div class="nombreYFoto">
+        <div>
+            <button><img src="../../../resources/core/imagenes/Foto_Perfil_.jpg" alt="Foto de perfil"></button>
+        </div>
+        <div>
+            <p><strong>Nombre de usuario</strong></p>
+            <p>Email@Email.com</p>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <button>
+                    <i class="fa-solid fa-address-card" style="color: black; font-size: 25px;"></i>
+                    Información Personal
+                </button>
+            </div>
+            <div class="col">
+                <button>
+                    <i class="fa-solid fa-wallet" style="color: #000000;"></i>
+                    Mis puntos
+                </button>
+            </div>
+            <div class="col">
+                <button>
+                    <i class="fa-solid fa-lock" style="color: black; font-size: 25px;"></i>
+                    Privacidad
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+    <br><br>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <button class="icon-button">
+                    <i class="fa-solid fa-shopping-bag"></i>
+                    Mis compras
+                </button>
+            </div>
+            <div class="col">
+                <button class="icon-button">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    Mis ventas
+                </button>
+            </div>
+            <div class="col">
+                <button class="icon-button">
+                    <i class="fa-solid fa-book"></i>
+                    Mis apuntes
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

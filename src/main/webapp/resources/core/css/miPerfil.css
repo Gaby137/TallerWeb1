@@ -1,0 +1,22 @@
+
+h1{
+    color:#0000FF;
+}
+
+h2{
+    color:#FF0000;
+}
+
+.navbar-brand{
+    margin:0 2rem;
+}
+
+.nombreYFoto {
+    display: flex;
+    align-items: center;
+}
+.nombreYFoto img{
+    width: 100px;
+    height: auto;
+    margin-right: 10px;
+}
