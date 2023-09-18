@@ -377,5 +377,15 @@ button:hover {
 .p-b-33 {padding-bottom: 33px;}
 .p-t-5 {padding-top: 5px;}
 
+.register{
+    margin-left: 20px;
+    text-decoration: none;
+}
+.olvidado{
+    float: right;
+    margin-right: 20px;
+    text-decoration:none;
+}
+
 /*//////////////////////////////////////////////////////////////////
 [ FIN DEL LOGIN ]*/
