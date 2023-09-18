@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 @Configuration
 public class DatabaseInitializationConfig {
 
-    @Autowired
+    @Autowired /*spring inyecta un new datasource*/
     private DataSource dataSource;
 
     @Bean
