@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository("repositorioReseña")
 public class RepositorioResenaImpl implements RepositorioResena {
@@ -38,9 +39,9 @@ public class RepositorioResenaImpl implements RepositorioResena {
     }
 
     @Override
-    public Resena buscar(Long id) {
-        return (Resena) sessionFactory.getCurrentSession().createCriteria(Resena.class)
+    public List<Resena> buscar(Long id) {
+        return sessionFactory.getCurrentSession().createCriteria(Resena.class)
                 .add(Restrictions.eq("id", id))
-                .uniqueResult();
+                .list();
     }
 }
