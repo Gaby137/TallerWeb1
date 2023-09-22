@@ -11,7 +11,6 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int puntos;
     private String email;
     private String password;
     private String rol;
@@ -55,15 +54,6 @@ public class Usuario {
 
     public void activar() {
         activo = true;
-    }
-
-
-    public int getPuntos() {
-        return puntos;
-    }
-
-    public void setPuntos(int puntos) {
-        this.puntos = puntos;
     }
 
 }

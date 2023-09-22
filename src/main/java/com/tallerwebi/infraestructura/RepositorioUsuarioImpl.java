@@ -30,7 +30,6 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     @Override
     public void guardar(Usuario usuario) {
-        usuario.setPuntos(100);
         sessionFactory.getCurrentSession().save(usuario);
     }
 
