@@ -1,5 +1,6 @@
 package com.tallerwebi.presentacion;
 
+import com.sun.xml.bind.util.AttributesImpl;
 import com.tallerwebi.dominio.Resena;
 import com.tallerwebi.dominio.ServicioResena;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +27,6 @@ public class ControladorResena {
     public String guardarResena(@ModelAttribute("resena") Resena resena) {
         servicioResena.guardar(resena);
         return "redirect:/apunte-detalle";
-    }
-
-    @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.POST)
-    public String borrarResena(@PathVariable("id") Long id) {
-        Resena resena = servicioResena.buscar(id);
-
-        if (resena != null) {
-            servicioResena.borrar(resena);
-        }
-
-        return "redirect:/apunte-detalle";
-    }
-    @RequestMapping(path = "/", method = RequestMethod.GET)
-    public ModelAndView inicio() {
-        return new ModelAndView("redirect:/login");
     }
 
 }
