@@ -22,7 +22,6 @@ public class Usuario {
     private Date updated_at;
 
     public Long getId() {
-
         return id;
     }
     public void setId(Long id) {
@@ -92,6 +91,5 @@ public class Usuario {
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
-
 
 }
