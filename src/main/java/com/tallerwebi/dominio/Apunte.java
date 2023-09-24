@@ -7,57 +7,42 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class Usuario {
-
+public class Apunte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String pathArchivo;
     private String nombre;
-    private String apellido;
-    private String email;
-    private String password;
-    private String rol;
-    private Boolean activo = false;
+    private String descripcion;
     private Date created_at;
     private Date updated_at;
+
+    public Apunte(String pathArchivo, String nombre, String descripcion, Date created_at, Date updated_at) {
+        this.pathArchivo = pathArchivo;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+    }
+
+    public Apunte() {
+
+    }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public String getRol() {
-        return rol;
-    }
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
-    public Boolean getActivo() {
-        return activo;
-    }
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
+
+    public String getPathArchivo() {
+        return pathArchivo;
     }
 
-    public boolean activo() {
-        return activo;
-    }
-
-    public void activar() {
-        activo = true;
+    public void setPathArchivo(String pathArchivo) {
+        this.pathArchivo = pathArchivo;
     }
 
     public String getNombre() {
@@ -68,12 +53,12 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public Date getCreated_at() {
@@ -91,5 +76,4 @@ public class Usuario {
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
-
 }
