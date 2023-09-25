@@ -3,9 +3,11 @@ package com.tallerwebi.presentacion;
 import com.sun.xml.bind.util.AttributesImpl;
 import com.tallerwebi.dominio.Resena;
 import com.tallerwebi.dominio.ServicioResena;
+import com.tallerwebi.dominio.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +25,16 @@ public class ControladorResena {
         this.servicioResena = servicioResena;
     }
 
+    @RequestMapping(path = "/formulario-alta-resena", method = RequestMethod.GET)
+    public ModelAndView irAHome() {
+        ModelMap model = new ModelMap();
+        model.put("resena", new Resena());
+        return new ModelAndView("formulario-alta-resena", model);
+    }
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
-    public String guardarResena(@ModelAttribute("resena") Resena resena) {
+    public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena) {
         servicioResena.guardar(resena);
-        return "redirect:/apunte-detalle";
+        return new ModelAndView("apunte-detalle");
     }
 
 }
