@@ -60,7 +60,7 @@ public class Usuario {
     public void activar() {
         activo = true;
     }
-
+    
     public String getNombre() {
         return nombre;
     }
@@ -92,6 +92,5 @@ public class Usuario {
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
-
 
 }
