@@ -14,6 +14,7 @@ public class Usuario {
     private Long id;
     private String nombre;
     private String apellido;
+    private int puntos;
     private String email;
     private String password;
     private String rol;
@@ -91,5 +92,10 @@ public class Usuario {
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
-
+    public int getPuntos() {
+        return puntos;
+    }
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
+    }
 }
