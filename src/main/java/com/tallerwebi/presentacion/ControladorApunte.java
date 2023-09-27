@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.xml.bind.ValidationException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ControladorApunte {
@@ -72,5 +74,28 @@ public class ControladorApunte {
         servicioApunte.eliminar(apunte);
 
         return new ModelAndView("apunteEliminado", modelo);
+    }
+    @RequestMapping(path = "/misApuntes", method = RequestMethod.GET)
+    public ModelAndView misApuntes() {
+        ModelMap model = new ModelMap();
+
+        //List<Apunte> resultApuntes = servicioApunte.getApuntesByProprietary(1234567890L);
+        Apunte apunte1 = new Apunte();
+        Apunte apunte2 = new Apunte();
+        apunte1.setNombre("Guía TP - PW2");
+        apunte1.setDescripcion("Guía de trabajos prácticos de PW2");
+        apunte2.setNombre("Resumen - 1er Parcial BD1");
+        apunte2.setDescripcion("Resumen para el primer parcial de BD1");
+        List<Apunte> listHard = new ArrayList<>();
+        listHard.add(apunte1);
+        listHard.add(apunte2);
+        listHard.add(apunte1);
+        listHard.add(apunte2);
+        listHard.add(apunte1);
+        listHard.add(apunte2);
+
+
+        model.put("apuntes", listHard);
+        return new ModelAndView("misApuntes", model);
     }
 }
