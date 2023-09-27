@@ -49,7 +49,7 @@ public class ControladorApunteTest {
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock);
 
         // Verificación
-        assertEquals("apuntePublicadoExito", modelAndView.getViewName());
+        assertEquals("misApuntes", modelAndView.getViewName());
         assertFalse(modelAndView.getModel().containsKey("error"));
     }
 
@@ -63,7 +63,7 @@ public class ControladorApunteTest {
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock);
 
         // Verificación
-        assertEquals("subirApunte", modelAndView.getViewName());
+        assertEquals("altaApunte", modelAndView.getViewName());
         assertTrue(modelAndView.getModel().containsKey("error"));
         assertEquals("Por favor complete todos los campos", modelAndView.getModel().get("error"));
     }
