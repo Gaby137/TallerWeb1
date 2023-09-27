@@ -33,7 +33,7 @@
     </div>
 </nav>
 <div class="mx-auto my-2" style="width: 200px;">
-    <a href="altaApunte.html" class="btn btn-success">Subir un apunte</a>
+    <a th:action="@{/formulario-alta-apunte}" class="btn btn-success">Subir un apunte</a>
 </div>
 <div class="container">
     <div class="row">
@@ -44,7 +44,7 @@
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
                     <p th:text="${apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
                     <a th:href="@{/editarApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Editar</a>
-                    <a th:href="@{/eliminarApunte/{apunteObj}(apunteObj=${apunte})}" class="btn btn-danger">Eliminar</a>
+                    <a th:href="@{/eliminarApunte/{id}(id=${apunte.id})}" class="btn btn-danger">Eliminar</a>
                 </div>
             </div>
         </div>
