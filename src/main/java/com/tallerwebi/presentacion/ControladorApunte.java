@@ -72,7 +72,7 @@ public class ControladorApunte {
         return new ModelAndView("mensajeExito", modelo);
     }
 
-    @RequestMapping(path = "/eliminarApunte/{id}", method = RequestMethod.POST)
+    @RequestMapping(path = "/eliminarApunte/{id}", method = RequestMethod.GET)
     public ModelAndView eliminar(@PathVariable("id") Long id) {
         ModelMap modelo = new ModelMap();
 
