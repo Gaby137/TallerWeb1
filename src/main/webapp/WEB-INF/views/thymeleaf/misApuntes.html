@@ -15,7 +15,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="home.html">Inicio <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Mis Apuntes</a>
@@ -24,7 +24,7 @@
                 <a class="nav-link" href="#">Puntos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Perfil</a>
+                <a class="nav-link" href="miPerfil.html">Perfil</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -33,7 +33,7 @@
     </div>
 </nav>
 <div class="mx-auto my-2" style="width: 200px;">
-    <a href="#" class="btn btn-success">Subir un apunte</a>
+    <a href="altaApunte.html" class="btn btn-success">Subir un apunte</a>
 </div>
 <div class="container">
     <div class="row">
@@ -43,8 +43,8 @@
                     <h5 th:text="${apunte.nombre}" class="card-title"></h5>
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
                     <p th:text="${apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
-                    <a href="#" class="btn btn-primary">Editar</a>
-                    <a href="#" class="btn btn-danger">Eliminar</a>
+                    <a th:href="@{/editarApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Editar</a>
+                    <a th:href="@{/eliminarApunte/{apunteObj}(apunteObj=${apunte})}" class="btn btn-danger">Eliminar</a>
                 </div>
             </div>
         </div>
