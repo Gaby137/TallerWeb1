@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,22 @@ public class ServicioApunteImpl implements ServicioApunte{
     }
     @Override
     public List<Apunte> obtenerApuntes() {
-        return null;
+        Apunte apunte1 = new Apunte();
+        Apunte apunte2 = new Apunte();
+        apunte1.setId(1L);
+        apunte1.setNombre("Guía TP - PW2");
+        apunte1.setDescripcion("Guía de trabajos prácticos de PW2");
+        apunte2.setId(2L);
+        apunte2.setNombre("Resumen - 1er Parcial BD1");
+        apunte2.setDescripcion("Resumen para el primer parcial de BD1");
+        List<Apunte> listHard = new ArrayList<>();
+        listHard.add(apunte1);
+        listHard.add(apunte2);
+        listHard.add(apunte1);
+        listHard.add(apunte2);
+        listHard.add(apunte1);
+        listHard.add(apunte2);
+        return listHard;
     }
 
     @Override
