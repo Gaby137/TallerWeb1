@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Apunte;
+import com.tallerwebi.dominio.Resena;
 import com.tallerwebi.dominio.ServicioApunte;
 import com.tallerwebi.dominio.excepcion.ValidacionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +26,22 @@ public class ControladorApunte {
         this.servicioApunte = servicioApunte;
     }
 
+    @RequestMapping(path = "/formulario-alta-apunte", method = RequestMethod.GET)
+    public ModelAndView apunte() {
+        ModelMap model = new ModelMap();
+        model.put("datosApunte", new DatosApunte());
+        return new ModelAndView("altaApunte", model);
+    }
+
     @RequestMapping(path = "/subirApunte", method = RequestMethod.POST)
     public ModelAndView publicar(@ModelAttribute("datosApunte") DatosApunte datosApunte) {
         ModelMap modelo = new ModelMap();
         if( servicioApunte.registrar(datosApunte)){
-            return new ModelAndView("apuntePublicadoExito", modelo);
+            return misApuntes();
         } else {
             modelo.put("error", "Por favor complete todos los campos");
-            return new ModelAndView("subirApunte", modelo);
+            return new ModelAndView("altaApunte", modelo);
         }
-
-
     }
 
     @RequestMapping(path = "/editarApunte/{id}", method = RequestMethod.GET)
@@ -66,12 +72,12 @@ public class ControladorApunte {
         return new ModelAndView("mensajeExito", modelo);
     }
 
-    @RequestMapping(path = "/eliminarApunte", method = RequestMethod.POST)
-    public ModelAndView eliminar(@ModelAttribute("apunte") Apunte apunte) {
-
+    @RequestMapping(path = "/eliminarApunte/{id}", method = RequestMethod.POST)
+    public ModelAndView eliminar(@PathVariable("id") Long id) {
         ModelMap modelo = new ModelMap();
 
-        servicioApunte.eliminar(apunte);
+        // Implementar la lógica para obtener el apunte que deseas editar
+        servicioApunte.eliminar(id);
 
         return new ModelAndView("apunteEliminado", modelo);
     }

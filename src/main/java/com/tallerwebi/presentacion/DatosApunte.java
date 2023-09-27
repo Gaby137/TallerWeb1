@@ -13,7 +13,9 @@ public class DatosApunte {
         this.descripcion = descripcion;
     }
 
+    public DatosApunte(){
 
+    }
     public String getPathArchivo() {
         return pathArchivo;
     }
