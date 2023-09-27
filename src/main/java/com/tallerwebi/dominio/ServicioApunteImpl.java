@@ -52,7 +52,9 @@ public class ServicioApunteImpl implements ServicioApunte{
     }
 
     @Override
-    public void eliminar(Apunte apunte) {
+    public void eliminar(Long id) {
+        Apunte apunte = repositorioApunte.obtenerApunte(id);
+
         repositorioApunte.eliminarApunte(apunte);
     }
 }
