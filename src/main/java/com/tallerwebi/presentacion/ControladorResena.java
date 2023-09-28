@@ -38,7 +38,7 @@ public class ControladorResena {
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
     public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena) {
         servicioResena.guardar(resena);
-        return new ModelAndView("apunte-detalle");
+        return listarResenas();
     }
 
     @RequestMapping(path = "/apunte-detalle", method = RequestMethod.GET)
@@ -49,7 +49,7 @@ public class ControladorResena {
         return new ModelAndView("apunte-detalle", model);
     }
 
-    @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.POST)
+    @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.GET)
     public ModelAndView borrar(@PathVariable("id") Long id) {
         ModelMap modelo = new ModelMap();
         try {
@@ -59,7 +59,7 @@ public class ControladorResena {
         } catch (Exception e) {
             modelo.put("error", "Error al intentar borrar la reseña");
         }
-        return new ModelAndView("apunte-detalle", modelo);
+        return new ModelAndView("redirect:/apunte-detalle", modelo);
     }
 
 }
