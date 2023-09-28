@@ -1,3 +1,4 @@
+/*
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.Puntaje;
@@ -48,3 +49,4 @@ public class RepositorioPuntajeImpl implements RepositorioPuntaje {
         throw new UnsupportedOperationException("Unimplemented method 'obtenerTodosLosPuntajes'");
     }
 }
+*/
