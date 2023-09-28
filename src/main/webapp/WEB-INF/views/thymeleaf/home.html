@@ -11,21 +11,91 @@
 
   <!-- custom style -->
   <link rel="stylesheet" th:href="@{/css/main.css}"/>
+  <link rel="stylesheet" th:href="@{/css/home.css}"/>
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="#">UNLAM</a>
-</nav>
+<div class="nav-container">
+<!--  <ul class="nav py-3 container">
+    <li class="nav-item">
+      <h2>Taller Web 1</h2>
+    </li>
+
+    <li class="nav-item justify-content-end">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+  </ul> -->
+    <nav class="navbar container navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand">Taller Web 1</a>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+</div>
+
 
 <main role="main" class="container">
-  <div class = "container">
-    <h1>Bienvenidos a Taller Web 1</h1>
 
-    <a href="login.html" class="btn btn-lg btn-primary btn-block">Volver</a>
-  </div>
+    <div class="my-5">
+      <h1 class="my-5">Bienvenidos a Taller Web 1</h1>
+    </div>
+    <!-- <div>
+        <div class="input-group">
+          <button class="btn btn-outline-secondary" type="button" id="button-addon1">Buscar</button>
+          <input type="text" class="form-control" >
+        </div>
+    </div> -->
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-3 mb-4"> <!-- Filtros -->
+                <div>
+                    <ul class="list-group">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                        <li class="list-group-item">A fourth item</li>
+                        <li class="list-group-item">And a fifth one</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-9"> <!-- Apuntes -->
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Titulo</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Autor</h6>
+                        <p class="card-text text-truncate">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="card-link">Ver mas</a>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Titulo</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Autor</h6>
+                        <p class="card-text text-truncate">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="card-link">Ver mas</a>
+                    </div>
+                </div>
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">Titulo</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Autor</h6>
+                        <p class="card-text text-truncate">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a href="#" class="card-link">Ver mas</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
 </main>
 <!-- /.container -->
 
