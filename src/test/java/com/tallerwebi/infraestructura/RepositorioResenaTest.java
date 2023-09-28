@@ -88,6 +88,7 @@ public class RepositorioResenaTest {
     public void borrarResena() {
         // Crear una nueva reseña
         Resena resena = new Resena();
+        Long id=resena.getId();
         resena.setDescripcion("Buena reseña");
         resena.setCantidadDeEstrellas(5);
 
@@ -95,7 +96,7 @@ public class RepositorioResenaTest {
         repositorioResena.guardar(resena);
 
         // Borrar la reseña de la base de datos
-        repositorioResena.borrar(resena);
+        repositorioResena.borrar(id);
 
         // Intentar buscar la reseña borrada por ID
         List<Resena> reseñas = repositorioResena.buscar(resena.getId());

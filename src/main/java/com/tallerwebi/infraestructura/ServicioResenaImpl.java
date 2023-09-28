@@ -30,12 +30,16 @@ public class ServicioResenaImpl implements ServicioResena {
     }
 
     @Override
-    public void borrar(Resena resena) {
-        this.repositorioResena.borrar(resena);
+    public void borrar(Long id) {
+        this.repositorioResena.borrar(id);
     }
 
     @Override
     public List<Resena> buscar(Long id) {
         return this.repositorioResena.buscar(id);
+    }
+    @Override
+    public List<Resena> listar(){
+        return this.repositorioResena.listar();
     }
 }
