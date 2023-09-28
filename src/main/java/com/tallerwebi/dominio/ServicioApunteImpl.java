@@ -12,30 +12,17 @@ import java.util.List;
 
 @Service("servicioApunte")
 @Transactional
-public class ServicioApunteImpl implements ServicioApunte{
+public class ServicioApunteImpl implements ServicioApunte {
     private RepositorioApunte repositorioApunte;
+
     @Autowired
-    public ServicioApunteImpl(RepositorioApunte repositorioApunte){
+    public ServicioApunteImpl(RepositorioApunte repositorioApunte) {
         this.repositorioApunte = repositorioApunte;
     }
+
     @Override
     public List<Apunte> obtenerApuntes() {
-        Apunte apunte1 = new Apunte();
-        Apunte apunte2 = new Apunte();
-        apunte1.setId(1L);
-        apunte1.setNombre("Guía TP - PW2");
-        apunte1.setDescripcion("Guía de trabajos prácticos de PW2");
-        apunte2.setId(2L);
-        apunte2.setNombre("Resumen - 1er Parcial BD1");
-        apunte2.setDescripcion("Resumen para el primer parcial de BD1");
-        List<Apunte> listHard = new ArrayList<>();
-        listHard.add(apunte1);
-        listHard.add(apunte2);
-        listHard.add(apunte1);
-        listHard.add(apunte2);
-        listHard.add(apunte1);
-        listHard.add(apunte2);
-        return listHard;
+        return repositorioApunte.obtenerApuntes();
     }
 
     @Override

@@ -3,11 +3,14 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.Apunte;
 import com.tallerwebi.dominio.RepositorioApunte;
 import com.tallerwebi.dominio.Usuario;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("repositorioApunte")
 public class RepositorioApunteImpl implements RepositorioApunte {
@@ -38,5 +41,12 @@ public class RepositorioApunteImpl implements RepositorioApunte {
     @Override
     public void eliminarApunte(Apunte apunte) {
         sessionFactory.getCurrentSession().delete(apunte);
+    }
+
+    @Override
+    public List<Apunte> obtenerApuntes() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Apunte.class);
+         return criteria.list();
     }
 }
