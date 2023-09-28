@@ -8,6 +8,6 @@ public interface ServicioApunte {
     List<Apunte> obtenerApuntes();
     boolean registrar(DatosApunte datosApunte);
     Apunte obtenerPorId(Long id);
-    void actualizar(Apunte apunte);
+    boolean actualizar(Apunte apunte);
     void eliminar(Long id);
 }

@@ -63,8 +63,19 @@ public class ServicioApunteImpl implements ServicioApunte{
     }
 
     @Override
-    public void actualizar(Apunte apunte) {
-        repositorioApunte.modificarApunte(apunte);
+    public boolean actualizar(Apunte apunte) {
+        boolean result;
+        if (apunte.getPathArchivo() == null || apunte.getPathArchivo().isEmpty() ||
+                apunte.getNombre() == null || apunte.getNombre().isEmpty() ||
+                apunte.getDescripcion() == null || apunte.getDescripcion().isEmpty()) {
+
+            result = false;
+        }else {
+
+            repositorioApunte.modificarApunte(apunte);
+            result = true;
+        }
+        return result;
     }
 
     @Override
