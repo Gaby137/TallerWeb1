@@ -6,6 +6,9 @@ import com.tallerwebi.dominio.ServicioApunteImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Date;
 
@@ -17,10 +20,14 @@ public class ServicioApunteTest {
     private ServicioApunteImpl servicioApunte;
     private RepositorioApunte repositorioApunteMock;
 
+    @Autowired
+    private WebApplicationContext wac;
+
 
     @BeforeEach
     public void init(){
         // Configuración de objetos simulados
+        MockitoAnnotations.initMocks(this);
         repositorioApunteMock = mock(RepositorioApunte.class);
         servicioApunte = new ServicioApunteImpl(repositorioApunteMock);
     }
@@ -83,14 +90,17 @@ public class ServicioApunteTest {
 
     @Test
     public void testEliminar() {
-        // Configuración de un apunte de ejemplo
-        Apunte apunteEjemplo = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", new Date(), new Date());
+        Long idApunte = 1L;
+        Apunte apunteEjemplo = new Apunte();
 
-        // Ejecución de la prueba
-        servicioApunte.eliminar(apunteEjemplo);
+        // Configurar el comportamiento del repositorio para devolver el apunte de ejemplo
+        when(repositorioApunteMock.obtenerApunte(idApunte)).thenReturn(apunteEjemplo);
 
-        // Verificación
-        verify(repositorioApunteMock).eliminarApunte(apunteEjemplo); // Verifica que se llamó al método del repositorio
+        // Llamada al método que queremos probar
+        servicioApunte.eliminar(idApunte);
+
+        // Verificar que se llamó al método del repositorio para eliminar el apunte
+        verify(repositorioApunteMock).eliminarApunte(apunteEjemplo);
     }
 
 

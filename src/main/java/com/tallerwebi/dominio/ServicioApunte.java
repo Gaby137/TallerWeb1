@@ -9,5 +9,5 @@ public interface ServicioApunte {
     boolean registrar(DatosApunte datosApunte);
     Apunte obtenerPorId(Long id);
     void actualizar(Apunte apunte);
-    void eliminar(Apunte apunte);
+    void eliminar(Long id);
 }
