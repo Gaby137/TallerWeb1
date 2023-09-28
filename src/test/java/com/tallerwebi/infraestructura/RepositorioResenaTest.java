@@ -77,6 +77,7 @@ public class RepositorioResenaTest {
         // Buscar la reseña recién guardada por ID
         Resena reseñaGuardada = repositorioResena.buscar(resena.getId()).get(0);
 
+
         // Verificar que la reseña guardada sea igual a la reseña original
         assertThat(reseñaGuardada, equalTo(resena));
     }
@@ -88,21 +89,21 @@ public class RepositorioResenaTest {
     public void borrarResena() {
         // Crear una nueva reseña
         Resena resena = new Resena();
-        Long id=resena.getId();
         resena.setDescripcion("Buena reseña");
         resena.setCantidadDeEstrellas(5);
 
         // Guardar la reseña en la base de datos
         repositorioResena.guardar(resena);
 
+        Long id=resena.getId();
         // Borrar la reseña de la base de datos
         repositorioResena.borrar(id);
 
         // Intentar buscar la reseña borrada por ID
-        List<Resena> reseñas = repositorioResena.buscar(resena.getId());
+        List<Resena> resenas = repositorioResena.buscar(resena.getId());
 
         // Verificar que no se encuentre ninguna reseña con ese ID
-        assertTrue(reseñas.isEmpty(), "No debe haber ninguna reseña con ese ID");
+        assertTrue(resenas.isEmpty(), "No debe haber ninguna reseña con ese ID");
     }
 
     @Transactional
