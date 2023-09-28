@@ -8,11 +8,17 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+
+    --c-primario: #4caf50;
 }
 
 body, html {
     height: 100%;
 
+}
+
+.nav-container {
+    background-color: var(--c-primario);
 }
 
 
