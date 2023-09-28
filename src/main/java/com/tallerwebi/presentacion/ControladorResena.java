@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.sun.xml.bind.util.AttributesImpl;
+import com.tallerwebi.dominio.Apunte;
 import com.tallerwebi.dominio.Resena;
 import com.tallerwebi.dominio.ServicioResena;
 import com.tallerwebi.dominio.Usuario;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 public class ControladorResena {
 
@@ -26,15 +29,37 @@ public class ControladorResena {
     }
 
     @RequestMapping(path = "/formulario-alta-resena", method = RequestMethod.GET)
-    public ModelAndView irAHome() {
+    public ModelAndView irAFormularioAlta() {
         ModelMap model = new ModelMap();
         model.put("resena", new Resena());
         return new ModelAndView("formulario-alta-resena", model);
     }
+
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
     public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena) {
         servicioResena.guardar(resena);
         return new ModelAndView("apunte-detalle");
+    }
+
+    @RequestMapping(path = "/apunte-detalle", method = RequestMethod.GET)
+    public ModelAndView listarResenas() {
+        ModelMap model = new ModelMap();
+        List<Resena> resenas = servicioResena.listar();
+        model.addAttribute("resenas", resenas);
+        return new ModelAndView("apunte-detalle", model);
+    }
+
+    @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.POST)
+    public ModelAndView borrar(@PathVariable("id") Long id) {
+        ModelMap modelo = new ModelMap();
+        try {
+            servicioResena.borrar(id);
+            modelo.addAttribute("mensaje", "Reseña borrada exitosamente");
+
+        } catch (Exception e) {
+            modelo.addAttribute("error", "Error al intentar borrar la reseña");
+        }
+        return new ModelAndView("apunte-detalle", modelo);
     }
 
 }

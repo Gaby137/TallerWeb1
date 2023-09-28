@@ -34,14 +34,24 @@ public class RepositorioResenaImpl implements RepositorioResena {
     }
 
     @Override
-    public void borrar(Resena resena) {
-        sessionFactory.getCurrentSession().delete(resena);
+    public void borrar(Long id) {
+        Session session = sessionFactory.getCurrentSession();
+        Resena resena = session.get(Resena.class, id);
+
+        if (resena != null) {
+            session.delete(resena);
+        }
     }
 
     @Override
     public List<Resena> buscar(Long id) {
         return sessionFactory.getCurrentSession().createCriteria(Resena.class)
                 .add(Restrictions.eq("id", id))
+                .list();
+    }
+    @Override
+    public List<Resena> listar() {
+        return sessionFactory.getCurrentSession().createCriteria(Resena.class)
                 .list();
     }
 }
