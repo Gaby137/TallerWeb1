@@ -3,6 +3,8 @@ import com.tallerwebi.dominio.Resena;
 import com.tallerwebi.dominio.ServicioResena;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,9 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 public class ControladorResenaTest {
 
@@ -56,19 +58,27 @@ public class ControladorResenaTest {
         assertEquals(2, resenasEnModelo.size());
     }
     @Test
-    void borrarResenaDeberiaDevolverVistaConMensajeDeExito() {
-        // preparación
+    void borrarResenaDeberiaLlamarMetodoBorrarDelServicio() {
+        // Preparación
         Long idResenaABorrar = 1L;
 
-        // ejecución
+        // Configuración del servicioResena para evitar excepciones
+        doNothing().when(servicioResena).borrar(idResenaABorrar);
+
+        // Ejecución
         ModelAndView modelAndView = controladorResena.borrar(idResenaABorrar);
 
-        // validación
-        assertEquals("apunte-detalle", modelAndView.getViewName());
-        String mensaje = (String) modelAndView.getModelMap().get("mensaje");
-        assertEquals("Reseña borrada exitosamente", mensaje);
+        // Verificación de que el servicioResena.borrar se llamó una vez con el idResenaABorrar
         verify(servicioResena, times(1)).borrar(idResenaABorrar);
+
+        // Verificación de la vista y modelo
+        assertEquals("redirect:/apunte-detalle", modelAndView.getViewName());
+        ModelMap modelMap = modelAndView.getModelMap();
+        assertTrue(modelMap.containsKey("mensaje"));
+        assertEquals("Reseña borrada exitosamente", modelMap.get("mensaje"));
+        assertFalse(modelMap.containsKey("error"));
     }
 }
+
 
 
