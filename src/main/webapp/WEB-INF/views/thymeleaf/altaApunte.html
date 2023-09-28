@@ -21,53 +21,29 @@
 <body>
 
 <main role="main" class="container">
-    <div class="row">
-        <form action="/guardar-apunte" method="post" enctype="multipart/form-data" class="container">
-            <h1 class="mt-4">Alta Apuntes</h1>
-            <div class="form-row">
-                <div class="col-md-6 mb-3">
-                    <label for="nombre">Titulo del Apunte:</label>
-                    <input type="text" id="nombre" name="nombre" class="form-control" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="subtitulo">Subtitulo:</label>
-                    <input type="text" id="subtitulo" name="subtitulo" class="form-control" required />
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-md-6 mb-3">
-                    <label for="autor">Autor:</label>
-                    <input type="text" id="autor" name="autor" class="form-control" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="precio">Precio en Puntos:</label>
-                    <input type="number" id="precio" name="precio" class="form-control" required />
-                </div>
-            </div>
+    <div class="container">
+        <h1>Formulario de Registro de Apunte</h1>
+        <form th:action="@{/subirApunte}" method="post" th:object="${datosApunte}" class="needs-validation" novalidate>
             <div class="form-group">
-                <label for="carrera">Carrera:</label>
-                <select id="carrera" name="carrera" class="form-control mb-3" required>
-                    <option value="1">Carrera 1</option>
-                    <option value="2">Carrera 2</option>
-                    <option value="3">Carrera 3</option>
-                    <option value="4">Carrera 4</option>
-                    <option value="5">Carrera 5</option>
-                </select>
+                <label for="nombre">Nombre del Apunte:</label>
+                <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required="required" />
             </div>
-            <div class="form-group">
-                <label for="archivo">Archivo:</label>
-                <input type="file" id="archivo" name="archivo" accept=".pdf" class="form-control-file mb-3" required />
-            </div>
+
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion" name="descripcion" rows="4" class="form-control mb-3" required></textarea>
+                <textarea id="descripcion" th:field="*{descripcion}" class="form-control" rows="4" required="required"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Guardar Apunte</button>
+
+            <div class="form-group">
+                <label for="archivo">Path del Archivo:</label>
+                <input type="text" id="archivo" th:field="*{pathArchivo}" class="form-control" required="required" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Registrar Apunte</button>
         </form>
     </div>
 </main>
 <!-- /.container -->
-
 <!-- Boostrap core js -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
