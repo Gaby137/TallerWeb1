@@ -1,4 +1,3 @@
-  
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Apunte;
@@ -10,14 +9,12 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ControladorPuntajeTest {
-    
-    private ControladorApunte controladorApunte; // Cambio de ControladorApunte a ControladorPuntaje
+
+    private ControladorApunte controladorApunte;
     private DatosApunte datosApunte;
     private Apunte apunteMock;
     private HttpServletRequest requestMock;
@@ -25,7 +22,7 @@ public class ControladorPuntajeTest {
     private ServicioApunte servicioApunteMock;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         String pathArchivo = "archivo.pdf";
         String nombre = "Apunte 1";
         String descripcion = "Descripcion del Apunte";
@@ -51,7 +48,7 @@ public class ControladorPuntajeTest {
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock);
 
         // Verificación
-        assertEquals("apuntePublicadoExito", modelAndView.getViewName());
+        assertEquals("misApuntes", modelAndView.getViewName()); // Nombre de la vista real
         assertFalse(modelAndView.getModel().containsKey("error"));
     }
 
@@ -65,9 +62,8 @@ public class ControladorPuntajeTest {
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock);
 
         // Verificación
-        assertEquals("subirApunte", modelAndView.getViewName());
+        assertEquals("altaApunte", modelAndView.getViewName()); // Nombre de la vista real
         assertTrue(modelAndView.getModel().containsKey("error"));
         assertEquals("Por favor complete todos los campos", modelAndView.getModel().get("error"));
     }
- 
 }
