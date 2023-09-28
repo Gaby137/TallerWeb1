@@ -77,4 +77,9 @@ public class ControladorLogin {
         return new ModelAndView("redirect:/login");
     }
 
+    @RequestMapping(path = "/miPerfil", method = RequestMethod.GET)
+    public ModelAndView perfil() {
+        return new ModelAndView("miPerfil");
+    }
+
 }

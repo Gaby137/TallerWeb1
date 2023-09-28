@@ -35,12 +35,13 @@ public class ControladorApunte {
 
     @RequestMapping(path = "/subirApunte", method = RequestMethod.POST)
     public ModelAndView publicar(@ModelAttribute("datosApunte") DatosApunte datosApunte) {
-        ModelMap modelo = new ModelMap();
+
         if( servicioApunte.registrar(datosApunte)){
             return misApuntes();
         } else {
-            modelo.put("error", "Por favor complete todos los campos");
-            return new ModelAndView("altaApunte", modelo);
+            ModelMap model = new ModelMap();
+            model.put("error", "Por favor complete todos los campos");
+            return new ModelAndView("altaApunte", model);
         }
     }
 
@@ -53,23 +54,24 @@ public class ControladorApunte {
 
         // Verificar si el apunte existe
         if (apunteAEditar != null) {
-            modelo.addAttribute("apunte", apunteAEditar);
+            modelo.put("apunte", apunteAEditar);
             return new ModelAndView("editarApunte", modelo);
         } else {
-            modelo.addAttribute("mensaje", "El apunte no se encontró");
+            modelo.put("mensaje", "El apunte no se encontró");
             return new ModelAndView("error", modelo);
         }
     }
 
     @RequestMapping(path = "/guardarEdicion", method = RequestMethod.POST)
     public ModelAndView guardarEdicion(@ModelAttribute("apunte") Apunte apunte) {
-        ModelMap modelo = new ModelMap();
 
-        // Implementar la lógica para guardar la edición del apunte
-        servicioApunte.actualizar(apunte);
-
-        modelo.addAttribute("mensaje", "Apunte editado exitosamente");
-        return new ModelAndView("mensajeExito", modelo);
+        if(servicioApunte.actualizar(apunte)){
+            return misApuntes();
+        } else {
+            ModelMap model = new ModelMap();
+            model.put("error", "Por favor complete todos los campos");
+            return new ModelAndView("editarApunte", model);
+        }
     }
 
     @RequestMapping(path = "/eliminarApunte/{id}", method = RequestMethod.GET)
