@@ -10,7 +10,7 @@ public class VistaLogin extends VistaWeb {
     }
 
     public String obtenerTextoDeLaBarraDeNavegacion(){
-        return this.obtenerTextoDelElemento("nav a.navbar-brand");
+        return this.obtenerTextoDelElemento("span.login100-form-title.p-b-41");
     }
 
     public String obtenerMensajeDeError(){
@@ -26,6 +26,6 @@ public class VistaLogin extends VistaWeb {
     }
 
     public void darClickEnIniciarSesion(){
-        this.darClickEnElElemento("#btn-login");
+        this.darClickEnElElemento("button.login100-form-btn");
     }
 }
