@@ -45,7 +45,7 @@ public class ControladorResena {
     public ModelAndView listarResenas() {
         ModelMap model = new ModelMap();
         List<Resena> resenas = servicioResena.listar();
-        model.addAttribute("resenas", resenas);
+        model.put("resenas", resenas);
         return new ModelAndView("apunte-detalle", model);
     }
 
@@ -54,10 +54,10 @@ public class ControladorResena {
         ModelMap modelo = new ModelMap();
         try {
             servicioResena.borrar(id);
-            modelo.addAttribute("mensaje", "Reseña borrada exitosamente");
+            modelo.put("mensaje", "Reseña borrada exitosamente");
 
         } catch (Exception e) {
-            modelo.addAttribute("error", "Error al intentar borrar la reseña");
+            modelo.put("error", "Error al intentar borrar la reseña");
         }
         return new ModelAndView("apunte-detalle", modelo);
     }
