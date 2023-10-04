@@ -1,9 +1,7 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Apunte;
-import com.tallerwebi.dominio.Resena;
-import com.tallerwebi.dominio.ServicioApunte;
-import com.tallerwebi.dominio.excepcion.ValidacionException;
+import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.servicio.ServicioApunte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.xml.bind.ValidationException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller

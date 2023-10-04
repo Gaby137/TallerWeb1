@@ -1,7 +1,7 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Apunte;
-import com.tallerwebi.dominio.ServicioApunte;
+import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.servicio.ServicioApunte;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;

@@ -1,8 +1,7 @@
-package com.tallerwebi.infraestructura;
+package com.tallerwebi.dominio.servicio;
 
-import com.tallerwebi.dominio.RepositorioMateria;
-import com.tallerwebi.dominio.Materia;
-import com.tallerwebi.dominio.ServicioMateria;
+import com.tallerwebi.dominio.iRepositorio.RepositorioMateria;
+import com.tallerwebi.dominio.entidad.Materia;
 import com.tallerwebi.presentacion.DatosMateria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.dominio.entidad;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,21 +7,25 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class Materia {
+public class Apunte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String pathArchivo;
+    private String nombre;
     private String descripcion;
     private Date created_at;
     private Date updated_at;
 
-    public Materia(String descripcion, Date created_at, Date updated_at) {
+    public Apunte(String pathArchivo, String nombre, String descripcion, Date created_at, Date updated_at) {
+        this.pathArchivo = pathArchivo;
+        this.nombre = nombre;
         this.descripcion = descripcion;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
 
-    public Materia() {
+    public Apunte() {
 
     }
 
@@ -31,6 +35,22 @@ public class Materia {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPathArchivo() {
+        return pathArchivo;
+    }
+
+    public void setPathArchivo(String pathArchivo) {
+        this.pathArchivo = pathArchivo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDescripcion() {
