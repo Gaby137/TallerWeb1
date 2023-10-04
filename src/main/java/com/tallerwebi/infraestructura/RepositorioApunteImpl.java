@@ -1,8 +1,7 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Apunte;
-import com.tallerwebi.dominio.RepositorioApunte;
-import com.tallerwebi.dominio.Usuario;
+import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -1,13 +1,11 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Materia;
-import com.tallerwebi.dominio.RepositorioMateria;
+import com.tallerwebi.dominio.entidad.Materia;
+import com.tallerwebi.dominio.iRepositorio.RepositorioMateria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository("repositorioMateria")
 public class RepositorioMateriaImpl implements RepositorioMateria {
