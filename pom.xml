@@ -106,6 +106,13 @@
             <version>${playwright.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.1.6.Final</version> <!-- Asegúrate de utilizar la versión más reciente disponible -->
+        </dependency>
+
         <!-- compile only, deployed container will provide this -->
         <!--
         <dependency>
