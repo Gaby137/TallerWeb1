@@ -26,7 +26,7 @@ public class ServicioLoginImpl implements ServicioLogin {
 
     @Override
     public void registrar(Usuario usuario) throws UsuarioExistente {
-        Usuario usuarioEncontrado = servicioLoginDao.buscarUsuario(usuario.getEmail(), usuario.getPassword());
+        Usuario usuarioEncontrado = servicioLoginDao.buscarUsuario(usuario.getEmail());
         if(usuarioEncontrado != null){
             throw new UsuarioExistente();
         }
