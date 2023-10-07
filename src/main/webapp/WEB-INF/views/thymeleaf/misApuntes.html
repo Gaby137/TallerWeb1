@@ -6,32 +6,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">UNLaM</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" th:href="@{'/home'}">Inicio</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{'/misApuntes'}">Mis Apuntes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Puntos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{'/miPerfil'}">Perfil</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <h4>Mis Apuntes</h4>
-        </form>
-    </div>
-</nav>
+<div th:insert="~{nav}"></div>
+
 <div class="mx-auto my-2" style="width: 200px;">
     <a th:href="@{'/formulario-alta-apunte'}" class="btn btn-success">Subir un apunte</a>
 </div>
