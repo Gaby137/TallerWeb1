@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio.entidad;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -15,6 +12,9 @@ public class Resena {
     private String descripcion;
     private int cantidadDeEstrellas;
     private Date created_at;
+
+    @OneToOne(mappedBy = "resena")
+    private UsuarioApunteResena usuarioResenaApunte;
 
     public Long getId() {
         return id;

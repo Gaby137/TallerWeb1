@@ -1,14 +1,13 @@
 package com.tallerwebi.dominio.entidad;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Usuario {
@@ -37,6 +36,28 @@ public class Usuario {
     private Boolean activo = false;
     private Date created_at;
     private Date updated_at;
+    @OneToMany(mappedBy = "usuario")
+    private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
+
+    @OneToOne(mappedBy = "usuario")
+    private UsuarioApunteResena usuarioResenaApunte;
+
+    public Usuario(){
+
+    }
+    public Usuario(Long id, String nombre, String apellido, int puntos, String email, String password, String rol, Boolean activo, Date created_at, Date updated_at, List<UsuarioApunte> relacionesUsuarioApunte) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.puntos = puntos;
+        this.email = email;
+        this.password = password;
+        this.rol = rol;
+        this.activo = activo;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.relacionesUsuarioApunte = relacionesUsuarioApunte;
+    }
 
     public Long getId() {
         return id;
@@ -113,5 +134,13 @@ public class Usuario {
     }
     public void setPuntos(int puntos) {
         this.puntos = puntos;
+    }
+
+    public List<UsuarioApunte> getRelacionesUsuarioApunte() {
+        return relacionesUsuarioApunte;
+    }
+
+    public void setRelacionesUsuarioApunte(List<UsuarioApunte> relacionesUsuarioApunte) {
+        this.relacionesUsuarioApunte = relacionesUsuarioApunte;
     }
 }
