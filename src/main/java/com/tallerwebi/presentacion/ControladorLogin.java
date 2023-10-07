@@ -35,9 +35,10 @@ public class ControladorLogin {
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLogin datosLogin, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-        Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
+        Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword(), datosLogin.getNombre());
         if (usuarioBuscado != null) {
-            request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
+            // Almacenar el usuario en la sesión con la clave "USUARIO"
+            request.getSession().setAttribute("USUARIO", usuarioBuscado);
             return new ModelAndView("redirect:/home");
         } else {
             model.put("error", "Usuario o clave incorrecta");
@@ -78,8 +79,15 @@ public class ControladorLogin {
     }
 
     @RequestMapping(path = "/miPerfil", method = RequestMethod.GET)
-    public ModelAndView perfil() {
-        return new ModelAndView("miPerfil");
-    }
+    public ModelAndView perfil(HttpServletRequest request) {
+        ModelMap model = new ModelMap();
 
+        // Obtener el usuario actual desde la sesión
+        Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("USUARIO");
+
+        // Pasar el usuario al modelo
+        model.put("usuario", usuarioLogueado);
+
+        return new ModelAndView("miPerfil", model);
+    }
 }
