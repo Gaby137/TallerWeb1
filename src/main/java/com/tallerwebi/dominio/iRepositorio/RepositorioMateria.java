@@ -1,6 +1,6 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.dominio.iRepositorio;
 
-import java.util.List;
+import com.tallerwebi.dominio.entidad.Materia;
 
 public interface RepositorioMateria {
 

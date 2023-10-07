@@ -1,8 +1,7 @@
-package com.tallerwebi.infraestructura;
+package com.tallerwebi.dominio.servicio;
 
-import com.tallerwebi.dominio.RepositorioResena;
-import com.tallerwebi.dominio.Resena;
-import com.tallerwebi.dominio.ServicioResena;
+import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
+import com.tallerwebi.dominio.entidad.Resena;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

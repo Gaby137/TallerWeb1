@@ -1,4 +1,6 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.dominio.iRepositorio;
+
+import com.tallerwebi.dominio.entidad.Apunte;
 
 import java.util.List;
 

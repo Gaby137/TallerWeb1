@@ -1,4 +1,4 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.dominio.entidad;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,22 +7,25 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class Materia {
+public class Puntaje {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String descripcion;
+    private int puntos;
     private Date created_at;
     private Date updated_at;
 
-    public Materia(String descripcion, Date created_at, Date updated_at) {
-        this.descripcion = descripcion;
+    public Puntaje(int puntos, Date created_at, Date updated_at) {
+        this.puntos = puntos;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
 
-    public Materia() {
+    public Puntaje() {
 
+    }
+
+    public Puntaje(String usuario, int puntos2, Date updated_at2) {
     }
 
     public Long getId() {
@@ -33,12 +36,12 @@ public class Materia {
         this.id = id;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public int getPuntos() {
+        return puntos;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
     }
 
     public Date getCreated_at() {

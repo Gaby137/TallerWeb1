@@ -1,11 +1,10 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Puntaje;
-import com.tallerwebi.dominio.RepositorioPuntaje;
+import com.tallerwebi.dominio.entidad.Puntaje;
+import com.tallerwebi.dominio.iRepositorio.RepositorioPuntaje;
 
 import java.util.List;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;

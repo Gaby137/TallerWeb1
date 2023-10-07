@@ -97,6 +97,13 @@
       <form action="#" th:action="@{/registrarme}" method="POST" th:object="${usuario}">
         <h3>Crear cuenta</h3>
         <hr class="colorgraph"><br>
+        <p class="mailpss">Nombre</p>
+        <input th:field="*{nombre}" id="nombre" class="form-control" required/>
+        <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+
+        <p class="mailpss">Apellido</p>
+        <input th:field="*{apellido}" id="apellido" class="form-control" required/>
+        <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></span>
 
         <div>
           <p class="mailpss">Nombre</p>
@@ -105,10 +112,12 @@
         <div>
         <p class="mailpss">Email</p>
         <input th:field="*{email}" id="email" class="form-control" required/>
+          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
         </div>
         <div>
         <p class="mailpss">Contraseña</p>
         <input th:field="*{password}" type="password" id="password" class="form-control" required/>
+          <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
         </div>
         <button id="btn-registrarme" Type="Submit">Registrarme</button>
         <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">

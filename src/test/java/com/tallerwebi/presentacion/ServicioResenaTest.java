@@ -1,11 +1,11 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.*;
-import com.tallerwebi.infraestructura.ServicioResenaImpl;
+import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
+import com.tallerwebi.dominio.servicio.ServicioResenaImpl;
+import com.tallerwebi.dominio.entidad.Resena;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,5 +1,6 @@
-package com.tallerwebi.dominio;
+package com.tallerwebi.dominio.servicio;
 
+import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.presentacion.DatosApunte;
 
 import java.util.List;

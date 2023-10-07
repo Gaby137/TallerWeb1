@@ -1,8 +1,8 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Puntaje;
-import com.tallerwebi.dominio.RepositorioPuntaje;
-import com.tallerwebi.dominio.ServicioPuntajeImpl;
+import com.tallerwebi.dominio.entidad.Puntaje;
+import com.tallerwebi.dominio.iRepositorio.RepositorioPuntaje;
+import com.tallerwebi.dominio.servicio.ServicioPuntajeImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

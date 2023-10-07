@@ -1,8 +1,8 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Apunte;
-import com.tallerwebi.dominio.RepositorioApunte;
-import com.tallerwebi.dominio.ServicioApunteImpl;
+import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
+import com.tallerwebi.dominio.servicio.ServicioApunteImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

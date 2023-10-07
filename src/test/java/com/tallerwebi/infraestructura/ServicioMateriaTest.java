@@ -1,9 +1,9 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.Apunte;
-import com.tallerwebi.dominio.Materia;
-import com.tallerwebi.dominio.RepositorioMateria;
+import com.tallerwebi.dominio.entidad.Materia;
+import com.tallerwebi.dominio.iRepositorio.RepositorioMateria;
 
+import com.tallerwebi.dominio.servicio.ServicioMateriaImpl;
 import com.tallerwebi.presentacion.DatosMateria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

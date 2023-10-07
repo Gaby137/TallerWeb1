@@ -45,8 +45,8 @@ public class VistaLoginE2E {
 
     @Test
     void deberiaDecirUNLAMEnElNavbar() {
-        String texto = vistaLogin.obtenerTextoDeLaBarraDeNavegacion();
-        assertThat("UNLAM", equalToIgnoringCase(texto));
+        String texto = vistaLogin.obtenerTextoDeLaBarraDeNavegacion().replaceAll("\\s", "");;
+        assertThat("Unlam", equalToIgnoringCase(texto));
     }
 
     @Test
