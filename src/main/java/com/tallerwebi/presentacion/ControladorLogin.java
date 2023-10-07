@@ -82,10 +82,8 @@ public class ControladorLogin {
     public ModelAndView perfil(HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-        // Obtener el usuario actual desde la sesión
         Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("USUARIO");
 
-        // Pasar el usuario al modelo
         model.put("usuario", usuarioLogueado);
 
         return new ModelAndView("miPerfil", model);

@@ -13,6 +13,9 @@ public class DatosLogin {
         this.password = password;
     }
 
+    public DatosLogin(String email, String contraseña, String nombre) {
+    }
+
     public String getEmail() {
         return email;
     }
