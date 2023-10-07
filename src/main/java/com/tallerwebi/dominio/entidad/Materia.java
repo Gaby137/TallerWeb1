@@ -1,10 +1,9 @@
 package com.tallerwebi.dominio.entidad;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Materia {
@@ -14,6 +13,9 @@ public class Materia {
     private String descripcion;
     private Date created_at;
     private Date updated_at;
+
+    @OneToMany(mappedBy = "materia")
+    private List<Apunte> apuntes = new ArrayList<>();
 
     public Materia(String descripcion, Date created_at, Date updated_at) {
         this.descripcion = descripcion;

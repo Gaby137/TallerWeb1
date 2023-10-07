@@ -1,10 +1,9 @@
 package com.tallerwebi.dominio.entidad;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Apunte {
@@ -17,12 +16,27 @@ public class Apunte {
     private Date created_at;
     private Date updated_at;
 
+    @OneToMany(mappedBy = "apunte")
+    private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
+
+    @OneToOne(mappedBy = "apunte")
+    private UsuarioApunteResena usuarioResenaApunte;
+
+    @ManyToOne
+    @JoinColumn(name = "materia_id")
+    private Materia materia;
+
+
     public Apunte(String pathArchivo, String nombre, String descripcion, Date created_at, Date updated_at) {
         this.pathArchivo = pathArchivo;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.created_at = created_at;
         this.updated_at = updated_at;
+    }
+
+    public Apunte(String nombre) {
+        this.nombre = nombre;
     }
 
     public Apunte() {
