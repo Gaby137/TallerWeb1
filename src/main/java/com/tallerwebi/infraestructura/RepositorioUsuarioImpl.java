@@ -1,5 +1,6 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.entidad.Rol;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuario;
 import com.tallerwebi.dominio.entidad.Usuario;
 import org.hibernate.Session;
@@ -38,7 +39,6 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
     @Override
     public void guardar(Usuario usuario) {
-        usuario.setPuntos(100);
         sessionFactory.getCurrentSession().save(usuario);
     }
 
