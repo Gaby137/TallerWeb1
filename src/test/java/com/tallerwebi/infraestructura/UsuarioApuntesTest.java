@@ -73,7 +73,7 @@ public class UsuarioApuntesTest {
         session.save(relacion2);
 
         // Recuperar el usuario de la base de datos
-        Usuario usuarioPersistido = session.find(Usuario.class, 1L);
+        Usuario usuarioPersistido = session.find(Usuario.class, usuario.getId());
 
         // Verificar que el usuario tenga una lista de relaciones UsuarioApunte no nula
         assertNotNull(usuarioPersistido.getRelacionesUsuarioApunte());

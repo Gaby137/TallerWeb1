@@ -32,7 +32,8 @@ public class Usuario {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$", message = "La contraseña debe contener al menos una letra mayúscula, una letra minúscula y un dígito.")
     @NotBlank
     private String password;
-    private String rol;
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
     private Boolean activo = false;
     private Date created_at;
     private Date updated_at;
@@ -45,7 +46,7 @@ public class Usuario {
     public Usuario(){
 
     }
-    public Usuario(Long id, String nombre, String apellido, int puntos, String email, String password, String rol, Boolean activo, Date created_at, Date updated_at, List<UsuarioApunte> relacionesUsuarioApunte) {
+    public Usuario(Long id, String nombre, String apellido, int puntos, String email, String password, Rol rol, Boolean activo, Date created_at, Date updated_at, List<UsuarioApunte> relacionesUsuarioApunte) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -77,12 +78,15 @@ public class Usuario {
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getRol() {
+
+    public Rol getRol() {
         return rol;
     }
-    public void setRol(String rol) {
+
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
+
     public Boolean getActivo() {
         return activo;
     }

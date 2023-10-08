@@ -30,6 +30,8 @@ public class ControladorUsuario {
         if (usuario != null) {
             // Agrega el usuario al modelo
             modelAndView.addObject("usuario", usuario);
+        }else{
+            return new ModelAndView("redirect:/login");
         }
 
         return modelAndView;

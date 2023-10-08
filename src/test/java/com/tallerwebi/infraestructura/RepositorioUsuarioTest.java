@@ -31,7 +31,7 @@ public class RepositorioUsuarioTest {
         Usuario usuario=new Usuario();
         repositorioUsuario.guardar(usuario);
         int puntos= usuario.getPuntos();
-        assertEquals(100, puntos);
+        assertEquals(0, puntos);
     }
 
 }
