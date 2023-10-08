@@ -17,10 +17,10 @@ public class HibernateConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.hsqldb.jdbcDriver"); /*poner motor de base de datos*/
-        dataSource.setUrl("jdbc:hsqldb:mem:db_"); /*iria localhost:3306*/
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver"); /*poner motor de base de datos*/
+        dataSource.setUrl("jdbc:mysql://localhost:3306/db"); /*iria localhost:3306*/
+        dataSource.setUsername("root");
+        dataSource.setPassword("root");
         return dataSource;
     }
 
@@ -41,10 +41,10 @@ public class HibernateConfig {
 
     private Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.HSQLDialect"); /*cambiar segun el moto de bdd q usemos*/
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect"); /*cambiar segun el moto de bdd q usemos*/
         properties.setProperty("hibernate.show_sql", "true"); /*permite mostrar en pantalla (ponerlo en false mientras desarrollemos)*/
         properties.setProperty("hibernate.format_sql", "true"); /*permite mostrar en pantalla (ponerlo en false mientras desarrollemos)*/
-        properties.setProperty("hibernate.hbm2ddl.auto", "create"); /*q va a hacer hybernate con el esquema de bdd todo lo q tenga @Entity lo va a transofrmar en una tabla,
+        properties.setProperty("hibernate.hbm2ddl.auto", "update"); /*q va a hacer hybernate con el esquema de bdd todo lo q tenga @Entity lo va a transofrmar en una tabla,
         borra todo lo que haya cargado en la bdd y muestra lo mas nuevo hecho, en modo produccion poner en NONE*/
         return properties;
     }
