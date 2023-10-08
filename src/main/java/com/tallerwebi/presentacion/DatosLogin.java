@@ -1,7 +1,6 @@
 package com.tallerwebi.presentacion;
 
 public class DatosLogin {
-    private String nombre;
     private String email;
     private String password;
 
@@ -11,9 +10,6 @@ public class DatosLogin {
     public DatosLogin(String email, String password) {
         this.email = email;
         this.password = password;
-    }
-
-    public DatosLogin(String email, String contraseña, String nombre) {
     }
 
     public String getEmail() {
@@ -31,15 +27,8 @@ public class DatosLogin {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 }
+
 
 
 

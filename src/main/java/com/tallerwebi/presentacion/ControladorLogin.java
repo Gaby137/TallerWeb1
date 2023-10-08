@@ -37,10 +37,10 @@ public class ControladorLogin {
     public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLogin datosLogin, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
-        Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword(), datosLogin.getNombre());
+        Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
-            // Almacenar el usuario en la sesión con la clave "USUARIO"
-            request.getSession().setAttribute("USUARIO", usuarioBuscado);
+            request.getSession().setAttribute("usuario", usuarioBuscado);
+            request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
             return new ModelAndView("redirect:/home");
         } else {
             model.put("error", "Usuario o clave incorrecta");
@@ -48,10 +48,11 @@ public class ControladorLogin {
         return new ModelAndView("login", model);
     }
 
+
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
     public ModelAndView registrarme(@Valid Usuario usuario, BindingResult result) {
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             ModelAndView model = nuevoUsuario();
             model.addObject("usuario", usuario);
             return model;
@@ -76,6 +77,7 @@ public class ControladorLogin {
         }
     }
 
+
     @RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
     public ModelAndView nuevoUsuario() {
         ModelMap model = new ModelMap();
@@ -93,14 +95,5 @@ public class ControladorLogin {
         return new ModelAndView("redirect:/login");
     }
 
-    @RequestMapping(path = "/miPerfil", method = RequestMethod.GET)
-    public ModelAndView perfil(HttpServletRequest request) {
-        ModelMap model = new ModelMap();
 
-        Usuario usuarioLogueado = (Usuario) request.getSession().getAttribute("USUARIO");
-
-        model.put("usuario", usuarioLogueado);
-
-        return new ModelAndView("miPerfil", model);
-    }
 }

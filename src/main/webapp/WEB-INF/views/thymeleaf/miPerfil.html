@@ -56,8 +56,8 @@
             <button><img th:src="@{/img/Foto_Perfil_.jpg}" alt="Foto de perfil"></button>
         </div>
         <div th:if="${usuario != null}">
-            <p th:text="${usuario.getNombre()}"></p>
-            <p th:text="${usuario.getEmail()}"></p>
+            <p th:text="${usuario.nombre}"></p>
+            <p th:text="${usuario.email}"></p>
         </div>
     </div>
 

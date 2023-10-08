@@ -13,8 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class ControladorLoginTest {
@@ -43,7 +41,7 @@ public class ControladorLoginTest {
 	@Test
 	public void loginConUsuarioYPasswordInorrectosDeberiaLlevarALoginNuevamente(){
 		// preparacion
-		when(servicioLoginMock.consultarUsuario(anyString(), anyString(), anyString())).thenReturn(null);
+		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(null);
 
 		// ejecucion
 		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
@@ -53,23 +51,23 @@ public class ControladorLoginTest {
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Usuario o clave incorrecta"));
 		verify(sessionMock, times(0)).setAttribute("ROL", "ADMIN");
 	}
+
 	@Test
-	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome() throws UsuarioExistente {
+	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome(){
 		// preparacion
-		when(servicioLoginMock.consultarUsuario(anyString(), anyString(), anyString())).thenReturn(usuarioMock);
-		when(usuarioMock.getRol()).thenReturn("ADMIN");
+		Usuario usuarioEncontradoMock = mock(Usuario.class);
+		when(usuarioEncontradoMock.getRol()).thenReturn("ADMIN");
 
 		when(requestMock.getSession()).thenReturn(sessionMock);
+		when(servicioLoginMock.consultarUsuario(anyString(), anyString())).thenReturn(usuarioEncontradoMock);
 
 		// ejecucion
 		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginMock, requestMock);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/home"));
-		verify(sessionMock, times(1)).setAttribute("USUARIO", usuarioMock);
-		verify(sessionMock, times(1)).setAttribute("ROL", usuarioMock.getRol());
+		verify(sessionMock, times(1)).setAttribute("ROL", usuarioEncontradoMock.getRol());
 	}
-
 
 	@Test
 	public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin() throws UsuarioExistente {
