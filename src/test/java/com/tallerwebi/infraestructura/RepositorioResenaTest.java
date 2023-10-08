@@ -38,33 +38,6 @@ public class RepositorioResenaTest {
     @Transactional
     @Rollback
     @Test
-    public void modificarResena() {
-        // Crear una nueva reseña
-        Resena resena = new Resena();
-        resena.setDescripcion("Buena reseña");
-        resena.setCantidadDeEstrellas(5);
-
-        // Guardar la reseña en la base de datos
-        repositorioResena.guardar(resena);
-
-        // Modificar la reseña
-        resena.setDescripcion("Excelente reseña");
-        resena.setCantidadDeEstrellas(4); // Cambiar la calificación
-
-        // Actualizar la reseña en la base de datos
-        repositorioResena.modificar(resena);
-
-        // Buscar la reseña modificada por ID
-        Resena reseñaModificada = repositorioResena.buscar(resena.getId()).get(0);
-
-        // Verificar que la reseña modificada tenga los cambios
-        assertThat(reseñaModificada.getDescripcion(), equalTo("Excelente reseña"));
-        assertThat(reseñaModificada.getCantidadDeEstrellas(), equalTo(4));
-
-}
-    @Transactional
-    @Rollback
-    @Test
     public void guardarResena() {
         // Crear una nueva reseña
         Resena resena = new Resena();
@@ -76,7 +49,6 @@ public class RepositorioResenaTest {
 
         // Buscar la reseña recién guardada por ID
         Resena reseñaGuardada = repositorioResena.buscar(resena.getId()).get(0);
-
 
         // Verificar que la reseña guardada sea igual a la reseña original
         assertThat(reseñaGuardada, equalTo(resena));

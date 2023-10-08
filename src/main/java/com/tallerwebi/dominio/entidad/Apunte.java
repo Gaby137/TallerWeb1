@@ -13,6 +13,7 @@ public class Apunte {
     private String pathArchivo;
     private String nombre;
     private String descripcion;
+    private int precio;
     private Date created_at;
     private Date updated_at;
 
@@ -90,4 +91,12 @@ public class Apunte {
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
+    public int getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(int precio) {
+        this.precio = precio;
+    }
+
 }

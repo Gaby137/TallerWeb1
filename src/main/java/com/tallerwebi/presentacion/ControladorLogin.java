@@ -39,6 +39,7 @@ public class ControladorLogin {
 
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
         if (usuarioBuscado != null) {
+            request.getSession().setAttribute("usuario", usuarioBuscado);
             request.getSession().setAttribute("ROL", usuarioBuscado.getRol());
             return new ModelAndView("redirect:/home");
         } else {
@@ -47,10 +48,11 @@ public class ControladorLogin {
         return new ModelAndView("login", model);
     }
 
+
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
     public ModelAndView registrarme(@Valid Usuario usuario, BindingResult result) {
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             ModelAndView model = nuevoUsuario();
             model.addObject("usuario", usuario);
             return model;
@@ -75,6 +77,7 @@ public class ControladorLogin {
         }
     }
 
+
     @RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
     public ModelAndView nuevoUsuario() {
         ModelMap model = new ModelMap();
@@ -92,9 +95,5 @@ public class ControladorLogin {
         return new ModelAndView("redirect:/login");
     }
 
-    @RequestMapping(path = "/miPerfil", method = RequestMethod.GET)
-    public ModelAndView perfil() {
-        return new ModelAndView("miPerfil");
-    }
 
 }

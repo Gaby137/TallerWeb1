@@ -15,8 +15,8 @@ public class ServicioResenaImpl implements ServicioResena {
     private RepositorioResena repositorioResena;
 
     @Autowired
-    public ServicioResenaImpl(RepositorioResena servicioResena){
-        this.repositorioResena = servicioResena;
+    public ServicioResenaImpl(RepositorioResena repositorioResena){
+        this.repositorioResena = repositorioResena;
     }
     @Override
     public void guardar(Resena resena) {
