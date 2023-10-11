@@ -147,4 +147,12 @@ public class Usuario {
     public void setRelacionesUsuarioApunte(List<UsuarioApunte> relacionesUsuarioApunte) {
         this.relacionesUsuarioApunte = relacionesUsuarioApunte;
     }
+
+    public UsuarioApunteResena getUsuarioResenaApunte() {
+        return usuarioResenaApunte;
+    }
+
+    public void setUsuarioResenaApunte(UsuarioApunteResena usuarioResenaApunte) {
+        this.usuarioResenaApunte = usuarioResenaApunte;
+    }
 }

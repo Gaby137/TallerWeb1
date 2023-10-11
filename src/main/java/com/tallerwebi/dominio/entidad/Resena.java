@@ -47,4 +47,12 @@ public class Resena {
     public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
+
+    public UsuarioApunteResena getUsuarioResenaApunte() {
+        return this.usuarioResenaApunte;
+    }
+
+    public void setUsuarioResenaApunte(UsuarioApunteResena usuarioResenaApunte) {
+        this.usuarioResenaApunte = usuarioResenaApunte;
+    }
 }

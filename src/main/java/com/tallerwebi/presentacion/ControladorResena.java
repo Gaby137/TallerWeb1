@@ -1,7 +1,9 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.Resena;
+import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.servicio.ServicioResena;
+import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,10 +19,12 @@ import java.util.List;
 public class ControladorResena {
 
     private ServicioResena servicioResena;
+    private ServicioUsuario servicioUsuario;
 
     @Autowired
-    public ControladorResena(ServicioResena servicioResena) {
+    public ControladorResena(ServicioResena servicioResena, ServicioUsuario servicioUsuario) {
         this.servicioResena = servicioResena;
+        this.servicioUsuario=servicioUsuario;
     }
 
     @RequestMapping(path = "/formulario-alta-resena", method = RequestMethod.GET)
@@ -32,10 +36,18 @@ public class ControladorResena {
 
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
     public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena) {
+        // Guardar la reseña
         servicioResena.guardar(resena);
+
+        // Obtener el usuario asociado a la reseña
+        Usuario usuario = resena.getUsuarioResenaApunte().getUsuario();
+
+        // Sumar 10 puntos al usuario
+        usuario.setPuntos(usuario.getPuntos() + 10);
+        servicioUsuario.actualizar(usuario);
+
         return listarResenas();
     }
-
     @RequestMapping(path = "/apunte-detalle", method = RequestMethod.GET)
     public ModelAndView listarResenas() {
         ModelMap model = new ModelMap();
