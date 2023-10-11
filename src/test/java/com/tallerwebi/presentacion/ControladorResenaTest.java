@@ -1,6 +1,9 @@
 package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.entidad.Resena;
+import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.ServicioResena;
+import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +21,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class ControladorResenaTest {
 
     private ServicioResena servicioResena;
+    private ServicioUsuario servicioUsuario;
     private ControladorResena controladorResena;
+    private ControladorUsuario controladorUsuario;
 
     @BeforeEach
     public void init() {
         servicioResena = mock(ServicioResena.class);
-        controladorResena = new ControladorResena(servicioResena);
+        servicioUsuario=mock(ServicioUsuario.class);
+        controladorResena = new ControladorResena(servicioResena, servicioUsuario);
+        controladorUsuario=new ControladorUsuario(servicioUsuario);
     }
 
     @Test
@@ -73,6 +80,35 @@ public class ControladorResenaTest {
         assertTrue(modelMap.containsKey("mensaje"));
         assertEquals("Reseña borrada exitosamente", modelMap.get("mensaje"));
         assertFalse(modelMap.containsKey("error"));
+    }
+    @Test
+    void guardarResenaDeberiaGuardarResenaYAgregarPuntos() {
+        // Preparación
+        Resena resena = new Resena();
+        Usuario usuario = new Usuario();  // Asegúrate de ajustar esto según tus necesidades
+        UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
+        usuarioApunteResena.setUsuario(usuario);
+        resena.setUsuarioResenaApunte(usuarioApunteResena);
+
+        // Configuración del servicioResena para evitar excepciones
+        doNothing().when(servicioResena).guardar(resena);
+
+        // Configuración del servicioUsuario para evitar excepciones
+        when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);
+
+        // Ejecución
+        ModelAndView modelAndView = controladorResena.guardarResena(resena);
+
+        // Verificación
+        // Verifica que se haya llamado al método guardar del servicioResena con la reseña
+        verify(servicioResena, times(1)).guardar(resena);
+
+        // Verifica que se haya llamado al método actualizar del servicioUsuario con el usuario
+        verify(servicioUsuario, times(1)).actualizar(usuario);
+
+        // Verifica que la vista sea la esperada (listarResenas)
+        assertEquals("apunte-detalle", modelAndView.getViewName());
+
     }
 }
 
