@@ -99,4 +99,27 @@ public class Apunte {
         this.precio = precio;
     }
 
+    public List<UsuarioApunte> getRelacionesUsuarioApunte() {
+        return relacionesUsuarioApunte;
+    }
+
+    public void setRelacionesUsuarioApunte(List<UsuarioApunte> relacionesUsuarioApunte) {
+        this.relacionesUsuarioApunte = relacionesUsuarioApunte;
+    }
+
+    public UsuarioApunteResena getUsuarioResenaApunte() {
+        return usuarioResenaApunte;
+    }
+
+    public void setUsuarioResenaApunte(UsuarioApunteResena usuarioResenaApunte) {
+        this.usuarioResenaApunte = usuarioResenaApunte;
+    }
+
+    public Materia getMateria() {
+        return materia;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
 }

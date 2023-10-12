@@ -82,20 +82,20 @@ public class ControladorLoginTest {
 	public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin() throws UsuarioExistente, IOException {
 
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.registrarme(registroMock, resultMock, fotoMock);
+		ModelAndView modelAndView = controladorLogin.registrarme(registroMock, resultMock);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
-		verify(servicioLoginMock, times(1)).registrar(registroMock,fotoMock);
+		verify(servicioLoginMock, times(1)).registrar(registroMock);
 	}
 
 	@Test
 	public void registrarmeSiUsuarioExisteDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente, IOException {
 		// preparacion
-		doThrow(UsuarioExistente.class).when(servicioLoginMock).registrar(registroMock,fotoMock);
+		doThrow(UsuarioExistente.class).when(servicioLoginMock).registrar(registroMock);
 
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.registrarme(registroMock, resultMock, fotoMock);
+		ModelAndView modelAndView = controladorLogin.registrarme(registroMock, resultMock);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
@@ -105,10 +105,10 @@ public class ControladorLoginTest {
 	@Test
 	public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente, IOException {
 		// preparacion
-		doThrow(RuntimeException.class).when(servicioLoginMock).registrar(registroMock,fotoMock);
+		doThrow(RuntimeException.class).when(servicioLoginMock).registrar(registroMock);
 
 		// ejecucion
-		ModelAndView modelAndView = controladorLogin.registrarme(registroMock, resultMock, fotoMock);
+		ModelAndView modelAndView = controladorLogin.registrarme(registroMock, resultMock);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));

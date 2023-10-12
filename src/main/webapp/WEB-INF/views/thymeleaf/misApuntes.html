@@ -20,7 +20,7 @@
                     <h5 th:text="${apunte.nombre}" class="card-title"></h5>
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
                     <p th:text="${apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
-                    <a th:href="@{/apunte-detalle}" class="btn btn-primary">Detalles</a>
+                    <a th:href="@{/apunte-detalle/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
                     <a th:href="@{/editarApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Editar</a>
                     <a th:href="@{/eliminarApunte/{id}(id=${apunte.id})}" class="btn btn-danger">Eliminar</a>
                 </div>

@@ -63,7 +63,7 @@ public class ControladorLogin {
 
 
     @RequestMapping(path = "/registrarme", method = RequestMethod.POST)
-    public ModelAndView registrarme(@Valid DatosRegistro usuario, BindingResult result, @RequestParam("fotoPerfil") MultipartFile fotoPerfil) {
+    public ModelAndView registrarme(@Valid DatosRegistro usuario, BindingResult result) {
 
         if (result.hasErrors()) {
             ModelMap model = new ModelMap();
@@ -72,7 +72,8 @@ public class ControladorLogin {
         } else {
             ModelAndView successModelAndView = new ModelAndView("redirect:/login");
             try {
-                    servicioLogin.registrar(usuario, fotoPerfil);
+
+                    servicioLogin.registrar(usuario);
             } catch (UsuarioExistente e) {
                 // En caso de un usuario existente, puedes agregar un mensaje de error al modelo y redirigir nuevamente al formulario
                 ModelAndView model = nuevoUsuario(); // Reutiliza el método nuevoUsuario()

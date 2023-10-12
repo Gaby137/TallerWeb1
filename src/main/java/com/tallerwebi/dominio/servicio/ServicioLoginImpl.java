@@ -39,7 +39,7 @@ public class ServicioLoginImpl implements ServicioLogin {
     }
 
     @Override
-    public void registrar(DatosRegistro usuario, MultipartFile fotoPerfil) throws UsuarioExistente, IOException {
+    public void registrar(DatosRegistro usuario) throws UsuarioExistente, IOException {
         Usuario usuarioEncontrado = servicioLoginDao.buscarUsuario(usuario.getEmail());
         if(usuarioEncontrado != null){
             throw new UsuarioExistente();
@@ -48,33 +48,15 @@ public class ServicioLoginImpl implements ServicioLogin {
         File uploadDirectory = new File(uploadDir);
         if (uploadDirectory.exists()) {
 
-            File imageFile = new File(uploadDirectory, fotoPerfil.getOriginalFilename());
-            fotoPerfil.transferTo(imageFile);
+            File imageFile = new File(uploadDirectory, usuario.getFotoPerfil().getOriginalFilename());
+            usuario.getFotoPerfil().transferTo(imageFile);
 
-            if (fotoPerfil.getOriginalFilename() !=null ){
-                Usuario u1 = new Usuario(usuario.getNombre(),usuario.getApellido(),100, usuario.getEmail(),usuario.getPassword(),Rol.USUARIO,false, fotoPerfil.getOriginalFilename(),new Date(),new Date());
+            if (usuario.getFotoPerfil().getOriginalFilename() !=null ){
+                Usuario u1 = new Usuario(usuario.getNombre(),usuario.getApellido(),100, usuario.getEmail(),usuario.getPassword(),Rol.USUARIO,false, usuario.getFotoPerfil().getOriginalFilename(),new Date(),new Date());
                 servicioLoginDao.guardar(u1);
             }
 
         }
-
-    }
-
-    public String almacenarFotoDePerfil(MultipartFile fotoPerfil) throws IOException {
-
-                // Obtén una ubicación de almacenamiento o un servicio de almacenamiento en la nube
-                // y guarda la imagen allí.
-
-                // Por ejemplo, si deseas guardarla en el sistema de archivos del servidor:
-                String nombreArchivo = UUID.randomUUID().toString() + "_" + fotoPerfil.getOriginalFilename();
-                String rutaAlmacenamiento = "/resources/core/img/";
-                String rutaCompleta = rutaAlmacenamiento + nombreArchivo;
-
-                Path rutaArchivo = Paths.get(rutaCompleta);
-                Files.write(rutaArchivo, fotoPerfil.getBytes());
-
-                // Devuelve la URL completa de la imagen para guardarla en la entidad Usuario
-                return "/resources/core/img/" + nombreArchivo;
 
     }
 
