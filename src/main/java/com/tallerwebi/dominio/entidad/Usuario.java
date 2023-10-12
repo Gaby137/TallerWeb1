@@ -37,6 +37,9 @@ public class Usuario {
     private Boolean activo = false;
     private Date created_at;
     private Date updated_at;
+
+    @Version
+    private Long version;
     @OneToMany(mappedBy = "usuario")
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
@@ -46,7 +49,7 @@ public class Usuario {
     public Usuario(){
 
     }
-    public Usuario(Long id, String nombre, String apellido, int puntos, String email, String password, Rol rol, Boolean activo, Date created_at, Date updated_at, List<UsuarioApunte> relacionesUsuarioApunte) {
+    public Usuario(Long id, String nombre, String apellido, int puntos, String email, String password, Rol rol, Boolean activo, Date created_at, Date updated_at, List<UsuarioApunte> relacionesUsuarioApunte, Long version) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -58,6 +61,7 @@ public class Usuario {
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.relacionesUsuarioApunte = relacionesUsuarioApunte;
+        this.version=version;
     }
 
     public Long getId() {
@@ -154,5 +158,13 @@ public class Usuario {
 
     public void setUsuarioResenaApunte(UsuarioApunteResena usuarioResenaApunte) {
         this.usuarioResenaApunte = usuarioResenaApunte;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

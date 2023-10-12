@@ -26,36 +26,40 @@ public class ControladorResena {
     @Autowired
     public ControladorResena(ServicioResena servicioResena, ServicioUsuario servicioUsuario) {
         this.servicioResena = servicioResena;
-        this.servicioUsuario=servicioUsuario;
+        this.servicioUsuario = servicioUsuario;
     }
 
     @RequestMapping(path = "/formulario-alta-resena", method = RequestMethod.GET)
     public ModelAndView irAFormularioAlta(HttpSession session) {
         ModelMap model = new ModelMap();
-        Usuario usuario=(Usuario) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         model.put("usuario", usuario);
         model.put("resena", new Resena());
         return new ModelAndView("formulario-alta-resena", model);
     }
 
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
-    public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena) {
+    public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena, HttpSession session) {
         ModelMap model = new ModelMap();
 
         if (resena != null) {
-            UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
-
-            usuarioApunteResena.setResena(resena);
-            resena.setUsuarioResenaApunte(usuarioApunteResena);
-
-            Usuario usuario = usuarioApunteResena.getUsuario();
+            // Obtener el usuario de la sesión
+            Usuario usuario = (Usuario) session.getAttribute("usuario");
 
             if (usuario != null) {
+                // Verificar si la propiedad usuarioResenaApunte es nula y, si es así, inicializarla
+                if (resena.getUsuarioResenaApunte() == null) {
+                    resena.setUsuarioResenaApunte(new UsuarioApunteResena());
+                }
 
+                // Asignar el usuario a la reseña
+                resena.getUsuarioResenaApunte().setUsuario(usuario);
+
+                // Otorgar 10 puntos al usuario
                 usuario.setPuntos(usuario.getPuntos() + 10);
-
                 servicioUsuario.actualizar(usuario);
 
+                // Guardar la reseña
                 servicioResena.guardar(resena);
 
                 return listarResenas();
@@ -68,7 +72,8 @@ public class ControladorResena {
 
         return new ModelAndView("formulario-alta-resena", model);
     }
-        @RequestMapping(path = "/apunte-detalle", method = RequestMethod.GET)
+
+    @RequestMapping(path = "/apunte-detalle", method = RequestMethod.GET)
     public ModelAndView listarResenas() {
         ModelMap model = new ModelMap();
         List<Resena> resenas = servicioResena.listar();
@@ -80,14 +85,19 @@ public class ControladorResena {
     public ModelAndView borrar(@PathVariable("id") Long id) {
         ModelMap modelo = new ModelMap();
         try {
-            servicioResena.borrar(id);
-            modelo.put("mensaje", "Reseña borrada exitosamente");
+            Resena resena = servicioResena.buscar(id);
 
+            if (resena != null) {
+                servicioResena.borrar(id);
+                modelo.put("mensaje", "Reseña borrada exitosamente");
+            } else {
+                modelo.put("error", "La reseña con el ID proporcionado no existe");
+            }
         } catch (Exception e) {
             modelo.put("error", "Error al intentar borrar la reseña");
         }
         return new ModelAndView("redirect:/apunte-detalle", modelo);
     }
-
 }
+
 

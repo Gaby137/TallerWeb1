@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.servicio;
 
+import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
 import com.tallerwebi.dominio.entidad.Resena;
@@ -14,11 +15,16 @@ import java.util.List;
 public class ServicioResenaImpl implements ServicioResena {
 
     private RepositorioResena repositorioResena;
+    private ServicioUsuario servicioUsuario;
 
     @Autowired
-    public ServicioResenaImpl(RepositorioResena repositorioResena){
+    public ServicioResenaImpl(RepositorioResena repositorioResena, ServicioUsuario servicioUsuario) {
         this.repositorioResena = repositorioResena;
+        this.servicioUsuario = servicioUsuario;
     }
+
+    // ... (otros métodos)
+
     @Override
     public void guardar(Resena resena) {
         repositorioResena.guardar(resena);
@@ -35,7 +41,7 @@ public class ServicioResenaImpl implements ServicioResena {
     }
 
     @Override
-    public List<Resena> buscar(Long id) {
+    public Resena buscar(Long id) {
         return this.repositorioResena.buscar(id);
     }
     @Override

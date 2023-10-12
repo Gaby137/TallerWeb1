@@ -24,8 +24,7 @@ import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
@@ -48,7 +47,10 @@ public class RepositorioResenaTest {
         repositorioResena.guardar(resena);
 
         // Buscar la reseña recién guardada por ID
-        Resena reseñaGuardada = repositorioResena.buscar(resena.getId()).get(0);
+        Resena reseñaGuardada = repositorioResena.buscar(resena.getId());
+
+        // Verificar que la reseña guardada no sea nula
+        assertNotNull(reseñaGuardada, "La reseña encontrada no debe ser nula");
 
         // Verificar que la reseña guardada sea igual a la reseña original
         assertThat(reseñaGuardada, equalTo(resena));
@@ -67,15 +69,16 @@ public class RepositorioResenaTest {
         // Guardar la reseña en la base de datos
         repositorioResena.guardar(resena);
 
-        Long id=resena.getId();
+        Long id = resena.getId();
+
         // Borrar la reseña de la base de datos
         repositorioResena.borrar(id);
 
         // Intentar buscar la reseña borrada por ID
-        List<Resena> resenas = repositorioResena.buscar(resena.getId());
+        Resena resenaBorrada = repositorioResena.buscar(id);
 
-        // Verificar que no se encuentre ninguna reseña con ese ID
-        assertTrue(resenas.isEmpty(), "No debe haber ninguna reseña con ese ID");
+        // Verificar que la reseña no se encuentre en la base de datos
+        assertNull(resenaBorrada, "La reseña debe haber sido borrada correctamente");
     }
 
     @Transactional
@@ -91,11 +94,13 @@ public class RepositorioResenaTest {
         repositorioResena.guardar(resena);
 
         // Buscar la reseña por ID
-        List<Resena> reseñas = repositorioResena.buscar(resena.getId());
+        Resena resenaEncontrada = repositorioResena.buscar(resena.getId());
 
-        // Verificar que se encuentre la reseña con ese ID
-        assertEquals(1, reseñas.size(), "Debe haber exactamente una reseña con ese ID");
-        assertEquals(resena, reseñas.get(0), "La reseña encontrada debe ser igual a la reseña original");
+        // Verificar que la reseña se encuentre en la base de datos y sea igual a la original
+        assertNotNull(resenaEncontrada, "Debe haber una reseña con ese ID");
+        assertEquals(resena.getId(), resenaEncontrada.getId(), "Los IDs de las reseñas deben coincidir");
+        assertEquals(resena.getDescripcion(), resenaEncontrada.getDescripcion(), "Las descripciones de las reseñas deben coincidir");
+        assertEquals(resena.getCantidadDeEstrellas(), resenaEncontrada.getCantidadDeEstrellas(), "Las cantidades de estrellas de las reseñas deben coincidir");
     }
 
 

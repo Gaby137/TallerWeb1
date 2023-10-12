@@ -12,7 +12,7 @@ public interface ServicioResena {
 
     void borrar(Long id);
 
-    List<Resena> buscar(Long id);
+    Resena buscar(Long id);
 
     List<Resena> listar();
 
