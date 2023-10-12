@@ -92,7 +92,7 @@ public class ControladorResena {
         request.getSession().setAttribute("idApunte", apunte.getId());
         model.put("apunte", apunte);
 
-        List<Resena> resenas = servicioResena.buscar(apunte.getId());
+        List<Resena> resenas = servicioResena.listar();
         model.put("resenas", resenas);
         return new ModelAndView("apunte-detalle", model);
     }
