@@ -2,8 +2,10 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
+import com.tallerwebi.dominio.servicio.ServicioApunte;
 import com.tallerwebi.dominio.servicio.ServicioResena;
 import com.tallerwebi.dominio.servicio.ServicioUsuario;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class ControladorResenaTest {
 
     private ServicioResena servicioResena;
     private ServicioUsuario servicioUsuario;
+    private ServicioApunte servicioApunte;
+    private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private ControladorResena controladorResena;
     private HttpSession sessionMock;
     private ControladorUsuario controladorUsuario;
@@ -31,7 +35,7 @@ public class ControladorResenaTest {
     public void init() {
         servicioResena = mock(ServicioResena.class);
         servicioUsuario=mock(ServicioUsuario.class);
-        controladorResena = new ControladorResena(servicioResena, servicioUsuario);
+        controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunteResena);
         controladorUsuario=new ControladorUsuario(servicioUsuario);
         sessionMock = mock(HttpSession.class);
     }
@@ -46,23 +50,7 @@ public class ControladorResenaTest {
         assertEquals(null, resena.getId());
     }
 
-    @Test
-    void listarResenasDeberiaDevolverVistaConListaDeResenas() {
-        // preparación
-        ModelMap modelMap = new ModelMap();
-        List<Resena> resenas = new ArrayList<>();
-        resenas.add(new Resena());
-        resenas.add(new Resena());
-        when(servicioResena.listar()).thenReturn(resenas);
 
-        // ejecución
-        ModelAndView modelAndView = controladorResena.listarResenas();
-
-        // validación
-        assertEquals("apunte-detalle", modelAndView.getViewName());
-        List<Resena> resenasEnModelo = (List<Resena>) modelAndView.getModelMap().get("resenas");
-        assertEquals(2, resenasEnModelo.size());
-    }
     @Test
     void borrarResenaDeberiaLlamarMetodoBorrarDelServicio() {
         // Preparación

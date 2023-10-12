@@ -8,8 +8,10 @@
 <body>
     <div th:insert="~{nav}"></div>
     <main class="container">
-        <a href="formulario-alta-resena.html" class="btn btn-primary">Agregar Reseña</a>
-        
+        <a th:href="@{'/formulario-alta-resena'}" class="btn btn-primary">Agregar Reseña</a>
+        <p th:text="${apunte.nombre}"></p>
+        <p th:text="${apunte.descripcion}"></p>
+        <p th:text="${apunte.pathArchivo}"></p>
         <table border="1">
             <thead>
             <tr>
@@ -32,5 +34,7 @@
         <p th:if="${error}" style="color: red;" th:text="${error}"></p>
 
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+
+
 </body>
 </html>
