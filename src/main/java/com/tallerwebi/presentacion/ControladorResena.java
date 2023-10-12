@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -29,8 +30,10 @@ public class ControladorResena {
     }
 
     @RequestMapping(path = "/formulario-alta-resena", method = RequestMethod.GET)
-    public ModelAndView irAFormularioAlta() {
+    public ModelAndView irAFormularioAlta(HttpSession session) {
         ModelMap model = new ModelMap();
+        Usuario usuario=(Usuario) session.getAttribute("usuario");
+        model.put("usuario", usuario);
         model.put("resena", new Resena());
         return new ModelAndView("formulario-alta-resena", model);
     }
@@ -39,27 +42,20 @@ public class ControladorResena {
     public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena) {
         ModelMap model = new ModelMap();
 
-        // Verificar que la reseña no sea nula
         if (resena != null) {
-            // Crear una nueva instancia de UsuarioApunteResena
             UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
 
-            // Configurar la asociación
             usuarioApunteResena.setResena(resena);
             resena.setUsuarioResenaApunte(usuarioApunteResena);
 
-            // Obtener el usuario asociado a la reseña
             Usuario usuario = usuarioApunteResena.getUsuario();
 
-            // Verificar que el usuario no sea nulo
             if (usuario != null) {
-                // Sumar 10 puntos al usuario
+
                 usuario.setPuntos(usuario.getPuntos() + 10);
 
-                // Guardar el usuario (asegúrate de que se persistan los cambios)
                 servicioUsuario.actualizar(usuario);
 
-                // La persistencia de la reseña y la relación debería ocurrir automáticamente
                 servicioResena.guardar(resena);
 
                 return listarResenas();

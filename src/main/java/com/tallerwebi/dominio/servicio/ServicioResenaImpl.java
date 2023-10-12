@@ -21,14 +21,6 @@ public class ServicioResenaImpl implements ServicioResena {
     }
     @Override
     public void guardar(Resena resena) {
-        // Obtener el usuario asociado a la reseña
-        UsuarioApunteResena usuarioApunteResena = resena.getUsuarioResenaApunte();
-
-        // Configurar la asociación
-        usuarioApunteResena.setResena(resena);
-        usuarioApunteResena.setUsuario(resena.getUsuarioResenaApunte().getUsuario());
-
-        // Guardar (asegúrate de que se persistan los cambios)
         repositorioResena.guardar(resena);
     }
 
