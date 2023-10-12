@@ -70,9 +70,7 @@ public class ControladorResena {
 
                 usuarioApunteResena.setApunte(apunte);
 
-                resena.setUsuarioResenaApunte(usuarioApunteResena);
-                usuario.setUsuarioResenaApunte(usuarioApunteResena);
-                apunte.setUsuarioResenaApunte(usuarioApunteResena);
+
                 servicioUsuarioApunteResena.registrar(usuarioApunteResena);
 
 
@@ -94,7 +92,7 @@ public class ControladorResena {
         request.getSession().setAttribute("idApunte", apunte.getId());
         model.put("apunte", apunte);
 
-        List<Resena> resenas = servicioResena.listar();
+        List<Resena> resenas = servicioResena.buscar(apunte.getId());
         model.put("resenas", resenas);
         return new ModelAndView("apunte-detalle", model);
     }

@@ -68,17 +68,17 @@ public class ServicioResenaTest {
         resena2.setCantidadDeEstrellas(4);
 
         // Configuración del comportamiento del repositorio simulado
-        when(repositorioResenaMock.listar()).thenReturn(List.of(resena1, resena2));
+        when(repositorioResenaMock.listar(0L)).thenReturn(List.of(resena1, resena2));
 
         // Ejecución de la prueba
-        List<Resena> resenas = servicioResena.listar();
+        List<Resena> resenas = servicioResena.listar(0L);
 
         // Verificación
         assertNotNull(resenas, "La lista de reseñas no debe ser nula");
         assertEquals(2, resenas.size(), "La lista debe contener 2 reseñas");
         assertTrue(resenas.contains(resena1), "La lista debe contener la primera reseña");
         assertTrue(resenas.contains(resena2), "La lista debe contener la segunda reseña");
-        verify(repositorioResenaMock, times(1)).listar(); // Verifica que se llamó al método del repositorio
+        verify(repositorioResenaMock, times(1)).listar(0L); // Verifica que se llamó al método del repositorio
     }
 
 }
