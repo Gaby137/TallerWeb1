@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.ServicioResena;
 import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,19 +37,42 @@ public class ControladorResena {
 
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
     public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena) {
-        // Guardar la reseña
-        servicioResena.guardar(resena);
+        ModelMap model = new ModelMap();
 
-        // Obtener el usuario asociado a la reseña
-        Usuario usuario = resena.getUsuarioResenaApunte().getUsuario();
+        // Verificar que la reseña no sea nula
+        if (resena != null) {
+            // Crear una nueva instancia de UsuarioApunteResena
+            UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
 
-        // Sumar 10 puntos al usuario
-        usuario.setPuntos(usuario.getPuntos() + 10);
-        servicioUsuario.actualizar(usuario);
+            // Configurar la asociación
+            usuarioApunteResena.setResena(resena);
+            resena.setUsuarioResenaApunte(usuarioApunteResena);
 
-        return listarResenas();
+            // Obtener el usuario asociado a la reseña
+            Usuario usuario = usuarioApunteResena.getUsuario();
+
+            // Verificar que el usuario no sea nulo
+            if (usuario != null) {
+                // Sumar 10 puntos al usuario
+                usuario.setPuntos(usuario.getPuntos() + 10);
+
+                // Guardar el usuario (asegúrate de que se persistan los cambios)
+                servicioUsuario.actualizar(usuario);
+
+                // La persistencia de la reseña y la relación debería ocurrir automáticamente
+                servicioResena.guardar(resena);
+
+                return listarResenas();
+            } else {
+                model.put("mensaje", "Usuario asociado a la reseña es nulo");
+            }
+        } else {
+            model.put("mensaje", "Reseña es nula");
+        }
+
+        return new ModelAndView("formulario-alta-resena", model);
     }
-    @RequestMapping(path = "/apunte-detalle", method = RequestMethod.GET)
+        @RequestMapping(path = "/apunte-detalle", method = RequestMethod.GET)
     public ModelAndView listarResenas() {
         ModelMap model = new ModelMap();
         List<Resena> resenas = servicioResena.listar();

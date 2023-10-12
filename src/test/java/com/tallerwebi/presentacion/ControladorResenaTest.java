@@ -85,7 +85,7 @@ public class ControladorResenaTest {
     void guardarResenaDeberiaGuardarResenaYAgregarPuntos() {
         // Preparación
         Resena resena = new Resena();
-        Usuario usuario = new Usuario();  // Asegúrate de ajustar esto según tus necesidades
+        Usuario usuario = new Usuario();
         UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
         usuarioApunteResena.setUsuario(usuario);
         resena.setUsuarioResenaApunte(usuarioApunteResena);

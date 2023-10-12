@@ -13,7 +13,7 @@ public class Resena {
     private int cantidadDeEstrellas;
     private Date created_at;
 
-    @OneToOne(mappedBy = "resena")
+    @OneToOne(mappedBy = "resena", cascade = CascadeType.ALL)
     private UsuarioApunteResena usuarioResenaApunte;
 
     public Long getId() {

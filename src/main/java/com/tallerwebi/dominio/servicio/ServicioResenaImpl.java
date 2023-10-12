@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.servicio;
 
+import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
 import com.tallerwebi.dominio.entidad.Resena;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,15 @@ public class ServicioResenaImpl implements ServicioResena {
     }
     @Override
     public void guardar(Resena resena) {
-        this.repositorioResena.guardar(resena);
+        // Obtener el usuario asociado a la reseña
+        UsuarioApunteResena usuarioApunteResena = resena.getUsuarioResenaApunte();
+
+        // Configurar la asociación
+        usuarioApunteResena.setResena(resena);
+        usuarioApunteResena.setUsuario(resena.getUsuarioResenaApunte().getUsuario());
+
+        // Guardar (asegúrate de que se persistan los cambios)
+        repositorioResena.guardar(resena);
     }
 
     @Override
