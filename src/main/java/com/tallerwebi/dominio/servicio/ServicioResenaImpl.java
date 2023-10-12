@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.servicio;
 
+import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
 import com.tallerwebi.dominio.entidad.Resena;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ServicioResenaImpl implements ServicioResena {
     }
     @Override
     public void guardar(Resena resena) {
-        this.repositorioResena.guardar(resena);
+        repositorioResena.guardar(resena);
     }
 
     @Override

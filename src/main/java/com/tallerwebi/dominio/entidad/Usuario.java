@@ -29,7 +29,7 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
-    @OneToOne(mappedBy = "usuario")
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private UsuarioApunteResena usuarioResenaApunte;
 
     public Usuario(){}
