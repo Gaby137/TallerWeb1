@@ -10,6 +10,6 @@ public interface RepositorioResena {
     void modificar(Resena resena);
     void borrar(Long id);
     List<Resena> buscar(Long id);
-    List<Resena> listar(Long id);
+    List<Resena> listar();
 
 }
