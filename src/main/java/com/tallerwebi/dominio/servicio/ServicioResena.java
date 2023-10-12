@@ -14,6 +14,6 @@ public interface ServicioResena {
 
     List<Resena> buscar(Long id);
 
-    List<Resena> listar();
+    List<Resena> listar(Long id);
 
 }

@@ -39,7 +39,8 @@ public class ServicioResenaImpl implements ServicioResena {
         return this.repositorioResena.buscar(id);
     }
     @Override
-    public List<Resena> listar(){
-        return this.repositorioResena.listar();
+    public List<Resena> listar(Long id){
+
+        return this.repositorioResena.listar(id);
     }
 }
