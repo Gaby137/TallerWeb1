@@ -1,25 +1,22 @@
 package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.entidad.Resena;
-import com.tallerwebi.dominio.entidad.Usuario;
-import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
+
 import com.tallerwebi.dominio.servicio.ServicioApunte;
 import com.tallerwebi.dominio.servicio.ServicioResena;
 import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
+
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 
 public class ControladorResenaTest {
 
@@ -29,14 +26,12 @@ public class ControladorResenaTest {
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private ControladorResena controladorResena;
     private HttpSession sessionMock;
-    private ControladorUsuario controladorUsuario;
-
     @BeforeEach
     public void init() {
         servicioResena = mock(ServicioResena.class);
         servicioUsuario=mock(ServicioUsuario.class);
         controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunteResena);
-        controladorUsuario=new ControladorUsuario(servicioUsuario);
+        new ControladorUsuario(servicioUsuario);
         sessionMock = mock(HttpSession.class);
     }
 

@@ -1,15 +1,11 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.entidad.Rol;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.Date;
 
 public class DatosRegistro {
     @NotEmpty(message = "El nombre no puede estar en blanco.")

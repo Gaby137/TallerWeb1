@@ -9,16 +9,12 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ControladorApunteTest {
     private ControladorApunte controladorApunte;
-    private DatosApunte datosApunte;
     private Apunte apunteMock;
-    private HttpServletRequest requestMock;
-    private HttpSession sessionMock;
     private ServicioApunte servicioApunteMock;
 
     @BeforeEach
@@ -26,14 +22,14 @@ public class ControladorApunteTest {
         String pathArchivo = "archivo.pdf";
         String nombre = "Apunte 1";
         String descripcion = "Descripcion del Apunte";
-        datosApunte = new DatosApunte(pathArchivo, nombre, descripcion);
+        new DatosApunte(pathArchivo, nombre, descripcion);
 
         apunteMock =mock(Apunte.class);
         when(apunteMock.getId()).thenReturn(1L);
         when(apunteMock.getNombre()).thenReturn("Apunte 1");
 
-        requestMock = mock(HttpServletRequest.class);
-        sessionMock = mock(HttpSession.class);
+        mock(HttpServletRequest.class);
+        mock(HttpSession.class);
         servicioApunteMock = mock(ServicioApunte.class);
         controladorApunte = new ControladorApunte(servicioApunteMock);
     }
