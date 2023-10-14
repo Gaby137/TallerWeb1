@@ -20,11 +20,8 @@ public class Apunte {
     @OneToMany(mappedBy = "apunte")
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
-    @OneToOne(mappedBy = "apunte")
-    private UsuarioApunteResena usuarioResenaApunte;
-
     @ManyToOne
-    @JoinColumn(name = "materia_id")
+    @JoinColumn(name = "materia_id", referencedColumnName = "id")
     private Materia materia;
 
 
@@ -105,14 +102,6 @@ public class Apunte {
 
     public void setRelacionesUsuarioApunte(List<UsuarioApunte> relacionesUsuarioApunte) {
         this.relacionesUsuarioApunte = relacionesUsuarioApunte;
-    }
-
-    public UsuarioApunteResena getUsuarioResenaApunte() {
-        return usuarioResenaApunte;
-    }
-
-    public void setUsuarioResenaApunte(UsuarioApunteResena usuarioResenaApunte) {
-        this.usuarioResenaApunte = usuarioResenaApunte;
     }
 
     public Materia getMateria() {
