@@ -25,6 +25,8 @@ public class ControladorApunteTest {
     private ControladorApunte controladorApunte;
     private Apunte apunteMock;
     private ServicioApunte servicioApunteMock;
+    private HttpServletRequest requestMock;
+    private HttpSession sessionMock;
 
     @BeforeEach
     public void init() {
@@ -37,8 +39,8 @@ public class ControladorApunteTest {
         when(apunteMock.getId()).thenReturn(1L);
         when(apunteMock.getNombre()).thenReturn("Apunte 1");
 
-        mock(HttpServletRequest.class);
-        mock(HttpSession.class);
+        requestMock = mock(HttpServletRequest.class);
+        sessionMock = mock(HttpSession.class);
         servicioApunteMock = mock(ServicioApunte.class);
         controladorApunte = new ControladorApunte(servicioApunteMock);
     }

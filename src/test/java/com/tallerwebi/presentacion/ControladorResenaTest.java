@@ -1,7 +1,8 @@
 package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Resena;
-
+import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.ServicioApunte;
 import com.tallerwebi.dominio.servicio.ServicioResena;
 import com.tallerwebi.dominio.servicio.ServicioUsuario;
