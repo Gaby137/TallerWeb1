@@ -2,6 +2,7 @@ package com.tallerwebi.dominio.servicio;
 
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.presentacion.DatosApunte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,17 @@ public class ServicioApunteImpl implements ServicioApunte {
     public List<Apunte> obtenerApuntes() {
         return repositorioApunte.obtenerApuntes();
     }
+
+    @Override
+    public Apunte obtenerApuntePorIdResena(Long idResena) {
+        return repositorioApunte.obtenerApuntePorIdResena(idResena);
+    }
+
+    
+    @Override
+    public List<UsuarioApunteResena> getListadoDeResenasConSusUsuariosPorIdApunte(Long idApunte) {
+        return this.repositorioApunte.getListadoDeResenasConSusUsuariosPorIdApunte(idApunte);
+    };
 
     @Override
     public boolean registrar(DatosApunte datosApunte) {

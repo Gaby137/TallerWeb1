@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.ServicioApunte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 @Controller
 public class ControladorApunte {
     private ServicioApunte servicioApunte;
@@ -87,5 +90,17 @@ public class ControladorApunte {
 
         model.put("apuntes", resultApuntes);
         return new ModelAndView("misApuntes", model);
+    }
+
+    @RequestMapping(path = "/detalleApunte/{id}", method = RequestMethod.GET)
+    public ModelAndView getDetalleApunteConListadoDeSusResenas(@PathVariable("id") Long id, HttpServletRequest request) {
+        ModelMap model = new ModelMap();
+
+        Apunte apunte = servicioApunte.obtenerPorId(id);
+        List<UsuarioApunteResena> usuarioApunteResenas = servicioApunte.getListadoDeResenasConSusUsuariosPorIdApunte(apunte.getId());    
+        request.getSession().setAttribute("idApunte", apunte.getId());
+        model.put("apunte", apunte);
+        model.put("usuarioApunteResenas", usuarioApunteResenas);
+        return new ModelAndView("detalleApunte", model);
     }
 }

@@ -66,6 +66,7 @@ public class ServicioApunteTest {
 
         // Configuración del comportamiento del repositorio simulado
         Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", new Date(), new Date());
+        apunteMock.setId(idEjemplo);
         when(repositorioApunteMock.obtenerApunte(idEjemplo)).thenReturn(apunteMock);
 
         // Ejecución de la prueba

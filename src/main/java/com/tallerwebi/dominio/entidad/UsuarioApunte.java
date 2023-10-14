@@ -11,11 +11,11 @@ public class UsuarioApunte {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;
 
     @ManyToOne
-    @JoinColumn(name = "apuntes_id")
+    @JoinColumn(name = "apuntes_id", referencedColumnName = "id")
     private Apunte apunte;
     @Enumerated(EnumType.STRING)
     private TipoDeAcceso tipoDeAcceso;

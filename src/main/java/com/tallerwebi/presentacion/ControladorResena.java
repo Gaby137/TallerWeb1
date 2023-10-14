@@ -19,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -49,12 +51,15 @@ public class ControladorResena {
 
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
     public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena, HttpSession session) {
-        ModelMap model = new ModelMap();
+        ModelMap modelo = new ModelMap();
         Usuario usuario=(Usuario) session.getAttribute("usuario");
         Long id = (Long) session.getAttribute("idApunte");
         Apunte apunte = servicioApunte.obtenerPorId(id);
+        modelo.put("id", id);
+
         if (resena != null) {
             UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
+            resena.setCreated_at(new Date());
 
             if (usuario != null) {
 
@@ -73,33 +78,21 @@ public class ControladorResena {
 
                 servicioUsuarioApunteResena.registrar(usuarioApunteResena);
 
-
-                return new ModelAndView("redirect:/misApuntes");
             } else {
-                model.put("mensaje", "Usuario asociado a la reseña es nulo");
+                modelo.put("mensaje", "Usuario asociado a la reseña es nulo");
             }
         } else {
-            model.put("mensaje", "Reseña es nula");
+            modelo.put("mensaje", "Reseña es nula");
         }
 
-        return new ModelAndView("redirect:/apunte-detalle");
-    }
-        @RequestMapping(path = "/apunte-detalle/{id}", method = RequestMethod.GET)
-    public ModelAndView listarResenas(@PathVariable("id") Long id, HttpServletRequest request) {
-        ModelMap model = new ModelMap();
-
-        Apunte apunte = servicioApunte.obtenerPorId(id);
-        request.getSession().setAttribute("idApunte", apunte.getId());
-        model.put("apunte", apunte);
-
-        List<Resena> resenas = servicioResena.listar();
-        model.put("resenas", resenas);
-        return new ModelAndView("apunte-detalle", model);
+        return new ModelAndView("redirect:/detalleApunte/{id}", modelo);
     }
 
     @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.GET)
-    public ModelAndView borrar(@PathVariable("id") Long id) {
+    public ModelAndView borrar(@PathVariable("id") Long id, HttpSession session) {
         ModelMap modelo = new ModelMap();
+        Long idApunte = (Long) session.getAttribute("idApunte");
+        modelo.put("id", idApunte);
         try {
             servicioResena.borrar(id);
             modelo.put("mensaje", "Reseña borrada exitosamente");
@@ -107,7 +100,7 @@ public class ControladorResena {
         } catch (Exception e) {
             modelo.put("error", "Error al intentar borrar la reseña");
         }
-        return new ModelAndView("redirect:/apunte-detalle", modelo);
+        return new ModelAndView("redirect:/detalleApunte/{id}", modelo);
     }
 
 }
