@@ -67,8 +67,6 @@ public class ControladorResena {
 
                 servicioUsuario.actualizar(usuario);
 
-                servicioResena.guardar(resena);
-
                 usuarioApunteResena.setResena(resena);
 
                 usuarioApunteResena.setUsuario(usuario);
@@ -77,6 +75,7 @@ public class ControladorResena {
 
 
                 servicioUsuarioApunteResena.registrar(usuarioApunteResena);
+                return new ModelAndView("redirect:/misApuntes");
 
             } else {
                 modelo.put("mensaje", "Usuario asociado a la reseña es nulo");
@@ -85,7 +84,7 @@ public class ControladorResena {
             modelo.put("mensaje", "Reseña es nula");
         }
 
-        return new ModelAndView("redirect:/detalleApunte/{id}", modelo);
+        return new ModelAndView("redirect:/detalleApunte");
     }
 
     @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.GET)
