@@ -58,30 +58,14 @@ public class ControladorResena {
         modelo.put("id", id);
 
         if (resena != null) {
-            UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
-            resena.setCreated_at(new Date());
-
-            if (usuario != null) {
-
-                usuario.setPuntos(usuario.getPuntos() + 10);
-
-                servicioUsuario.actualizar(usuario);
-
-                usuarioApunteResena.setResena(resena);
-
-                usuarioApunteResena.setUsuario(usuario);
-
-                usuarioApunteResena.setApunte(apunte);
-
-
-                servicioUsuarioApunteResena.registrar(usuarioApunteResena);
+            if(servicioUsuarioApunteResena.registrar(usuario ,apunte, resena)){
                 return new ModelAndView("redirect:/misApuntes");
-
-            } else {
-                modelo.put("mensaje", "Usuario asociado a la reseña es nulo");
+            }else {
+                modelo.put("error", "No puede dar mas de una reseña");
+                return new ModelAndView("formulario-alta-resena", modelo);
             }
-        } else {
-            modelo.put("mensaje", "Reseña es nula");
+
+
         }
 
         return new ModelAndView("redirect:/detalleApunte");

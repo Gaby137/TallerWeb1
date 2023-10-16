@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.servicio;
 
+import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public interface ServicioUsuarioApunteResena {
 
-    void registrar(UsuarioApunteResena usuarioApunteResena);
+    boolean registrar(Usuario usuario, Apunte apunte, Resena resena);
     List<Resena> obtenerLista(Long idApunte);
 
 }

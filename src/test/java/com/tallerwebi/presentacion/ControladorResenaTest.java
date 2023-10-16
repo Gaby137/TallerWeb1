@@ -94,7 +94,7 @@ public class ControladorResenaTest {
 
         // Configuración del servicioResena para evitar excepciones
 
-        doNothing().when(servicioUsuarioApunteResena).registrar(usuarioApunteResena);
+        doNothing().when(servicioUsuarioApunteResena).registrar(usuario, apunteMock,resena);
 
         // Configuración del servicioUsuario para evitar excepciones
         when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);

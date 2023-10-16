@@ -1,5 +1,8 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
 import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.integracion.config.HibernateTestConfig;
@@ -26,6 +29,8 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
@@ -97,6 +102,8 @@ public class RepositorioResenaTest {
         assertEquals(1, reseñas.size(), "Debe haber exactamente una reseña con ese ID");
         assertEquals(resena, reseñas.get(0), "La reseña encontrada debe ser igual a la reseña original");
     }
+
+
 
 
 }

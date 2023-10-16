@@ -29,7 +29,7 @@
         <input type="submit" value="Guardar Reseña">
 
     </form>
-
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
 </main>
 <script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
 </body>
