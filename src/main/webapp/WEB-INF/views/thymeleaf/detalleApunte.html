@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:insert="~{nav}"></div>
+    <main class="container">
+        <div class="p-4 row">
+            <div class="col-sm-8">
+                <h3 class="my-2" th:text="${apunte.nombre}"></h3>
+                <hr>
+                <p class="text-truncate" th:text="${apunte.descripcion}"></p>
+            </div>
+            <div class="col-sm-4 d-flex justify-content-center align-items-center">
+                <p class="display-1 text-center" th:text="'$ '+${apunte.precio}"></p>
+            </div>
+        </div>
+        
+        <div>
+          <h4>Reseñas</h4>
+          <div th:each="UAResena : ${usuarioApunteResenas}" class="list-group">
+            <div class="list-group-item my-1">
+              <div class="w-100 w-md-75">
+                <div class="w-100 w-md-75 d-flex justify-content-between">
+                  <span class="fs-4 align-middle" th:text="${UAResena.resena.cantidadDeEstrellas}"></span>
+                  <span th:text="${#dates.format(UAResena.resena.created_at, 'dd/MM/yyyy HH:mm')}"></span>
+                </div>
+                <div class="w-100 w-md-75">
+                  <p th:text="${UAResena.resena.descripcion}" class="mb-1"></p>
+                </div>
+                <a th:href="@{'/borrarResena/' + ${UAResena.resena.id}}" class="btn btn-danger">Borrar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a th:href="@{/formulario-alta-resena}" class="btn btn-primary my-3">Agregar Reseña</a>       
+        <p th:if="${mensaje}" style="color: green;" th:text="${mensaje}"></p>
+        <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+
+    </main>
+
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+</body>
+</html>

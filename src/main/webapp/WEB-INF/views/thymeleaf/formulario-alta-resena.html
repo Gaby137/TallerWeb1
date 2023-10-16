@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
+    <meta charset="UTF-8">
+    <title>Nueva reseña</title>
+</head>
+<body>
+<div th:insert="~{nav}"></div>
+<main class="container">
+    <div th:if="${mensaje}" class="alert alert-danger">
+        <p th:text="${mensaje}"></p>
+    </div>
+
+    <h1>Formulario de Reseña</h1>
+    <form action="#" th:action="@{/guardarResena}" method="POST" th:object="${resena}"> 
+        <label for="descripcion">Comentario:</label><br>
+        <textarea th:field="*{descripcion}" id="descripcion" name="descripcion"  rows="4" cols="50" required></textarea><br><br>
+
+        <label for="calificacion">Calificación:</label>
+        <select id="calificacion" name="calificacion" th:field="*{cantidadDeEstrellas}" required>
+            <option value="1">1 - Muy Malo</option>
+            <option value="2">2 - Malo</option>
+            <option value="3">3 - Regular</option>
+            <option value="4">4 - Bueno</option>
+            <option value="5">5 - Excelente</option>
+        </select><br><br>
+        
+        <input type="submit" value="Guardar Reseña">
+
+    </form>
+
+</main>
+<script type="text/javascript" th:src="@{webjars/bootstrap/5.2.0/js/bootstrap.min.js}"></script>
+</body>
+</html>
