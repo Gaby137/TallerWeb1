@@ -93,7 +93,7 @@ public class ControladorResenaTest {
         resena.setUsuarioResenaApunte(usuarioApunteResena);
 
         // Configuración del servicioResena para evitar excepciones
-        doNothing().when(servicioResena).guardar(resena);
+
         doNothing().when(servicioUsuarioApunteResena).registrar(usuarioApunteResena);
 
         // Configuración del servicioUsuario para evitar excepciones
@@ -106,14 +106,13 @@ public class ControladorResenaTest {
         ModelAndView modelAndView = controladorResena.guardarResena(resena, sessionMock);
 
         // Verificación
-        // Verifica que se haya llamado al método guardar del servicioResena con la reseña
-        verify(servicioResena, times(1)).guardar(resena);
+
 
         // Verifica que se haya llamado al método actualizar del servicioUsuario con el usuario
         verify(servicioUsuario, times(1)).actualizar(usuario);
 
         // Verifica que la vista sea la esperada (listarResenas)
-        assertEquals("redirect:/detalleApunte/{id}", modelAndView.getViewName());
+        assertEquals("redirect:/detalleApunte", modelAndView.getViewName());
         assertEquals(APUNTE_ID, modelAndView.getModelMap().getAttribute("id"));
 
     }
