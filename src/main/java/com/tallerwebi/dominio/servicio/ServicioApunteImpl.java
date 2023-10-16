@@ -1,7 +1,8 @@
 package com.tallerwebi.dominio.servicio;
 
+import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
-import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.presentacion.DatosApunte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,19 +15,31 @@ import java.util.List;
 @Transactional
 public class ServicioApunteImpl implements ServicioApunte {
     private RepositorioApunte repositorioApunte;
+    private RepositorioUsuarioApunte repositorioUsuarioApunte;
 
     @Autowired
-    public ServicioApunteImpl(RepositorioApunte repositorioApunte) {
+    public ServicioApunteImpl(RepositorioApunte repositorioApunte, RepositorioUsuarioApunte repositorioUsuarioApunte) {
         this.repositorioApunte = repositorioApunte;
+        this.repositorioUsuarioApunte = repositorioUsuarioApunte;
     }
-
     @Override
     public List<Apunte> obtenerApuntes() {
         return repositorioApunte.obtenerApuntes();
     }
 
     @Override
-    public boolean registrar(DatosApunte datosApunte) {
+    public Apunte obtenerApuntePorIdResena(Long idResena) {
+        return repositorioApunte.obtenerApuntePorIdResena(idResena);
+    }
+
+    
+    @Override
+    public List<UsuarioApunteResena> getListadoDeResenasConSusUsuariosPorIdApunte(Long idApunte) {
+        return this.repositorioApunte.getListadoDeResenasConSusUsuariosPorIdApunte(idApunte);
+    };
+
+    @Override
+    public boolean registrar(DatosApunte datosApunte, Usuario usuario) {
         boolean result;
         if (datosApunte.getPathArchivo() == null || datosApunte.getPathArchivo().isEmpty() ||
                 datosApunte.getNombre() == null || datosApunte.getNombre().isEmpty() ||
@@ -36,7 +49,12 @@ public class ServicioApunteImpl implements ServicioApunte {
         }else {
             Apunte apunte = new Apunte(datosApunte.getPathArchivo(), datosApunte.getNombre(), datosApunte.getDescripcion(), new Date(), new Date());
 
+            UsuarioApunte usuarioApunte = new UsuarioApunte();
+            usuarioApunte.setApunte(apunte);
+            usuarioApunte.setUsuario(usuario);
+            usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
             repositorioApunte.registrarApunte(apunte);
+            repositorioUsuarioApunte.registrar(usuarioApunte);
             result = true;
         }
        return result;

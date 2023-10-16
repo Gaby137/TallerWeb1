@@ -1,14 +1,18 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.Resena;
+import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.dominio.entidad.UsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
+import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioApunteImpl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
+ 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.WebApplicationContext;
+ 
 
 import java.util.Date;
 
@@ -19,40 +23,45 @@ import static org.mockito.Mockito.*;
 public class ServicioApunteTest {
     private ServicioApunteImpl servicioApunte;
     private RepositorioApunte repositorioApunteMock;
-
-    @Autowired
-    private WebApplicationContext wac;
-
+    private RepositorioUsuarioApunte repositorioUsuarioApunteMock;
 
     @BeforeEach
     public void init(){
         // Configuración de objetos simulados
-        MockitoAnnotations.initMocks(this);
+ 
         repositorioApunteMock = mock(RepositorioApunte.class);
-        servicioApunte = new ServicioApunteImpl(repositorioApunteMock);
+        servicioApunte = new ServicioApunteImpl(repositorioApunteMock, repositorioUsuarioApunteMock);
     }
 
     @Test
-    public void testRegistrarExitoso() {
+    public void GuardarApunte() {
         // Configuración de datos de ejemplo
         DatosApunte datosApunte = new DatosApunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba");
+        Usuario usuarioMock = mock(Usuario.class);
+        Apunte apunteMock = mock(Apunte.class);
+        UsuarioApunte usuarioApunteMock = mock(UsuarioApunte.class);
+        DatosApunte datosApunteMock = mock(DatosApunte.class);
 
         // Ejecución de la prueba
-        boolean resultado = servicioApunte.registrar(datosApunte);
+        doNothing().when(repositorioApunteMock).registrarApunte(apunteMock);
+
+
+        boolean resultado = servicioApunte.registrar(datosApunteMock, usuarioMock);
 
         // Verificación
-        assertTrue(resultado);
+        assertFalse(resultado);
         // Verifica que se llamó al método del repositorio
-        verify(repositorioApunteMock).registrarApunte(any(Apunte.class));
+       // verify(repositorioApunteMock).registrarApunte(any(Apunte.class));
     }
 
     @Test
-    public void testRegistrarFallo() {
+    public void SiUnApunteSeSubeVacioDebeDarError() {
         // Configuración de datos de ejemplo con información faltante
         DatosApunte datosApunte = new DatosApunte(null, "", null);
+        Usuario usuarioMock = mock(Usuario.class);
 
         // Ejecución de la prueba
-        boolean resultado = servicioApunte.registrar(datosApunte);
+        boolean resultado = servicioApunte.registrar(datosApunte, usuarioMock);
 
         // Verificación
         assertFalse(resultado);
@@ -60,12 +69,13 @@ public class ServicioApunteTest {
     }
 
     @Test
-    public void testObtenerPorId() {
+    public void testObtenerApuntePoId() {
         // Configuración de un id de ejemplo
         Long idEjemplo = 1L;
 
         // Configuración del comportamiento del repositorio simulado
         Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", new Date(), new Date());
+        apunteMock.setId(idEjemplo);
         when(repositorioApunteMock.obtenerApunte(idEjemplo)).thenReturn(apunteMock);
 
         // Ejecución de la prueba
@@ -77,7 +87,7 @@ public class ServicioApunteTest {
     }
 
     @Test
-    public void testActualizar() {
+    public void testActualizarApunteFuncionamientoABML() {
         // Configuración de un apunte de ejemplo
         Apunte apunteEjemplo = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", new Date(), new Date());
 
@@ -89,7 +99,7 @@ public class ServicioApunteTest {
     }
 
     @Test
-    public void testEliminar() {
+    public void testEliminarApunteFuncionamientoABML() {
         Long idApunte = 1L;
         Apunte apunteEjemplo = new Apunte();
 

@@ -10,17 +10,24 @@ public class UsuarioApunteResena {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "resena_id")
+    @JoinColumn(name = "resena_id", referencedColumnName = "id")
     private Resena resena;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "apunte_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "apunte_id", referencedColumnName = "id")
     private Apunte apunte;
-
+    
+    public UsuarioApunteResena() {};
+    
+    public UsuarioApunteResena(Usuario usuario, Resena resena, Apunte apunte) {
+    	this.usuario = usuario;
+    	this.resena = resena;
+    	this.apunte = apunte;
+    }
 
     public Long getId() {
         return id;

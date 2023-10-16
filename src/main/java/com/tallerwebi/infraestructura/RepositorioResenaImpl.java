@@ -48,8 +48,10 @@ public class RepositorioResenaImpl implements RepositorioResena {
                 .list();
     }
     @Override
-    public List<Resena> listar(Long id) {
+    public List<Resena> listar() {
         return sessionFactory.getCurrentSession().createCriteria(Resena.class)
                 .list();
     }
+
+    
 }

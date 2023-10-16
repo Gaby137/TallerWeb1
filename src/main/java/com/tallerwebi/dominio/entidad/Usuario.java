@@ -26,7 +26,7 @@ public class Usuario {
     private String fotoPerfil;
     private Date created_at;
     private Date updated_at;
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)

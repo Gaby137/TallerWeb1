@@ -25,7 +25,6 @@ public class ControladorLoginTest {
 	private Usuario usuarioMock;
 	private DatosRegistro registroMock;
 	private BindingResult resultMock;
-	private MultipartFile fotoMock;
 	private DatosLogin datosLoginMock;
 	private HttpServletRequest requestMock;
 	private HttpSession sessionMock;
@@ -38,7 +37,7 @@ public class ControladorLoginTest {
 		usuarioMock = mock(Usuario.class);
 		registroMock = mock(DatosRegistro.class);
 		resultMock = mock(BindingResult.class);
-		fotoMock = mock(MultipartFile.class);
+		mock(MultipartFile.class);
 		when(usuarioMock.getEmail()).thenReturn("dami@unlam.com");
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
