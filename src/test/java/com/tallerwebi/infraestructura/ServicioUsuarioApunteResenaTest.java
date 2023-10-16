@@ -59,35 +59,17 @@ public class ServicioUsuarioApunteResenaTest {
     @Test
     public void queNoPuedaDarMasDeUnaResenaAUnMismoApunte(){
 
-        // Mock de la clase Apunte
+        // Crea objetos mock de Apunte, Usuario y Servicio
         Apunte apunteMock = mock(Apunte.class);
-        when(apunteMock.getId()).thenReturn(1L);
-        when(apunteMock.getNombre()).thenReturn("Apunte 1");
-
-        // Mock de la clase Usuario
         Usuario usuarioMock = mock(Usuario.class);
+        Resena resenaMock= mock(Resena.class);
+
+        // Configura las interacciones de los objetos mock
+        when(apunteMock.getId()).thenReturn(1L);
         when(usuarioMock.getId()).thenReturn(10L);
-        when(usuarioMock.getNombre()).thenReturn("Usuario 10");
+        when(repositorioUsuarioApunteResenaMock.existeResenaConApunteYUsuario(10L, 1L)).thenReturn(true); // Supongamos que ya existe una reseña
 
-        // Mock de la clase Resena
-        Resena resenaMock = mock(Resena.class);
-        when(resenaMock.getId()).thenReturn(1L);
-        when(resenaMock.getDescripcion()).thenReturn("Reseña 1");
-        when(resenaMock.getCantidadDeEstrellas()).thenReturn(5);
-        // Configura otras propiedades y métodos según tus necesidades
-
-        // Mock de la clase UsuarioApunteResena
-        UsuarioApunteResena usuarioApunteResenaMock = mock(UsuarioApunteResena.class);
-        when(usuarioApunteResenaMock.getId()).thenReturn(1L);
-        when(usuarioApunteResenaMock.getUsuario()).thenReturn(usuarioMock);
-        when(usuarioApunteResenaMock.getResena()).thenReturn(resenaMock);
-        when(usuarioApunteResenaMock.getApunte()).thenReturn(apunteMock);
-
-        Resena resenaNueva = new Resena();
-        resenaNueva.setDescripcion("Buena nueva reseña");
-        resenaNueva.setCantidadDeEstrellas(5);
-
-        boolean result = servicioUsuarioApunteResena.registrar(usuarioMock,apunteMock,resenaNueva);
+        boolean result = servicioUsuarioApunteResena.registrar(usuarioMock,apunteMock,resenaMock);
 
         assertFalse(result);
 
