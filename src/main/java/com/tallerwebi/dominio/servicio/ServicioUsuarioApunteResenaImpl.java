@@ -27,7 +27,6 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         this.repositorioUsuarioApunteResena = repositorioUsuarioApunteResena;
     }
 
-
     @Override
     public void registrar(UsuarioApunteResena usuarioApunteResena) {
 

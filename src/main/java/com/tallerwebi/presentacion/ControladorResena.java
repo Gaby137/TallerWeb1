@@ -70,9 +70,7 @@ public class ControladorResena {
 
                 usuarioApunteResena.setApunte(apunte);
 
-
                 servicioUsuarioApunteResena.registrar(usuarioApunteResena);
-
 
                 return new ModelAndView("redirect:/misApuntes");
             } else {
@@ -85,7 +83,7 @@ public class ControladorResena {
         return new ModelAndView("redirect:/apunte-detalle");
     }
         @RequestMapping(path = "/apunte-detalle/{id}", method = RequestMethod.GET)
-    public ModelAndView listarResenas(@PathVariable("id") Long id, HttpServletRequest request) {
+        public ModelAndView listarResenas(@PathVariable("id") Long id, HttpServletRequest request) {
         ModelMap model = new ModelMap();
 
         Apunte apunte = servicioApunte.obtenerPorId(id);
