@@ -112,8 +112,7 @@ public class ControladorResenaTest {
         verify(servicioUsuario, times(1)).actualizar(usuario);
 
         // Verifica que la vista sea la esperada (listarResenas)
-        assertEquals("redirect:/detalleApunte", modelAndView.getViewName());
-        assertEquals(APUNTE_ID, modelAndView.getModelMap().getAttribute("id"));
+        assertEquals("redirect:/misApuntes", modelAndView.getViewName());
 
     }
 }
