@@ -77,7 +77,7 @@ public class ControladorResenaTest {
         assertTrue(modelMap.containsKey("mensaje"));
         assertEquals("Reseña borrada exitosamente", modelMap.get("mensaje"));
         assertFalse(modelMap.containsKey("error"));
-    }
+}
     @Test
     void guardarResenaDeberiaGuardarResenaYAgregarPuntos() {
         // Preparación

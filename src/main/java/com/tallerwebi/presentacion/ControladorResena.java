@@ -98,8 +98,10 @@ public class ControladorResena {
     }
 
     @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.GET)
-    public ModelAndView borrar(@PathVariable("id") Long id) {
+    public ModelAndView borrar(@PathVariable("id") Long id, HttpSession session) {
         ModelMap modelo = new ModelMap();
+        Long idApunte = (Long) session.getAttribute("idApunte");
+        modelo.put("id", idApunte);
         try {
             servicioResena.borrar(id);
             modelo.put("mensaje", "Reseña borrada exitosamente");
@@ -107,7 +109,7 @@ public class ControladorResena {
         } catch (Exception e) {
             modelo.put("error", "Error al intentar borrar la reseña");
         }
-        return new ModelAndView("redirect:/apunte-detalle", modelo);
+        return new ModelAndView("redirect:/detalleApunte/{id}",modelo);
     }
 
 }

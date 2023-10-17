@@ -10,5 +10,7 @@ public interface RepositorioUsuarioApunte {
     void registrar(UsuarioApunte usuarioApunte);
 
     List<UsuarioApunte> obtenerApuntesPorIdUsuario(Long id);
+
+    List<UsuarioApunte> obtenerApuntesDeOtrosUsuarios(Long id);
 }
 

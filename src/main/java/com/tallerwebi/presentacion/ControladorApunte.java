@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.entidad.Apunte;
-import com.tallerwebi.dominio.entidad.Resena;
-import com.tallerwebi.dominio.entidad.Usuario;
-import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
+import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.servicio.ServicioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -100,6 +98,21 @@ public class ControladorApunte {
 
         model.put("apuntes", resultApuntes);
         return new ModelAndView("misApuntes", model);
+    }
+
+    @RequestMapping(path = "/apuntes", method = RequestMethod.GET)
+    public ModelAndView apuntesDeOtrosUsuarios(HttpSession session) {
+        ModelMap model = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        System.out.println("Antes de obtener apuntes de otros usuarios");
+
+        List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario.getId());
+
+        System.out.println("Después de obtener apuntes de otros usuarios: " + apuntesDeOtrosUsuarios);
+
+        model.put("apuntes", apuntesDeOtrosUsuarios);
+        return new ModelAndView("apuntes", model);
     }
 
     @RequestMapping(path = "/detalleApunte/{id}", method = RequestMethod.GET)
