@@ -9,7 +9,7 @@ public interface RepositorioResena {
     void guardar(Resena resena);
     void modificar(Resena resena);
     void borrar(Long id);
-    List<Resena> buscar(Long id);
+    Resena buscar(Long id);
     List<Resena> listar();
 
 }

@@ -113,6 +113,35 @@ public class ControladorResenaTest {
         assertEquals("redirect:/misApuntes", modelAndView.getViewName());
 
     }
+    @Test
+    void guardarResenaDeberiaGuardarResenaYAgregarPuntos() {
+        // Preparación
+        Resena resena = new Resena();
+        Usuario usuario = new Usuario();  // Asegúrate de ajustar esto según tus necesidades
+        UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
+        usuarioApunteResena.setUsuario(usuario);
+        resena.setUsuarioResenaApunte(usuarioApunteResena);
+
+        // Configuración del servicioResena para evitar excepciones
+        doNothing().when(servicioResena).guardar(resena);
+
+        // Configuración del servicioUsuario para evitar excepciones
+        when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);
+
+        // Ejecución
+        ModelAndView modelAndView = controladorResena.guardarResena(resena, sessionMock);
+
+        // Verificación
+        // Verifica que se haya llamado al método guardar del servicioResena con la reseña
+        verify(servicioResena, times(1)).guardar(resena);
+
+        // Verifica que se haya llamado al método actualizar del servicioUsuario con el usuario
+        verify(servicioUsuario, times(1)).actualizar(usuario);
+
+        // Verifica que la vista sea la esperada (listarResenas)
+        assertEquals("apunte-detalle", modelAndView.getViewName());
+
+    }
 }
 
 
