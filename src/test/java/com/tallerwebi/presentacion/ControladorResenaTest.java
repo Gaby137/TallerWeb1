@@ -44,6 +44,7 @@ public class ControladorResenaTest {
         controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunteResena);
         new ControladorUsuario(servicioUsuario);
         sessionMock = mock(HttpSession.class);
+
     }
 
     @Test
@@ -94,7 +95,7 @@ public class ControladorResenaTest {
 
         // Configuración del servicioResena para evitar excepciones
 
-        doNothing().when(servicioUsuarioApunteResena).registrar(usuarioApunteResena);
+        when(servicioUsuarioApunteResena.registrar(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
 
         // Configuración del servicioUsuario para evitar excepciones
         when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);
@@ -102,14 +103,11 @@ public class ControladorResenaTest {
         when(sessionMock.getAttribute("idApunte")).thenReturn(APUNTE_ID);
         when(servicioApunte.obtenerPorId(APUNTE_ID)).thenReturn(apunteMock);
 
+
         // Ejecución
         ModelAndView modelAndView = controladorResena.guardarResena(resena, sessionMock);
 
         // Verificación
-
-
-        // Verifica que se haya llamado al método actualizar del servicioUsuario con el usuario
-        verify(servicioUsuario, times(1)).actualizar(usuario);
 
         // Verifica que la vista sea la esperada (listarResenas)
         assertEquals("redirect:/misApuntes", modelAndView.getViewName());

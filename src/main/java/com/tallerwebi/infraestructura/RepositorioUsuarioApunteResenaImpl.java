@@ -38,4 +38,15 @@ public class RepositorioUsuarioApunteResenaImpl implements RepositorioUsuarioApu
 
         return resenas;
     }
+
+    @Override
+    public boolean existeResenaConApunteYUsuario(Long idUsuario, Long idApunte) {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "SELECT uar FROM UsuarioApunteResena uar WHERE uar.apunte.id = :apunteId AND uar.usuario.id = :usuarioId";
+        TypedQuery<UsuarioApunteResena> query = session.createQuery(hql, UsuarioApunteResena.class);
+        query.setParameter("apunteId", idApunte);
+        query.setParameter("usuarioId", idUsuario);
+
+        return !query.getResultList().isEmpty();
+    }
 }
