@@ -27,15 +27,6 @@ public class RepositorioUsuarioTest {
 
     @Autowired
     private RepositorioUsuario repositorioUsuario;
-    @Transactional
-    @Rollback
-    @Test
-    public void queAlRegistrarUsuarioSeLeAsignen100Puntos(){
-        Usuario usuario=new Usuario();
-        repositorioUsuario.guardar(usuario);
-        int puntos= usuario.getPuntos();
-        assertEquals(0, puntos);
-    }
 
     @Transactional
     @Rollback

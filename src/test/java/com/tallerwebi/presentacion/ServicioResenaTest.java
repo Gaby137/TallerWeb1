@@ -3,6 +3,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
 import com.tallerwebi.dominio.servicio.ServicioResenaImpl;
 import com.tallerwebi.dominio.entidad.Resena;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,13 +15,14 @@ import static org.mockito.Mockito.*;
 public class ServicioResenaTest {
 
     private ServicioResenaImpl servicioResena;
+    private ServicioUsuarioImpl servicioUsuario;
     private RepositorioResena repositorioResenaMock;
 
     @BeforeEach
     public void init(){
         // Configuración de objetos simulados
         repositorioResenaMock = mock(RepositorioResena.class);
-        servicioResena = new ServicioResenaImpl(repositorioResenaMock);
+        servicioResena = new ServicioResenaImpl(repositorioResenaMock, servicioUsuario);
     }
 
     @Test

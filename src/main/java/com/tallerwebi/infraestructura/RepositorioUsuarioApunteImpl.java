@@ -35,4 +35,12 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
                 .add(Restrictions.eq("a.id", id));
         return criteria.list();
     }
+    @Override
+    public List<UsuarioApunte> obtenerApuntesDeOtrosUsuarios(Long id) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(UsuarioApunte.class)
+                .createAlias("usuario", "u")
+                .add(Restrictions.not(Restrictions.eq("u.id", id))); // Excluye los apuntes asociados al usuario con el ID proporcionado
+        return criteria.list();
+    }
 }

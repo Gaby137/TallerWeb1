@@ -28,7 +28,6 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         this.repositorioUsuarioApunteResena = repositorioUsuarioApunteResena;
     }
 
-
     @Override
     public boolean registrar(Usuario usuario, Apunte apunte, Resena resena) {
 

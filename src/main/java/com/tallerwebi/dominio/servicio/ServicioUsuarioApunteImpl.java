@@ -19,7 +19,7 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
     private RepositorioUsuarioApunte repositorioUsuarioApunte;
 
     @Autowired
-    public ServicioUsuarioApunteImpl(RepositorioUsuarioApunte repositorioUsuarioApunte){
+    public ServicioUsuarioApunteImpl(RepositorioUsuarioApunte repositorioUsuarioApunte) {
         this.repositorioUsuarioApunte = repositorioUsuarioApunte;
     }
 
@@ -31,6 +31,19 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
                 .collect(Collectors.toSet());
 
         return new ArrayList<>(apuntesPorUsuario);
+    }
+
+    @Override
+    public List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id) {
+
+        Set<Apunte> apuntesDeOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(id).stream()
+                .filter(usuarioApunte -> !usuarioApunte.getUsuario().getId().equals(id))
+                .map(UsuarioApunte::getApunte)
+                .collect(Collectors.toSet());
+
+        System.out.println("Apuntes de otros usuarios: " + apuntesDeOtrosUsuarios);
+
+        return new ArrayList<>(apuntesDeOtrosUsuarios);
     }
 }
 

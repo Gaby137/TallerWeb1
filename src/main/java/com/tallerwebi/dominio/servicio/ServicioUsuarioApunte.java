@@ -6,5 +6,6 @@ import java.util.List;
 public interface ServicioUsuarioApunte {
 
     List<Apunte> obtenerApuntesPorUsuario(Long id);
+    List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id);
 
 }
