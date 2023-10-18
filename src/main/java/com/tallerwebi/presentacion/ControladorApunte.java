@@ -100,21 +100,6 @@ public class ControladorApunte {
         return new ModelAndView("misApuntes", model);
     }
 
-    @RequestMapping(path = "/apuntes", method = RequestMethod.GET)
-    public ModelAndView apuntesDeOtrosUsuarios(HttpSession session) {
-        ModelMap model = new ModelMap();
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-
-        System.out.println("Antes de obtener apuntes de otros usuarios");
-
-        List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario.getId());
-
-        System.out.println("Después de obtener apuntes de otros usuarios: " + apuntesDeOtrosUsuarios);
-
-        model.put("apuntes", apuntesDeOtrosUsuarios);
-        return new ModelAndView("apuntes", model);
-    }
-
     @RequestMapping(path = "/detalleApunte/{id}", method = RequestMethod.GET)
     public ModelAndView getDetalleApunteConListadoDeSusResenas(@PathVariable("id") Long id, HttpServletRequest request) {
         ModelMap model = new ModelMap();
@@ -127,5 +112,39 @@ public class ControladorApunte {
         List<Resena> resenas = servicioUsuarioApunteResena.obtenerLista(id);
         model.put("resenas", resenas);
         return new ModelAndView("apunte-detalle", model);
+    }
+
+    @RequestMapping(path = "/apuntes", method = RequestMethod.GET)
+    public ModelAndView apuntesDeOtrosUsuarios(HttpSession session) {
+        ModelMap model = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario.getId());
+
+        model.put("apuntes", apuntesDeOtrosUsuarios);
+        return new ModelAndView("apuntes", model);
+    }
+
+    @RequestMapping(path = "/comprarApunte/{id}", method = RequestMethod.GET)
+    public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpSession session) {
+        ModelMap model = new ModelMap();
+
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        Apunte apunte = servicioApunte.obtenerPorId(id);
+
+        boolean compraExitosa = servicioUsuarioApunte.comprarApunte(usuario, apunte);
+
+        if (compraExitosa) {
+            model.put("mensaje", "Compra exitosa");
+
+            List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario.getId());
+            model.put("apuntes", apuntesDeOtrosUsuarios);
+
+            return new ModelAndView("apuntes", model);
+        } else {
+            model.put("error", "Error al realizar la compra");
+            return new ModelAndView("apuntes", model);
+        }
     }
 }

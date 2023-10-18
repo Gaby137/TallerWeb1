@@ -14,12 +14,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
@@ -65,14 +63,16 @@ public class RepositorioApunteTest {
         // Guardar el apunte en la base de datos
         repositorioApunte.registrarApunte(apunte);
 
+        Long id = apunte.getId();
+
         // Borrar la reseña de la base de datos
         repositorioApunte.eliminarApunte(apunte);
 
         // Intentar buscar la reseña borrada por ID
-        List <Apunte> apuntesObtenidos = repositorioApunte.obtenerApuntes();
+        Apunte apunteBorrado = repositorioApunte.obtenerApunte(id);
 
         // Verificar que no se encuentre ninguna reseña con ese ID
-        assertTrue(apuntesObtenidos.isEmpty(), "No debe haber ningun apunte");
+        assertNull(apunteBorrado, "El apunte debe haber sido borrado correctamente");
     }
 
     @Transactional
