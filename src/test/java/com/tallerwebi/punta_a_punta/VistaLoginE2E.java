@@ -58,5 +58,12 @@ public class VistaLoginE2E {
         assertThat("Error Usuario o clave incorrecta", equalToIgnoringCase(texto));
     }
 
-
+    @Test
+    void deberiaNavegarAlHomeSiElUsuarioExiste() {
+        vistaLogin.escribirEMAIL("test@unlam.edu.ar");
+        vistaLogin.escribirClave("test");
+        vistaLogin.darClickEnIniciarSesion();
+        String url = vistaLogin.obtenerURLActual();
+        assertThat(url, containsStringIgnoringCase("/spring/home"));
+    }
 }
