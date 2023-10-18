@@ -9,19 +9,23 @@
 
 <div th:insert="~{nav}"></div>
 
+<p th:if="${mensaje}" style="color: greenyellow;" th:text="${mensaje}"></p>
 <div class="container">
     <div class="row">
-        <div th:each="apunte : ${apuntes}"  class="col">
+        <div th:each="apunte : ${apuntes}" class="col">
             <div class="card my-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 th:text="${apunte.nombre}" class="card-title"></h5>
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
                     <p th:text="${apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
                     <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
+                    <p th:text="${apunte.precio}" class="card-text" style="height: 6rem;"></p>
+                    <a class="btn btn-success" th:href="@{/comprarApunte/{id}(id=${apunte.id})}">Comprar</a>
                 </div>
             </div>
         </div>
     </div>
+    <p th:if="${error}" style="color: red;" th:text="${error}"></p>
 </div>
 </body>
 </html>

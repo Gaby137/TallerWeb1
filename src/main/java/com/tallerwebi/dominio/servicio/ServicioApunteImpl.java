@@ -41,13 +41,15 @@ public class ServicioApunteImpl implements ServicioApunte {
     @Override
     public boolean registrar(DatosApunte datosApunte, Usuario usuario) {
         boolean result;
+        Integer precio= datosApunte.getPrecio();
         if (datosApunte.getPathArchivo() == null || datosApunte.getPathArchivo().isEmpty() ||
                 datosApunte.getNombre() == null || datosApunte.getNombre().isEmpty() ||
-                datosApunte.getDescripcion() == null || datosApunte.getDescripcion().isEmpty()) {
+                datosApunte.getDescripcion() == null || datosApunte.getDescripcion().isEmpty() ||
+                precio==null){
 
             result = false;
         }else {
-            Apunte apunte = new Apunte(datosApunte.getPathArchivo(), datosApunte.getNombre(), datosApunte.getDescripcion(), new Date(), new Date());
+            Apunte apunte = new Apunte(datosApunte.getPathArchivo(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
 
             UsuarioApunte usuarioApunte = new UsuarioApunte();
             usuarioApunte.setApunte(apunte);

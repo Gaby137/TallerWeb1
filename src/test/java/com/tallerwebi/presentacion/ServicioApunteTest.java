@@ -36,7 +36,7 @@ public class ServicioApunteTest {
     @Test
     public void GuardarApunte() {
         // Configuración de datos de ejemplo
-        DatosApunte datosApunte = new DatosApunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba");
+        DatosApunte datosApunte = new DatosApunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20);
         Usuario usuarioMock = mock(Usuario.class);
         Apunte apunteMock = mock(Apunte.class);
         UsuarioApunte usuarioApunteMock = mock(UsuarioApunte.class);
@@ -57,7 +57,7 @@ public class ServicioApunteTest {
     @Test
     public void SiUnApunteSeSubeVacioDebeDarError() {
         // Configuración de datos de ejemplo con información faltante
-        DatosApunte datosApunte = new DatosApunte(null, "", null);
+        DatosApunte datosApunte = new DatosApunte(null, "", null, 0);
         Usuario usuarioMock = mock(Usuario.class);
 
         // Ejecución de la prueba
@@ -74,7 +74,7 @@ public class ServicioApunteTest {
         Long idEjemplo = 1L;
 
         // Configuración del comportamiento del repositorio simulado
-        Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", new Date(), new Date());
+        Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20,  new Date(), new Date());
         apunteMock.setId(idEjemplo);
         when(repositorioApunteMock.obtenerApunte(idEjemplo)).thenReturn(apunteMock);
 
@@ -89,7 +89,7 @@ public class ServicioApunteTest {
     @Test
     public void testActualizarApunteFuncionamientoABML() {
         // Configuración de un apunte de ejemplo
-        Apunte apunteEjemplo = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", new Date(), new Date());
+        Apunte apunteEjemplo = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20, new Date(), new Date());
 
         // Ejecución de la prueba
         servicioApunte.actualizar(apunteEjemplo);

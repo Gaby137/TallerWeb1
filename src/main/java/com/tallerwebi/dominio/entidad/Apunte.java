@@ -25,10 +25,11 @@ public class Apunte {
     private Materia materia;
 
 
-    public Apunte(String pathArchivo, String nombre, String descripcion, Date created_at, Date updated_at) {
+    public Apunte(String pathArchivo, String nombre, String descripcion, int precio, Date created_at, Date updated_at) {
         this.pathArchivo = pathArchivo;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.precio=precio;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
