@@ -100,7 +100,6 @@ public class ControladorApunte {
         return new ModelAndView("misApuntes", model);
     }
 
-
     @RequestMapping(path = "/detalleApunte/{id}", method = RequestMethod.GET)
     public ModelAndView getDetalleApunteConListadoDeSusResenas(@PathVariable("id") Long id, HttpServletRequest request) {
         ModelMap model = new ModelMap();
