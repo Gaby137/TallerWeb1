@@ -7,10 +7,13 @@ public class DatosApunte {
     private String pathArchivo;
     private String nombre;
     private String descripcion;
-    public DatosApunte(String pathArchivo, String nombre, String descripcion) {
+
+    private int precio;
+    public DatosApunte(String pathArchivo, String nombre, String descripcion, int precio) {
         this.pathArchivo = pathArchivo;
         this.nombre = nombre;
         this.descripcion = descripcion;
+        this.precio=precio;
     }
 
     public DatosApunte(){
@@ -40,6 +43,11 @@ public class DatosApunte {
         this.descripcion = descripcion;
     }
 
+    public int getPrecio() {
+        return precio;
+    }
 
-
+    public void setPrecio(int precio) {
+        this.precio = precio;
+    }
 }

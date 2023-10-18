@@ -37,7 +37,8 @@ public class ControladorApunteTest {
         String pathArchivo = "archivo.pdf";
         String nombre = "Apunte 1";
         String descripcion = "Descripcion del Apunte";
-        new DatosApunte(pathArchivo, nombre, descripcion);
+        int precio=20;
+        new DatosApunte(pathArchivo, nombre, descripcion, precio);
 
         apunteMock = mock(Apunte.class);
         when(apunteMock.getId()).thenReturn(1L);

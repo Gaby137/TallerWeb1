@@ -20,6 +20,14 @@ public class UsuarioApunte {
     @Enumerated(EnumType.STRING)
     private TipoDeAcceso tipoDeAcceso;
 
+    public UsuarioApunte(Usuario usuario, Apunte apunte) {
+        this.usuario = usuario;
+        this.apunte = apunte;
+    }
+    public UsuarioApunte() {
+    }
+
+
     public Long getId() {
         return id;
     }

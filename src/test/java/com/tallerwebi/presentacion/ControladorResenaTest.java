@@ -86,7 +86,7 @@ public class ControladorResenaTest {
         Resena resena = new Resena();
         resena.setDescripcion("lalalal");
         resena.setCantidadDeEstrellas(4);
-        Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", new Date(), new Date());
+        Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20, new Date(), new Date());
         apunteMock.setId(APUNTE_ID);
         Usuario usuario = new Usuario();  // Asegúrate de ajustar esto según tus necesidades
         UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();

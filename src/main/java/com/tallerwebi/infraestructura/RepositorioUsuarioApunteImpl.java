@@ -43,4 +43,5 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
                 .add(Restrictions.not(Restrictions.eq("u.id", id))); // Excluye los apuntes asociados al usuario con el ID proporcionado
         return criteria.list();
     }
+
 }
