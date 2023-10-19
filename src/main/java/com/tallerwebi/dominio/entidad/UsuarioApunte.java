@@ -10,11 +10,11 @@ public class UsuarioApunte {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "apuntes_id", referencedColumnName = "id")
     private Apunte apunte;
     @Enumerated(EnumType.STRING)

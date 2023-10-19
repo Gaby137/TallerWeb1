@@ -11,10 +11,12 @@ import javax.transaction.Transactional;
 @Transactional
 public class ServicioUsuarioImpl implements ServicioUsuario {
     private RepositorioUsuario repositorioUsuario;
+
     @Autowired
     public ServicioUsuarioImpl(RepositorioUsuario repositorioUsuario) {
         this.repositorioUsuario = repositorioUsuario;
     }
+
     @Override
     public Usuario obtenerPorId(Long id) {
         return repositorioUsuario.buscarPorId(id);
@@ -22,17 +24,12 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
 
     @Override
     public boolean actualizar(Usuario usuario) {
-            boolean result;
-            if (usuario.getNombre() == null || usuario.getNombre().isEmpty() ||
-                  usuario.getId() == null) {
-
-                result = false;
-            }else {
-
-                repositorioUsuario.modificar(usuario);
-                result = true;
-            }
-            return result;
+        if (usuario == null || usuario.getNombre() == null || usuario.getNombre().isEmpty() || usuario.getId() == null) {
+            return false;
         }
+
+        repositorioUsuario.modificar(usuario);
+        return true;
     }
+}
 
