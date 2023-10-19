@@ -16,13 +16,12 @@ import java.util.stream.Collectors;
 public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
 
     private RepositorioUsuarioApunte repositorioUsuarioApunte;
-
-    @Autowired
     private ServicioUsuario servicioUsuario;
 
     @Autowired
-    public ServicioUsuarioApunteImpl(RepositorioUsuarioApunte repositorioUsuarioApunte) {
+    public ServicioUsuarioApunteImpl(RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuario servicioUsuario) {
         this.repositorioUsuarioApunte = repositorioUsuarioApunte;
+        this.servicioUsuario=servicioUsuario;
     }
 
 
