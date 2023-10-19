@@ -28,6 +28,7 @@ public class UsuarioApunte {
     }
 
 
+
     public Long getId() {
         return id;
     }

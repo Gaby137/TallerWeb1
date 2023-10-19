@@ -47,6 +47,10 @@ public class Usuario {
         this.updated_at = updated_at;
     }
 
+    public Usuario(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

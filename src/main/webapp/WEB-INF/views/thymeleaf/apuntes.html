@@ -18,7 +18,7 @@
                     <h5 th:text="${apunte.nombre}" class="card-title"></h5>
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
                     <p th:text="${apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
-                    <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
+                    <!--<a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a-->
                     <p th:text="${apunte.precio}" class="card-text" style="height: 6rem;"></p>
                     <a class="btn btn-success" th:href="@{/comprarApunte/{id}(id=${apunte.id})}">Comprar</a>
                 </div>
