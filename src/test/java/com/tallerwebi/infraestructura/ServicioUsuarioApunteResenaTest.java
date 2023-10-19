@@ -9,7 +9,10 @@ import com.tallerwebi.presentacion.DatosMateria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,12 +25,16 @@ public class ServicioUsuarioApunteResenaTest {
     private ServicioUsuarioApunteResenaImpl servicioUsuarioApunteResena;
 
     private RepositorioUsuarioApunteResena repositorioUsuarioApunteResenaMock;
+    private HttpServletRequest requestMock;
+    private HttpSession sessionMock;
 
     @BeforeEach
     public void init(){
         // Configuración de objetos simulados
         repositorioUsuarioApunteResenaMock = mock(RepositorioUsuarioApunteResena.class);
         servicioUsuarioApunteResena = new ServicioUsuarioApunteResenaImpl(repositorioUsuarioApunteResenaMock);
+        requestMock = mock(HttpServletRequest.class);
+        sessionMock = mock(HttpSession.class);
     }
 
     @Test
@@ -74,9 +81,6 @@ public class ServicioUsuarioApunteResenaTest {
         assertFalse(result);
 
     }
-
-
-
 }
 
 
