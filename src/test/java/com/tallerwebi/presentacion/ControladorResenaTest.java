@@ -42,7 +42,6 @@ public class ControladorResenaTest {
         servicioApunte = mock(ServicioApunte.class);
         servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
         controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunteResena);
-        new ControladorUsuario(servicioUsuario);
         sessionMock = mock(HttpSession.class);
 
     }

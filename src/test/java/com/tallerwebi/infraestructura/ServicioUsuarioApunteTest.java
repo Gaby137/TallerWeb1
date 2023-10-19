@@ -99,6 +99,29 @@ public class ServicioUsuarioApunteTest {
         verify(repositorioUsuarioApunteMock, times(1)).registrar(any(UsuarioApunte.class));
     }
 
+    @Test
+    public void queElUsuarioNoPuedaComprarApunteSiNoTieneLosPuntosNecesarios() {
+        Usuario usuario = new Usuario();
+        Apunte apunte = new Apunte();
+        usuario.setPuntos(30);
+        apunte.setPrecio(50);
+
+        boolean resultadoCompra = servicioUsuarioApunte.comprarApunte(usuario, apunte);
+
+        assertFalse(resultadoCompra);
+        assertEquals(30, usuario.getPuntos());
+        verify(repositorioUsuarioApunteMock, never()).registrar(any(UsuarioApunte.class));
+    }
+
+    @Test
+    public void queNoSePuedaComprarSiUsuarioEsNull() {
+        Apunte apunte = new Apunte();
+        apunte.setPrecio(50);
+
+        boolean resultadoCompra = servicioUsuarioApunte.comprarApunte(null, apunte);
+
+        assertFalse(resultadoCompra);
+    }
 
 }
 
