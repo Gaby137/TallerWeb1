@@ -36,6 +36,7 @@ public class ControladorUsuarioApunteTest {
     sessionMock = mock(HttpSession.class);
     }
 
+
     @Test
     public void queAlComprarUnApunteCorrectamenteAparezcaMensajeEnLaVista(){
             Usuario usuario = new Usuario();
