@@ -10,12 +10,12 @@ public class Apunte {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String pathArchivo;
-    private String nombre;
+    private String rutaArchivo;
+    private String titulo;
     private String descripcion;
     private int precio;
-    private Date created_at;
-    private Date updated_at;
+    private Date fecha_creacion;
+    private Date fecha_actualizacion;
 
     @OneToMany(mappedBy = "apunte")
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
@@ -25,17 +25,17 @@ public class Apunte {
     private Materia materia;
 
 
-    public Apunte(String pathArchivo, String nombre, String descripcion, int precio, Date created_at, Date updated_at) {
-        this.pathArchivo = pathArchivo;
-        this.nombre = nombre;
+    public Apunte(String rutaArchivo, String titulo, String descripcion, int precio, Date fecha_creacion, Date fecha_actualizacion) {
+        this.rutaArchivo = rutaArchivo;
+        this.titulo = titulo;
         this.descripcion = descripcion;
-        this.precio=precio;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.precio = precio;
+        this.fecha_creacion = fecha_creacion;
+        this.fecha_actualizacion = fecha_actualizacion;
     }
 
-    public Apunte(String nombre) {
-        this.nombre = nombre;
+    public Apunte(String titulo) {
+        this.titulo = titulo;
     }
 
     public Apunte() {
@@ -51,19 +51,19 @@ public class Apunte {
     }
 
     public String getPathArchivo() {
-        return pathArchivo;
+        return rutaArchivo;
     }
 
     public void setPathArchivo(String pathArchivo) {
-        this.pathArchivo = pathArchivo;
+        this.rutaArchivo = pathArchivo;
     }
 
     public String getNombre() {
-        return nombre;
+        return titulo;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.titulo = nombre;
     }
 
     public String getDescripcion() {
@@ -75,19 +75,19 @@ public class Apunte {
     }
 
     public Date getCreated_at() {
-        return created_at;
+        return fecha_creacion;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreated_at(Date fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
     }
 
     public Date getUpdated_at() {
-        return updated_at;
+        return fecha_actualizacion;
     }
 
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdated_at(Date fecha_actualizacion) {
+        this.fecha_actualizacion = fecha_actualizacion;
     }
     public int getPrecio() {
         return precio;

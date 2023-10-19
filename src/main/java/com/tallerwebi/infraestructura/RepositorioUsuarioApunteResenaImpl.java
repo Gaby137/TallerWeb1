@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.entidad.Resena;
+import com.tallerwebi.dominio.entidad.UsuarioApunte;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunteResena;
 
@@ -48,5 +49,39 @@ public class RepositorioUsuarioApunteResenaImpl implements RepositorioUsuarioApu
         query.setParameter("usuarioId", idUsuario);
 
         return !query.getResultList().isEmpty();
+    }
+
+    /*@Override
+    public void eliminarRelacionDeUsuarioApunteResena(Long idResena, Long idApunte, Long idUsuario) {
+        Session session = sessionFactory.getCurrentSession();
+        UsuarioApunteResena uar = sessionFactory.getCurrentSession().createQuery(
+                        "select a " +
+                                "from UsuarioApunteResena a " +
+                                "where a.resena.id = :idResena " +
+                                "and a.apunte.id = :idApunte " +
+                                "and a.usuario.id = :idUsuario ",
+                        UsuarioApunteResena.class)
+                .setParameter("idResena", idResena).setParameter("idApunte", idApunte).setParameter("idUsuario", idUsuario)
+                .uniqueResult();
+        session.delete(uar);
+    }*/
+    @Override
+    public void eliminarRelacionDeUsuarioApunteResena(Long idResena, Long idApunte, Long idUsuario) {
+        Session session = sessionFactory.getCurrentSession();
+
+        UsuarioApunteResena u = sessionFactory.getCurrentSession().createQuery(
+                        "select a " +
+                                "from UsuarioApunteResena a " +
+                                "where a.resena.id = :idResena " +
+                                "and a.apunte.id = :idApunte " +
+                                "and a.usuario.id = :idUsuario ",
+                        UsuarioApunteResena.class)
+                .setParameter("idResena", idResena).setParameter("idApunte", idApunte).setParameter("idUsuario", idUsuario)
+                .uniqueResult();
+
+        UsuarioApunteResena uar = session.get(UsuarioApunteResena.class, u.getId());
+        if (uar != null) {
+            session.delete(uar);
+        }
     }
 }

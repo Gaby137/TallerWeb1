@@ -76,7 +76,7 @@ public class ControladorResenaTest {
         assertEquals("redirect:/detalleApunte/{id}", modelAndView.getViewName());
         ModelMap modelMap = modelAndView.getModelMap();
         assertTrue(modelMap.containsKey("mensaje"));
-        assertEquals("Reseña borrada exitosamente", modelMap.get("mensaje"));
+        assertEquals("Resena borrada exitosamente", modelMap.get("mensaje"));
         assertFalse(modelMap.containsKey("error"));
     }
     @Test

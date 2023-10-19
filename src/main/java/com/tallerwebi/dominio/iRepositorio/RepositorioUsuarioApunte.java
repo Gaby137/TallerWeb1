@@ -12,5 +12,7 @@ public interface RepositorioUsuarioApunte {
     List<UsuarioApunte> obtenerApuntesPorIdUsuario(Long id);
 
     List<UsuarioApunte> obtenerApuntesDeOtrosUsuarios(Long id);
+
+    void eliminarRelacionDeUsuarioApunte(Long idApunte, Long isUsuario);
 }
 

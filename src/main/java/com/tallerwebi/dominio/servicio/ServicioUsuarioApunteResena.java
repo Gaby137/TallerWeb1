@@ -15,5 +15,5 @@ public interface ServicioUsuarioApunteResena {
 
     boolean registrar(Usuario usuario, Apunte apunte, Resena resena);
     List<Resena> obtenerLista(Long idApunte);
-
+    void eliminarRelacion(Long idResena, Long idApunte, Long idUsuario);
 }

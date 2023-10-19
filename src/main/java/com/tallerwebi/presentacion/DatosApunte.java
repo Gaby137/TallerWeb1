@@ -1,38 +1,36 @@
 package com.tallerwebi.presentacion;
 
-import java.util.Date;
-
 public class DatosApunte {
 
-    private String pathArchivo;
-    private String nombre;
+    private String rutaArchivo;
+    private String titulo;
     private String descripcion;
 
     private int precio;
-    public DatosApunte(String pathArchivo, String nombre, String descripcion, int precio) {
-        this.pathArchivo = pathArchivo;
-        this.nombre = nombre;
+    public DatosApunte(String rutaArchivo, String titulo, String descripcion, int precio) {
+        this.rutaArchivo = rutaArchivo;
+        this.titulo = titulo;
         this.descripcion = descripcion;
-        this.precio=precio;
+        this.precio = precio;
     }
 
     public DatosApunte(){
 
     }
     public String getPathArchivo() {
-        return pathArchivo;
+        return rutaArchivo;
     }
 
-    public void setPathArchivo(String pathArchivo) {
-        this.pathArchivo = pathArchivo;
+    public void setPathArchivo(String rutaArchivo) {
+        this.rutaArchivo = rutaArchivo;
     }
 
     public String getNombre() {
-        return nombre;
+        return titulo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombre(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getDescripcion() {

@@ -1,5 +1,7 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import org.hibernate.Criteria;
@@ -43,5 +45,17 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
                 .add(Restrictions.not(Restrictions.eq("u.id", id))); // Excluye los apuntes asociados al usuario con el ID proporcionado
         return criteria.list();
     }
-
+    @Override
+    public void eliminarRelacionDeUsuarioApunte(Long idApunte, Long idUsuario) {
+        Session session = sessionFactory.getCurrentSession();
+        UsuarioApunte u = sessionFactory.getCurrentSession().createQuery(
+                        "select a " +
+                                "from UsuarioApunte a " +
+                                "where a.apunte.id = :idApunte " +
+                                "and a.usuario.id = :idUsuario ",
+                        UsuarioApunte.class)
+                .setParameter("idApunte", idApunte).setParameter("idUsuario", idUsuario)
+                .uniqueResult();
+        session.delete(u);
+    }
 }

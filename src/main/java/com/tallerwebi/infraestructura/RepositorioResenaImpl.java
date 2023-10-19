@@ -1,5 +1,6 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.entidad.UsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
 import com.tallerwebi.dominio.entidad.Resena;
 import org.hibernate.Session;
@@ -39,6 +40,19 @@ public class RepositorioResenaImpl implements RepositorioResena {
             session.delete(resena);
         }
     }
+
+    /*@Override
+    public void borrar(Long id) {
+        Session session = sessionFactory.getCurrentSession();
+        Resena r = sessionFactory.getCurrentSession().createQuery(
+                        "select r " +
+                                "from Resena r " +
+                                "where r.id = :idResena ",
+                        Resena.class)
+                .setParameter("idResena", id)
+                .uniqueResult();
+        session.delete(r);
+    }*/
 
     @Override
     public Resena buscar(Long id) {

@@ -59,4 +59,10 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     public List<Resena> obtenerLista(Long idApunte) {
         return repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(idApunte);
     }
+
+    @Override
+    public void eliminarRelacion(Long idResena, Long idApunte, Long idUsuario) {
+
+        repositorioUsuarioApunteResena.eliminarRelacionDeUsuarioApunteResena(idResena, idApunte, idUsuario);
+    }
 }

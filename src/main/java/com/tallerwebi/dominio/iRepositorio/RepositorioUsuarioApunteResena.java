@@ -11,5 +11,7 @@ public interface RepositorioUsuarioApunteResena {
 
     boolean existeResenaConApunteYUsuario(Long idUsuario,Long idApunte);
 
+    void eliminarRelacionDeUsuarioApunteResena(Long idResena, Long idApunte, Long idUsuario);
+
 }
 

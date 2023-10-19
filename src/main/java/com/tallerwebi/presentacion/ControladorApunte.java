@@ -88,6 +88,16 @@ public class ControladorApunte {
 
         return new ModelAndView("apunteEliminado", modelo);
     }
+    @RequestMapping(path = "/eliminarRelacionApunte/{id}", method = RequestMethod.GET)
+    public ModelAndView eliminarRelacionApunte(@PathVariable("id") Long id, HttpSession session) {
+        ModelMap modelo = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        // Implementar la lógica para obtener el apunte que deseas editar
+        servicioApunte.eliminarRelacion(id, usuario.getId());
+
+        return new ModelAndView("apunteEliminado", modelo);
+    }
     @RequestMapping(path = "/misApuntes", method = RequestMethod.GET)
     public ModelAndView misApuntes(HttpSession session) {
         ModelMap model = new ModelMap();

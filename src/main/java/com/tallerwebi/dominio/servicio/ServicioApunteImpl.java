@@ -91,4 +91,10 @@ public class ServicioApunteImpl implements ServicioApunte {
 
         repositorioApunte.eliminarApunte(apunte);
     }
+
+    @Override
+    public void eliminarRelacion(Long idApunte, Long idUsuario) {
+
+        repositorioUsuarioApunte.eliminarRelacionDeUsuarioApunte(idApunte, idUsuario);
+    }
 }
