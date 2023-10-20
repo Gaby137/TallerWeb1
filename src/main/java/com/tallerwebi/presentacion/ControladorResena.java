@@ -78,15 +78,14 @@ public class ControladorResena {
         Long idApunte = (Long) session.getAttribute("idApunte");
         modelo.put("id", idApunte);
         try {
-            //servicioResena.borrar(id);
-            servicioUsuarioApunteResena.eliminarRelacion(id, idApunte, usuario.getId());
+            servicioResena.borrar(id);
             modelo.put("mensaje", "Reseña borrada exitosamente");
 
         } catch (Exception e) {
             modelo.put("mensaje", "Error al intentar borrar la reseña");
             modelo.put("error", e);
         }
-        return new ModelAndView("resenaEliminada", modelo); //saque model
+        return new ModelAndView("redirect:/detalleApunte/"+idApunte, modelo);
     }
 
 }

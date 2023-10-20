@@ -73,10 +73,10 @@ public class ControladorResenaTest {
         verify(servicioResena, times(1)).borrar(idResenaABorrar);
 
         // Verificación de la vista y modelo
-        assertEquals("redirect:/detalleApunte/{id}", modelAndView.getViewName());
+        assertEquals("redirect:/detalleApunte/1", modelAndView.getViewName());
         ModelMap modelMap = modelAndView.getModelMap();
         assertTrue(modelMap.containsKey("mensaje"));
-        assertEquals("Resena borrada exitosamente", modelMap.get("mensaje"));
+        assertEquals("Reseña borrada exitosamente", modelMap.get("mensaje"));
         assertFalse(modelMap.containsKey("error"));
     }
     @Test
