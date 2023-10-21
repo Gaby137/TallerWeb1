@@ -120,7 +120,6 @@ public class ServicioUsuarioApunteTest {
             Apunte apunte = new Apunte();
             apunte.setPrecio(50);
 
-
             boolean compraExitosa = servicioUsuarioApunte.comprarApunte(usuario, apunte);
 
             assertTrue(compraExitosa);
