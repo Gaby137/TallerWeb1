@@ -81,42 +81,6 @@ public class ControladorApunteTest {
         assertEquals("Por favor complete todos los campos", modelAndView.getModel().get("error"));
     }
 
-   /* @Test
-    void testDeberiaDevolverDetalleDeApunteConSuListadoDeResenas() {
-        // preparación
-        Long APUNTE_ID = 1L;
 
-        // Apunte apunteMock = mock(Apunte.class);
-        Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", new Date(), new Date());
-        apunteMock.setId(APUNTE_ID);
-        Usuario usuarioMock = mock(Usuario.class);
-        Resena resenaMock1 = mock(Resena.class);
-        Resena resenaMock2 = mock(Resena.class);
-        List<UsuarioApunteResena>  usuarioApunteResenaListMock = new ArrayList<>();
-
-        UsuarioApunteResena usuarioApunteResenaMock1 = new UsuarioApunteResena(usuarioMock, resenaMock1, apunteMock);
-        UsuarioApunteResena usuarioApunteResenaMock2 = new UsuarioApunteResena(usuarioMock, resenaMock2, apunteMock);
-
-        usuarioApunteResenaListMock.add(usuarioApunteResenaMock1);
-        usuarioApunteResenaListMock.add(usuarioApunteResenaMock2);
-
-        when(requestMock.getSession()).thenReturn(sessionMock);
-        when(servicioApunteMock.obtenerPorId(APUNTE_ID)).thenReturn(apunteMock);
-        when(servicioApunteMock.getListadoDeResenasConSusUsuariosPorIdApunte(APUNTE_ID)).thenReturn(usuarioApunteResenaListMock);
-
-        // ejecución
-        ModelAndView modelAndView = controladorApunte.getDetalleApunteConListadoDeSusResenas(APUNTE_ID, requestMock);
-
-        // validación
-        Apunte apunteEnModelo = (Apunte) modelAndView.getModelMap().get("apunte");
-        List<UsuarioApunteResena> resenasEnModelo = (List<UsuarioApunteResena>) modelAndView.getModelMap().get("usuarioApunteResenas");
-
-        verify(servicioApunteMock).getListadoDeResenasConSusUsuariosPorIdApunte(APUNTE_ID);
-        assertEquals("detalleApunte", modelAndView.getViewName());
-        assertFalse(apunteEnModelo == null);
-        assertEquals(apunteMock, apunteEnModelo);
-        assertFalse(resenasEnModelo == null);
-        assertEquals(2, resenasEnModelo.size());
-    }*/
 
 }

@@ -42,6 +42,11 @@ public class Apunte {
 
     }
 
+    public Apunte(String apunte, Long id) {
+        this.nombre = apunte;
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

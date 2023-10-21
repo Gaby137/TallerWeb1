@@ -30,38 +30,52 @@ public class ServicioApunteTest {
         // Configuración de objetos simulados
  
         repositorioApunteMock = mock(RepositorioApunte.class);
+        repositorioUsuarioApunteMock = mock(RepositorioUsuarioApunte.class);
         servicioApunte = new ServicioApunteImpl(repositorioApunteMock, repositorioUsuarioApunteMock);
+
+
     }
 
     @Test
-    public void GuardarApunte() {
+    public void unUsuarioPuedeSubirUnApunteExitosamente() {
         // Configuración de datos de ejemplo
-        DatosApunte datosApunte = new DatosApunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20);
-        Usuario usuarioMock = mock(Usuario.class);
-        Apunte apunteMock = mock(Apunte.class);
-        UsuarioApunte usuarioApunteMock = mock(UsuarioApunte.class);
         DatosApunte datosApunteMock = mock(DatosApunte.class);
+        Usuario usuarioMock = mock(Usuario.class);
 
-        // Ejecución de la prueba
-        doNothing().when(repositorioApunteMock).registrarApunte(apunteMock);
+        when(datosApunteMock.getPathArchivo()).thenReturn("asasas.pdf");
+        when(datosApunteMock.getNombre()).thenReturn("apunte1");
+        when(datosApunteMock.getDescripcion()).thenReturn("descripcion de apunte");
+        when(datosApunteMock.getPrecio()).thenReturn(100);
 
+        doNothing().when(repositorioApunteMock).registrarApunte(any(Apunte.class));
+        doNothing().when(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
 
+        // Ejecución de la pruebas
         boolean resultado = servicioApunte.registrar(datosApunteMock, usuarioMock);
 
         // Verificación
-        assertFalse(resultado);
-        // Verifica que se llamó al método del repositorio
-       // verify(repositorioApunteMock).registrarApunte(any(Apunte.class));
+        assertTrue(resultado);
+        // Verifica que se llamó al método del repositorioApunteMock
+       verify(repositorioApunteMock).registrarApunte(any(Apunte.class));
+       verify(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
     }
 
     @Test
     public void SiUnApunteSeSubeVacioDebeDarError() {
-        // Configuración de datos de ejemplo con información faltante
-        DatosApunte datosApunte = new DatosApunte(null, "", null, 0);
+        // Configuración de datos de ejemplo
+        DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
 
-        // Ejecución de la prueba
-        boolean resultado = servicioApunte.registrar(datosApunte, usuarioMock);
+        when(datosApunteMock.getPathArchivo()).thenReturn("");
+        when(datosApunteMock.getNombre()).thenReturn("");
+        when(datosApunteMock.getDescripcion()).thenReturn("");
+        when(datosApunteMock.getPrecio()).thenReturn(100);
+
+        doNothing().when(repositorioApunteMock).registrarApunte(any(Apunte.class));
+        doNothing().when(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
+
+        // Ejecución de la pruebas
+        boolean resultado = servicioApunte.registrar(datosApunteMock, usuarioMock);
 
         // Verificación
         assertFalse(resultado);
