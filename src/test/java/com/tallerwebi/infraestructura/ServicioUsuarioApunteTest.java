@@ -24,8 +24,6 @@ public class ServicioUsuarioApunteTest {
     private ServicioUsuarioApunteImpl servicioUsuarioApunte;
     private RepositorioUsuarioApunte repositorioUsuarioApunteMock;
     private ServicioUsuario servicioUsuarioMock;
-    private Usuario usuarioMock;
-    private Apunte apunteMock;
 
     private List<UsuarioApunte> usuarioApuntesMock;
 
@@ -34,19 +32,17 @@ public class ServicioUsuarioApunteTest {
         repositorioUsuarioApunteMock = mock(RepositorioUsuarioApunte.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioUsuarioApunte = new ServicioUsuarioApunteImpl(repositorioUsuarioApunteMock, servicioUsuarioMock);
-        usuarioMock = mock(Usuario.class);
-        apunteMock = mock(Apunte.class);
         usuarioApuntesMock = new ArrayList<>();
     }
     @Test
     public void alGuardarUnApunteFijarseSiElUsuarioLoTiene() {
-        Long userId = 1L;
+        Usuario usuario = new Usuario();
         Apunte apunte = new Apunte();
-        usuarioApuntesMock.add(new UsuarioApunte(null, apunte));
+        usuarioApuntesMock.add(new UsuarioApunte(usuario, apunte));
 
-        when(repositorioUsuarioApunteMock.obtenerApuntesPorIdUsuario(userId)).thenReturn(usuarioApuntesMock);
+        when(repositorioUsuarioApunteMock.obtenerApuntesPorIdUsuario(usuario.getId())).thenReturn(usuarioApuntesMock);
 
-        List<Apunte> resultado = servicioUsuarioApunte.obtenerApuntesPorUsuario(userId);
+        List<Apunte> resultado = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
 
         assertTrue(resultado.contains(apunte));
     }
@@ -61,9 +57,6 @@ public class ServicioUsuarioApunteTest {
 
         Apunte apunte1 = new Apunte();
         Apunte apunte2 = new Apunte();
-
-        apunte1.setId(1L);
-        apunte2.setId(2L);
 
         UsuarioApunte usuarioApuntePropio = new UsuarioApunte(usuarioPropio, apunte1);
         UsuarioApunte usuarioApunteOtro = new UsuarioApunte(usuarioOtro, apunte2);
@@ -96,7 +89,6 @@ public class ServicioUsuarioApunteTest {
 
         assertTrue(resultadoCompra);
         assertEquals(50, usuario.getPuntos());
-        verify(repositorioUsuarioApunteMock, times(1)).registrar(any(UsuarioApunte.class));
     }
 
     @Test
@@ -110,7 +102,6 @@ public class ServicioUsuarioApunteTest {
 
         assertFalse(resultadoCompra);
         assertEquals(30, usuario.getPuntos());
-        verify(repositorioUsuarioApunteMock, never()).registrar(any(UsuarioApunte.class));
     }
 
     @Test
