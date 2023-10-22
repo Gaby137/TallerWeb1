@@ -46,6 +46,7 @@ public class ControladorResena {
         Usuario usuario=(Usuario) session.getAttribute("usuario");
         model.put("usuario", usuario);
         model.put("resena", new Resena());
+        model.put("title", "Nueva Reseña");
         return new ModelAndView("formulario-alta-resena", model);
     }
 

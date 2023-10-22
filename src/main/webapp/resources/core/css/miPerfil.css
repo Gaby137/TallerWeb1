@@ -1,0 +1,30 @@
+.navbar-brand{
+  margin:0 2rem;
+}
+
+.nombreYFoto {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  background: #e3f2fd;
+}
+.nombreYFoto p{
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+.nombreYFoto img{
+  width: 100px;
+  height: 90px;
+  margin-right: 15px;
+}
+.col button{
+  background: #e3f2fd;
+  padding: 20px;
+  padding-left: 33%;
+  padding-right: 33%;
+}
+i{
+  font-size: 25px;
+  text-align: left;
+  justify-content: left;
+}

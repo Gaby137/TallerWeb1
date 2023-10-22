@@ -35,6 +35,7 @@ public class ControladorApunte {
     public ModelAndView apunte() {
         ModelMap model = new ModelMap();
         model.put("datosApunte", new DatosApunte());
+        model.put("title", "Nuevo Apunte");
         return new ModelAndView("altaApunte", model);
     }
 
@@ -97,6 +98,7 @@ public class ControladorApunte {
         List<Apunte> resultApuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
 
         model.put("apuntes", resultApuntes);
+        model.put("title", "Mis Apuntes");
         return new ModelAndView("misApuntes", model);
     }
 
@@ -122,6 +124,7 @@ public class ControladorApunte {
         List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario.getId());
 
         model.put("apuntes", apuntesDeOtrosUsuarios);
+        model.put("title", "Apuntes");
         return new ModelAndView("apuntes", model);
     }
 
