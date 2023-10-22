@@ -9,6 +9,7 @@
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.2.0/css/bootstrap.min.css}"/>
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
 
 </head>
 
@@ -34,11 +35,11 @@
                 </div>
 
                 <div class="container-login100-form-btn m-t-32">
-                    <button class="login100-form-btn" Type="Submit">
+                    <button class="login100-form-btn" type="Submit">
                         Iniciar Sesion
                     </button>
 
-                    <p th:if="${error != null}" class="alert alert-danger" th:text="'Error ' + ${error}">
+                    <p th:if="${error != null}" class="alert alert-danger mt-1" th:text="'Error ' + ${error}">
                     </p>
                 </div>
                 <a th:href="@{'/nuevo-usuario'}" class="register">Registrate</a>
