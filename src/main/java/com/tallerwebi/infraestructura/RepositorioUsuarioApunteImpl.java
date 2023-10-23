@@ -31,7 +31,7 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
     public List<UsuarioApunte> obtenerApuntesPorIdUsuario(Long id) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(UsuarioApunte.class)
-                .createAlias("usuario", "a") // Establece un alias para la entidad Apunte
+                .createAlias("usuario", "a")
                 .add(Restrictions.eq("a.id", id));
         return criteria.list();
     }
@@ -40,7 +40,7 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(UsuarioApunte.class)
                 .createAlias("usuario", "u")
-                .add(Restrictions.not(Restrictions.eq("u.id", id))); // Excluye los apuntes asociados al usuario con el ID proporcionado
+                .add(Restrictions.not(Restrictions.eq("u.id", id)));
         return criteria.list();
     }
 
