@@ -125,6 +125,7 @@ public class ControladorApunte {
 
         model.put("apuntes", apuntesDeOtrosUsuarios);
         model.put("title", "Apuntes");
+        model.put("puntos", "Usted tiene " + usuario.getPuntos() + " puntos");
         return new ModelAndView("apuntes", model);
     }
 
@@ -132,16 +133,19 @@ public class ControladorApunte {
     public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpSession session) {
         ModelMap model = new ModelMap();
 
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        Usuario comprador = (Usuario) session.getAttribute("usuario");
 
         Apunte apunte = servicioApunte.obtenerPorId(id);
 
-        boolean compraExitosa = servicioUsuarioApunte.comprarApunte(usuario, apunte);
+        Usuario vendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(apunte.getId());
+
+        boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
 
         if (compraExitosa) {
             model.put("mensaje", "Compra exitosa");
+            model.put("puntos", "Usted tiene " + comprador.getPuntos() + " puntos");
 
-            List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario.getId());
+            List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(comprador.getId());
             model.put("apuntes", apuntesDeOtrosUsuarios);
 
             return new ModelAndView("apuntes", model);

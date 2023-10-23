@@ -113,32 +113,37 @@ public class ServicioUsuarioApunteTest {
         }
 
         @Test
-        public void queElUsuarioPuedaComprarUnApunteYSeLeRestenLosPuntosQueCuesta() {
-            Usuario usuario = new Usuario();
-            usuario.setPuntos(100);
+        public void queElUsuarioPuedaComprarUnApunteYSeLeRestenLosPuntosQueCuestaYAlVendedorSeLeSumen() {
+            Usuario comprador = new Usuario();
+            comprador.setPuntos(100);
+
+            Usuario vendedor = new Usuario();
+            vendedor.setPuntos(100);
 
             Apunte apunte = new Apunte();
             apunte.setPrecio(50);
 
-            boolean compraExitosa = servicioUsuarioApunte.comprarApunte(usuario, apunte);
+            boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
 
             assertTrue(compraExitosa);
 
-            assertEquals(50, usuario.getPuntos());
+            assertEquals(50, comprador.getPuntos());
+            assertEquals(150, vendedor.getPuntos());
         }
 
 
         @Test
         public void queElUsuarioNoPuedaComprarApunteSiNoTieneLosPuntosNecesarios() {
-            Usuario usuario = new Usuario();
+            Usuario comprador = new Usuario();
             Apunte apunte = new Apunte();
-            usuario.setPuntos(30);
+            Usuario vendedor = new Usuario();
+            comprador.setPuntos(30);
             apunte.setPrecio(50);
 
-            boolean resultadoCompra = servicioUsuarioApunte.comprarApunte(usuario, apunte);
+            boolean resultadoCompra = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
 
             assertFalse(resultadoCompra);
-            assertEquals(30, usuario.getPuntos());
+            assertEquals(30, comprador.getPuntos());
             verify(repositorioUsuarioApunteMock, never()).registrar(any(UsuarioApunte.class));
         }
 
@@ -147,9 +152,11 @@ public class ServicioUsuarioApunteTest {
             Apunte apunte = new Apunte();
             apunte.setPrecio(50);
 
-            boolean resultadoCompra = servicioUsuarioApunte.comprarApunte(null, apunte);
+            boolean resultadoCompra = servicioUsuarioApunte.comprarApunte(null, null, apunte);
 
             assertFalse(resultadoCompra);
         }
 
     }
+
+

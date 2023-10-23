@@ -44,4 +44,13 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
         return criteria.list();
     }
 
+    @Override
+    public List<UsuarioApunte> obtenerUsuarioPorIdDeApunte(Long id) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(UsuarioApunte.class)
+                .createAlias("apunte", "a")
+                .add(Restrictions.eq("a.id", id));
+        return criteria.list();
+    }
+
 }

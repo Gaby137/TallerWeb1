@@ -35,6 +35,19 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
     }
 
     @Override
+    public Usuario obtenerVendedorPorApunte(Long id){
+        List<UsuarioApunte> usuarioApuntes = repositorioUsuarioApunte.obtenerUsuarioPorIdDeApunte(id);
+
+        for (UsuarioApunte usuarioApunte : usuarioApuntes){
+            if(usuarioApunte.getTipoDeAcceso()== TipoDeAcceso.EDITAR){
+                return usuarioApunte.getUsuario();
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id) {
 
         Set<Apunte> apuntesDeOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(id).stream()
@@ -52,17 +65,20 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
     }
 
     @Override
-    public boolean comprarApunte(Usuario usuario, Apunte apunte) {
-        if (usuario == null || apunte == null) {
+    @Transactional
+    public boolean comprarApunte(Usuario comprador, Usuario vendedor, Apunte apunte) {
+        if (comprador == null || vendedor == null || apunte == null) {
             return false;
         }
 
-        if (usuario.getPuntos() >= apunte.getPrecio()) {
-            usuario.setPuntos(usuario.getPuntos() - apunte.getPrecio());
-            servicioUsuario.actualizar(usuario);
+        if (comprador.getPuntos() >= apunte.getPrecio()) {
+            comprador.setPuntos(comprador.getPuntos() - apunte.getPrecio());
+            vendedor.setPuntos(vendedor.getPuntos() + apunte.getPrecio());
+            servicioUsuario.actualizar(comprador);
+            servicioUsuario.actualizar(vendedor);
 
-            UsuarioApunte usuarioApunte = new UsuarioApunte(usuario, apunte);
-            usuarioApunte.setUsuario(usuario);
+            UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
+            usuarioApunte.setUsuario(comprador);
             usuarioApunte.setApunte(apunte);
             usuarioApunte.setTipoDeAcceso(TipoDeAcceso.LEER);
 

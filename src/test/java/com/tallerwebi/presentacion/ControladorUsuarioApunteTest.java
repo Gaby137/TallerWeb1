@@ -39,17 +39,20 @@ public class ControladorUsuarioApunteTest {
 
     @Test
     public void queAlComprarUnApunteCorrectamenteAparezcaMensajeEnLaVista(){
-            Usuario usuario = new Usuario();
+            Usuario comprador = new Usuario();
+            Usuario vendedor = new Usuario();
             Apunte apunte = new Apunte();
-            Long apunteId = 1L;
 
-            when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
 
-            when(servicioApunte.obtenerPorId(apunteId)).thenReturn(apunte);
+            when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
 
-            when(servicioUsuarioApunte.comprarApunte(usuario, apunte)).thenReturn(true);
+            when(servicioApunte.obtenerPorId(apunte.getId())).thenReturn(apunte);
 
-            ModelAndView modelAndView = controladorApunte.comprarApunte(apunteId, sessionMock);
+            when(servicioUsuarioApunte.obtenerVendedorPorApunte(vendedor.getId())).thenReturn(vendedor);
+
+            when(servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte)).thenReturn(true);
+
+            ModelAndView modelAndView = controladorApunte.comprarApunte(apunte.getId(), sessionMock);
 
             ModelMap modelMap = modelAndView.getModelMap();
             assertEquals("Compra exitosa", modelMap.get("mensaje"));
@@ -58,19 +61,21 @@ public class ControladorUsuarioApunteTest {
         }
     @Test
     public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVista() {
-        Usuario usuario = new Usuario();
+        Usuario comprador = new Usuario();
+        Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
         Long apunteId = 1L;
 
-        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
 
         when(servicioApunte.obtenerPorId(apunteId)).thenReturn(apunte);
 
-        when(servicioUsuarioApunte.comprarApunte(usuario, apunte)).thenReturn(false);
+        when(servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte)).thenReturn(false);
 
         ModelAndView modelAndView = controladorApunte.comprarApunte(apunteId, sessionMock);
 
         ModelMap modelMap = modelAndView.getModelMap();
+
         assertEquals("Error al realizar la compra", modelMap.get("error"));
 
         assertEquals("apuntes", modelAndView.getViewName());
@@ -78,4 +83,3 @@ public class ControladorUsuarioApunteTest {
 
 
     }
-
