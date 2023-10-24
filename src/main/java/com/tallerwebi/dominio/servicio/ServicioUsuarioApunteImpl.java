@@ -25,14 +25,30 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
     }
 
 
-    @Override
     public List<Apunte> obtenerApuntesPorUsuario(Long id) {
-        Set<Apunte> apuntesPorUsuario = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id).stream()
-                .map(UsuarioApunte::getApunte)
-                .collect(Collectors.toSet());
+        List<UsuarioApunte> usuarioApuntes = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
 
-        return new ArrayList<>(apuntesPorUsuario);
+        List<Apunte> apuntesPorUsuario = new ArrayList<>();
+
+        for (UsuarioApunte usuarioApunte : usuarioApuntes) {
+            apuntesPorUsuario.add(usuarioApunte.getApunte());
+        }
+
+        return apuntesPorUsuario;
     }
+    public List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id) {
+        List<UsuarioApunte> apuntesDeOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(id);
+
+        List<Apunte> apuntesDeOtrosUsuariosList = new ArrayList<>();
+
+        for (UsuarioApunte usuarioApunte : apuntesDeOtrosUsuarios) {
+            if(usuarioApunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR)
+            apuntesDeOtrosUsuariosList.add(usuarioApunte.getApunte());
+        }
+
+        return apuntesDeOtrosUsuariosList;
+    }
+
 
     @Override
     public Usuario obtenerVendedorPorApunte(Long id){
@@ -45,23 +61,6 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
         }
 
         return null;
-    }
-
-    @Override
-    public List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id) {
-
-        Set<Apunte> apuntesDeOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(id).stream()
-                .filter(usuarioApunte -> !usuarioApunte.getUsuario().getId().equals(id))
-                .map(UsuarioApunte::getApunte)
-                .collect(Collectors.toSet());
-
-        Set<Apunte> apuntesCompradosPorUsuario = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id).stream()
-                .map(UsuarioApunte::getApunte)
-                .collect(Collectors.toSet());
-
-        apuntesDeOtrosUsuarios.removeAll(apuntesCompradosPorUsuario);
-
-        return new ArrayList<>(apuntesDeOtrosUsuarios);
     }
 
     @Override

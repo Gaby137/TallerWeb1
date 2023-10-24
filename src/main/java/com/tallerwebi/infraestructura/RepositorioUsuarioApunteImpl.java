@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,21 +28,28 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
         sessionFactory.getCurrentSession().save(usuarioApunte);
     }
 
-    @Override
     public List<UsuarioApunte> obtenerApuntesPorIdUsuario(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria(UsuarioApunte.class)
-                .createAlias("usuario", "a")
-                .add(Restrictions.eq("a.id", id));
-        return criteria.list();
+
+        String jpql = "SELECT ua FROM UsuarioApunte ua " +
+                "WHERE ua.usuario.id = :userId";
+
+        Query<UsuarioApunte> query = session.createQuery(jpql, UsuarioApunte.class);
+        query.setParameter("userId", id);
+
+        return query.getResultList();
     }
-    @Override
-    public List<UsuarioApunte> obtenerApuntesDeOtrosUsuarios(Long id) {
+    public List<UsuarioApunte> obtenerApuntesDeOtrosUsuarios(Long userId) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria(UsuarioApunte.class)
-                .createAlias("usuario", "u")
-                .add(Restrictions.not(Restrictions.eq("u.id", id)));
-        return criteria.list();
+
+        String jpql = "SELECT ua FROM UsuarioApunte ua " +
+                "WHERE ua.usuario.id != :userId " +
+                "AND ua.apunte.id NOT IN (SELECT ua2.apunte.id FROM UsuarioApunte ua2 WHERE ua2.usuario.id = :userId)";
+
+        Query<UsuarioApunte> query = session.createQuery(jpql, UsuarioApunte.class);
+        query.setParameter("userId", userId);
+
+        return query.getResultList();
     }
 
     @Override

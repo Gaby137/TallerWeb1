@@ -1,9 +1,6 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.entidad.Apunte;
-import com.tallerwebi.dominio.entidad.Resena;
-import com.tallerwebi.dominio.entidad.Usuario;
-import com.tallerwebi.dominio.entidad.UsuarioApunte;
+import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteImpl;
@@ -13,8 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -25,9 +21,6 @@ import com.tallerwebi.dominio.servicio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -80,37 +73,31 @@ public class ServicioUsuarioApunteTest {
             assertTrue(resultado.contains(apunte));
         }
 
-        @Test
-        public void alTener1ApunteCompradoY1ApunteDeOtroUsuarioVendiendoseQueSoloSeMuestreElApunteEnVenta() {
-            Usuario usuarioPropio = new Usuario();
-            Usuario usuarioOtro = new Usuario();
+    @Test
+    public void alTener1ApunteCompradoY1ApunteDeOtroUsuarioVendiendoseQueSoloSeMuestreElApunteEnVenta() {
+        Usuario usuarioPropio = new Usuario();
+        Usuario usuarioVendedor = new Usuario();
 
-            usuarioPropio.setId(1L);
-            usuarioOtro.setId(2L);
+        Apunte apunteEnVenta = new Apunte();
+        Apunte apunteComprado = new Apunte();
 
-            Apunte apunte1 = new Apunte();
-            Apunte apunte2 = new Apunte();
+        UsuarioApunte usuarioApunteEnVenta = new UsuarioApunte(usuarioVendedor, apunteEnVenta);
 
-            apunte1.setId(1L);
-            apunte2.setId(2L);
+        UsuarioApunte usuarioApunteComprado = new UsuarioApunte(usuarioPropio, apunteComprado);
 
-            UsuarioApunte usuarioApuntePropio = new UsuarioApunte(usuarioPropio, apunte1);
-            UsuarioApunte usuarioApunteOtro = new UsuarioApunte(usuarioOtro, apunte2);
+        usuarioApunteEnVenta.setTipoDeAcceso(TipoDeAcceso.EDITAR);
 
-            List<UsuarioApunte> apuntesDeOtrosUsuarios = new ArrayList<>();
-            apuntesDeOtrosUsuarios.add(usuarioApunteOtro);
+        List<UsuarioApunte> listaUsuarioApunte = new ArrayList<>();
+        listaUsuarioApunte.add(usuarioApunteEnVenta);
+        listaUsuarioApunte.add(usuarioApunteComprado);
 
-            List<UsuarioApunte> apuntesCompradosPorUsuario = new ArrayList<>();
-            apuntesCompradosPorUsuario.add(usuarioApuntePropio);
+        when(repositorioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(usuarioPropio.getId())).thenReturn(listaUsuarioApunte);
 
-            when(repositorioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(usuarioPropio.getId())).thenReturn(apuntesDeOtrosUsuarios);
-            when(repositorioUsuarioApunteMock.obtenerApuntesPorIdUsuario(usuarioPropio.getId())).thenReturn(apuntesCompradosPorUsuario);
+        List<Apunte> resultado = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuarioPropio.getId());
 
-            List<Apunte> resultado = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuarioPropio.getId());
-
-            assertEquals(1, resultado.size());
-            assertEquals(apunte2, resultado.get(0));
-        }
+        assertEquals(1, resultado.size());
+        assertEquals(apunteEnVenta, resultado.get(0));
+    }
 
         @Test
         public void queElUsuarioPuedaComprarUnApunteYSeLeRestenLosPuntosQueCuestaYAlVendedorSeLeSumen() {
@@ -156,6 +143,9 @@ public class ServicioUsuarioApunteTest {
 
             assertFalse(resultadoCompra);
         }
+
+        /*Agregar Test de que de 2 apuntes (uno comprado y otro en venta) solo aparezca el que está en venta (tipoacceso=editor)
+         */
 
     }
 
