@@ -27,8 +27,6 @@ public class UsuarioApunte {
     public UsuarioApunte() {
     }
 
-
-
     public Long getId() {
         return id;
     }

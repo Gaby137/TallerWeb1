@@ -1,7 +1,9 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.TipoDeAcceso;
 import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.dominio.entidad.UsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
@@ -13,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -81,5 +86,36 @@ public class ControladorUsuarioApunteTest {
         assertEquals("apuntes", modelAndView.getViewName());
     }
 
+    @Test
+    public void queAparezcan3ApuntesCompradosY1Guardado() {
+        Usuario usuario = new Usuario();
+        usuario.setId(1L);
+
+        UsuarioApunte apunteComprado1 = new UsuarioApunte(usuario, new Apunte());
+        UsuarioApunte apunteComprado2 = new UsuarioApunte(usuario, new Apunte());
+        UsuarioApunte apunteComprado3 = new UsuarioApunte(usuario, new Apunte());
+        UsuarioApunte apunteGuardado = new UsuarioApunte(usuario, new Apunte());
+        apunteComprado1.setTipoDeAcceso(TipoDeAcceso.LEER);
+        apunteComprado2.setTipoDeAcceso(TipoDeAcceso.LEER);
+        apunteComprado3.setTipoDeAcceso(TipoDeAcceso.LEER);
+        apunteGuardado.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+
+        List<UsuarioApunte> apuntes = Arrays.asList(apunteComprado1, apunteComprado2, apunteComprado3, apunteGuardado);
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+
+        when(servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId())).thenReturn(apuntes);
+
+        ModelAndView modelAndView = controladorApunte.misApuntes(sessionMock);
+
+        ModelMap modelMap = modelAndView.getModelMap();
+
+        List<UsuarioApunte> apuntesComprados = (List<UsuarioApunte>) modelMap.get("apuntesComprados");
+        List<UsuarioApunte> apuntesGuardados = (List<UsuarioApunte>) modelMap.get("apuntesCreados");
+
+        assertEquals(3, apuntesComprados.size());
+        assertEquals(1, apuntesGuardados.size());
+
+    }
 
     }
