@@ -7,9 +7,8 @@ public class DatosApunte {
     private String pathArchivo;
     private String nombre;
     private String descripcion;
-
     private int precio;
-    public DatosApunte(String pathArchivo, String nombre, String descripcion, int precio) {
+    public DatosApunte(String pathArchivo, String nombre, String descripcion,  int precio) {
         this.pathArchivo = pathArchivo;
         this.nombre = nombre;
         this.descripcion = descripcion;

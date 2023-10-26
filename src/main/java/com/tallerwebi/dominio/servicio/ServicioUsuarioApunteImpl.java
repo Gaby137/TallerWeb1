@@ -24,17 +24,8 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
         this.servicioUsuario=servicioUsuario;
     }
 
-
-    public List<Apunte> obtenerApuntesPorUsuario(Long id) {
-        List<UsuarioApunte> usuarioApuntes = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
-
-        List<Apunte> apuntesPorUsuario = new ArrayList<>();
-
-        for (UsuarioApunte usuarioApunte : usuarioApuntes) {
-            apuntesPorUsuario.add(usuarioApunte.getApunte());
-        }
-
-        return apuntesPorUsuario;
+    public List<UsuarioApunte> obtenerApuntesPorUsuario(Long id) {
+        return this.repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
     }
     public List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id) {
         List<UsuarioApunte> apuntesDeOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(id);

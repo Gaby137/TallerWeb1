@@ -32,15 +32,13 @@ public class ServicioUsuarioApunteTest {
         private HttpServletRequest requestMock;
         private HttpSession sessionMock;
         private ServicioUsuario servicioUsuarioMock;
-        private List<UsuarioApunte> usuarioApuntesMock;
 
         @BeforeEach
         public void init() {
-            servicioUsuarioMock = mock(ServicioUsuario.class);  // Mover la inicialización aquí
+            servicioUsuarioMock = mock(ServicioUsuario.class);
             repositorioUsuarioApunteMock = mock(RepositorioUsuarioApunte.class);
             requestMock = mock(HttpServletRequest.class);
             sessionMock = mock(HttpSession.class);
-            usuarioApuntesMock = new ArrayList<>();
             servicioUsuarioApunte = new ServicioUsuarioApunteImpl(repositorioUsuarioApunteMock, servicioUsuarioMock);  // Pasar el servicioUsuarioMock como argumento
         }
 
@@ -55,22 +53,22 @@ public class ServicioUsuarioApunteTest {
 
             when(repositorioUsuarioApunteMock.obtenerApuntesPorIdUsuario(usuarioId)).thenReturn(usuarioApuntes);
 
-            List<Apunte> resultado = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuarioId);
+            List<UsuarioApunte> resultado = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuarioId);
 
             assertEquals(2, resultado.size());
         }
 
         @Test
-        public void alGuardarUnApunteFijarseSiElUsuarioLoTiene() {
-            Long userId = 1L;
+        public void alQuererBuscarUnaRelacionUsuarioApuntePorElIdDelUsuarioQueDevuelvaDichaRelacion() {
             Apunte apunte = new Apunte();
-            usuarioApuntesMock.add(new UsuarioApunte(null, apunte));
+            Usuario usuario = new Usuario();
+            UsuarioApunte usuarioApunte = new UsuarioApunte(usuario, apunte);
 
-            when(repositorioUsuarioApunteMock.obtenerApuntesPorIdUsuario(userId)).thenReturn(usuarioApuntesMock);
+            when(repositorioUsuarioApunteMock.obtenerApuntesPorIdUsuario(usuario.getId())).thenReturn(Arrays.asList(usuarioApunte));
 
-            List<Apunte> resultado = servicioUsuarioApunte.obtenerApuntesPorUsuario(userId);
+            List<UsuarioApunte> resultado = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
 
-            assertTrue(resultado.contains(apunte));
+            assertTrue(resultado.contains(usuarioApunte));
         }
 
     @Test
@@ -144,9 +142,7 @@ public class ServicioUsuarioApunteTest {
             assertFalse(resultadoCompra);
         }
 
-        /*Agregar Test de que de 2 apuntes (uno comprado y otro en venta) solo aparezca el que está en venta (tipoacceso=editor)
-         */
-
     }
+
 
 

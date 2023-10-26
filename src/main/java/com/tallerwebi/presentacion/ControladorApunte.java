@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,12 +93,22 @@ public class ControladorApunte {
     @RequestMapping(path = "/misApuntes", method = RequestMethod.GET)
     public ModelAndView misApuntes(HttpSession session) {
         ModelMap model = new ModelMap();
-        Usuario usuario=(Usuario) session.getAttribute("usuario");
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        //List<Apunte> resultApuntes = servicioApunte.obtenerApuntes();
-        List<Apunte> resultApuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
+        List<UsuarioApunte> apuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
+        List<UsuarioApunte> apuntesComprados = new ArrayList<>();
+        List<UsuarioApunte> apuntesCreados = new ArrayList<>();
 
-        model.put("apuntes", resultApuntes);
+        for (UsuarioApunte apunte : apuntes) {
+            if (apunte.getTipoDeAcceso() == TipoDeAcceso.LEER) {
+                apuntesComprados.add(apunte);
+            } else if (apunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR) {
+                apuntesCreados.add(apunte);
+            }
+        }
+
+        model.put("apuntesComprados", apuntesComprados);
+        model.put("apuntesCreados", apuntesCreados);
         model.put("title", "Mis Apuntes");
         return new ModelAndView("misApuntes", model);
     }

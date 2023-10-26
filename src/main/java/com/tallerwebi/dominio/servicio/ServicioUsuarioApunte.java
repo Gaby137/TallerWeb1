@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ServicioUsuarioApunte {
 
-    List<Apunte> obtenerApuntesPorUsuario(Long id);
+    List<UsuarioApunte> obtenerApuntesPorUsuario(Long id);
     List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id);
     Usuario obtenerVendedorPorApunte(Long id);
     boolean comprarApunte(Usuario comprador, Usuario vendedor, Apunte apunte);
