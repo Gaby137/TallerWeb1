@@ -27,7 +27,6 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         if (usuario == null || usuario.getNombre() == null || usuario.getNombre().isEmpty() || usuario.getId() == null) {
             return false;
         }
-
         repositorioUsuario.modificar(usuario);
         return true;
     }

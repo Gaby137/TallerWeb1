@@ -2,9 +2,10 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.iRepositorio.RepositorioMateria;
+import com.tallerwebi.dominio.iRepositorio.RepositorioUsuario;
+import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunteResena;
-import com.tallerwebi.dominio.servicio.ServicioMateriaImpl;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResenaImpl;
+import com.tallerwebi.dominio.servicio.*;
 import com.tallerwebi.presentacion.DatosMateria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -23,28 +25,29 @@ import static org.mockito.Mockito.*;
 public class ServicioUsuarioApunteResenaTest {
 
     private ServicioUsuarioApunteResenaImpl servicioUsuarioApunteResena;
-
     private RepositorioUsuarioApunteResena repositorioUsuarioApunteResenaMock;
-    private HttpServletRequest requestMock;
-    private HttpSession sessionMock;
+    private ServicioUsuarioApunte servicioUsuarioApunteMock;
+    private ServicioUsuario servicioUsuarioMock;
 
     @BeforeEach
-    public void init(){
-        // Configuración de objetos simulados
+    public void init() {
         repositorioUsuarioApunteResenaMock = mock(RepositorioUsuarioApunteResena.class);
-        servicioUsuarioApunteResena = new ServicioUsuarioApunteResenaImpl(repositorioUsuarioApunteResenaMock);
-        requestMock = mock(HttpServletRequest.class);
-        sessionMock = mock(HttpSession.class);
+        servicioUsuarioApunteMock = mock(ServicioUsuarioApunte.class);
+        servicioUsuarioMock = mock(ServicioUsuario.class);
+
+        servicioUsuarioApunteResena = new ServicioUsuarioApunteResenaImpl(
+                repositorioUsuarioApunteResenaMock,
+                servicioUsuarioApunteMock,
+                servicioUsuarioMock
+        );
     }
 
     @Test
     public void obtieneUnaListaDeResenasPorElIdDelApunte() {
         Long idApunte = 1L;
 
-        // Crear una lista de mocks de Resena
         List<Resena> listaResenasMock = new ArrayList<>();
 
-        // Crear y agregar varios mocks de Resena a la lista
         Resena resenaMock1 = mock(Resena.class);
         listaResenasMock.add(resenaMock1);
 
@@ -53,25 +56,20 @@ public class ServicioUsuarioApunteResenaTest {
 
         when(servicioUsuarioApunteResena.obtenerLista(idApunte)).thenReturn(listaResenasMock);
 
-        // Ejecución de la prueba
         List<Resena> result= servicioUsuarioApunteResena.obtenerLista(idApunte);
 
-        // Verificación
         assertEquals(listaResenasMock, result);
-        // Verifica que se llamó al método del repositorio
+
         verify(repositorioUsuarioApunteResenaMock).obtenerResenasPorIdApunte(idApunte);
 
     }
 
     @Test
     public void queNoPuedaDarMasDeUnaResenaAUnMismoApunte(){
-
-        // Crea objetos mock de Apunte, Usuario y Servicio
         Apunte apunteMock = mock(Apunte.class);
         Usuario usuarioMock = mock(Usuario.class);
         Resena resenaMock= mock(Resena.class);
 
-        // Configura las interacciones de los objetos mock
         when(apunteMock.getId()).thenReturn(1L);
         when(usuarioMock.getId()).thenReturn(10L);
         when(repositorioUsuarioApunteResenaMock.existeResenaConApunteYUsuario(10L, 1L)).thenReturn(true); // Supongamos que ya existe una reseña
@@ -81,7 +79,36 @@ public class ServicioUsuarioApunteResenaTest {
         assertFalse(result);
 
     }
+
+    @Test
+    public void dar100PuntosAlUsuarioPorBuenasResenasCuandoElPromedioDeEstrellasDeLasResenasDeUnApunteDeMasDeCuatroYMedio() {
+        Long apunteId = 1L;
+        Usuario usuario = new Usuario();
+        usuario.setId(1L);
+        usuario.setPuntos(100);
+        Apunte apunte = new Apunte();
+        apunte.setId(apunteId);
+        Resena resena1 = new Resena();
+        resena1.setCantidadDeEstrellas(5);
+        Resena resena2 = new Resena();
+        resena2.setCantidadDeEstrellas(4);
+        Resena resena3 = new Resena();
+        resena3.setCantidadDeEstrellas(5);
+        Resena resena4 = new Resena();
+        resena4.setCantidadDeEstrellas(5);
+        Resena resena5 = new Resena();
+        resena5.setCantidadDeEstrellas(5);
+
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(apunteId)).thenReturn(List.of(resena1, resena2, resena3, resena4, resena5));
+        when(servicioUsuarioApunteMock.obtenerVendedorPorApunte(apunteId)).thenReturn(usuario);
+
+        boolean resultado = servicioUsuarioApunteResena.dar100PuntosAlUsuarioPorBuenasResenas(apunteId);
+
+        assertTrue(resultado);
+        assertEquals(200, usuario.getPuntos());
+    }
 }
+
 
 
 
