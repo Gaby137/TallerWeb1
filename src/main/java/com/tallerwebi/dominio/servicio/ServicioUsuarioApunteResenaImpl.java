@@ -19,21 +19,18 @@ import java.util.Set;
 @Transactional
 public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteResena {
 
-    private Set<Long> apuntesConPuntosOtorgados = new HashSet<>();
-
     private RepositorioUsuarioApunteResena repositorioUsuarioApunteResena;
-
-    @Autowired
+    private ServicioApunte servicioApunte;
     private ServicioUsuario servicioUsuario;
-
-    @Autowired
     private ServicioUsuarioApunte servicioUsuarioApunte;
 
     @Autowired
-    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario){
+    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte){
         this.repositorioUsuarioApunteResena = repositorioUsuarioApunteResena;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuario = servicioUsuario;
+        this.servicioApunte = servicioApunte;
+
     }
 
     @Override
@@ -58,9 +55,8 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
             repositorioUsuarioApunteResena.guardar(usuarioApunteResena);
 
-            if (!apuntesConPuntosOtorgados.contains(apunte.getId())) {
-                dar100PuntosAlUsuarioPorBuenasResenas(apunte.getId());
-            }
+            dar100PuntosAlUsuarioPorBuenasResenas(apunte.getId());
+
             return true;
         }
     }
@@ -71,24 +67,43 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
     @Override
     public boolean dar100PuntosAlUsuarioPorBuenasResenas(Long idApunte) {
+        Apunte apunte = servicioApunte.obtenerPorId(idApunte);
         List<Resena> resenas = repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(idApunte);
 
-        if (resenas.size() >= 5) {
-            double totalPuntaje = 0.0;
-            for (Resena resena : resenas) {
-                totalPuntaje += resena.getCantidadDeEstrellas();
-            }
-            double promedio = totalPuntaje / resenas.size();
+        if (!apunte.isCienPuntosPorBuenPromedioDeResenas()){
+          if (resenas.size() >= 5) {
+              double totalPuntaje = 0.0;
+              for (Resena resena : resenas) {
+                  totalPuntaje += resena.getCantidadDeEstrellas();
+              }
+              double promedio = totalPuntaje / resenas.size();
 
-            if (promedio >= 4.5) {
-                Usuario usuario=servicioUsuarioApunte.obtenerVendedorPorApunte(idApunte);
-                usuario.setPuntos(usuario.getPuntos() + 100);
-                servicioUsuario.actualizar(usuario);
-                apuntesConPuntosOtorgados.add(idApunte);
-                return true;
-            }
+              if (promedio >= 4.5) {
+                  Usuario usuario = servicioUsuarioApunte.obtenerVendedorPorApunte(idApunte);
+                  usuario.setPuntos(usuario.getPuntos() + 100);
+                  servicioUsuario.actualizar(usuario);
+                  apunte.setCienPuntosPorBuenPromedioDeResenas(true);
+                  return true;
+              }
+          }
         }
         return false;
 }
+    @Override
+    public double calcularPromedioPuntajeResenas(Long apunteId) {
+        List<Resena> resenas = repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(apunteId);
+
+        if (resenas.isEmpty()) {
+            return 0.0;
+        }
+
+        double totalPuntaje = 0.0;
+        for (Resena resena : resenas) {
+            totalPuntaje += resena.getCantidadDeEstrellas();
+        }
+
+        return totalPuntaje / resenas.size();
+    }
+
 }
 

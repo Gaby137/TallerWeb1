@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.iRepositorio;
 
+import com.tallerwebi.dominio.entidad.TipoDeAcceso;
 import com.tallerwebi.dominio.entidad.UsuarioApunte;
 
 import java.util.List;
@@ -14,5 +15,6 @@ public interface RepositorioUsuarioApunte {
     List<UsuarioApunte> obtenerApuntesDeOtrosUsuarios(Long id);
 
     List<UsuarioApunte> obtenerUsuarioPorIdDeApunte(Long id);
+    TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte);
 }
 

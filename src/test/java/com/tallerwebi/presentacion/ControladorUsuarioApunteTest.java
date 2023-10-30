@@ -62,7 +62,7 @@ public class ControladorUsuarioApunteTest {
             ModelMap modelMap = modelAndView.getModelMap();
             assertEquals("Compra exitosa", modelMap.get("mensaje"));
 
-            assertEquals("apuntes", modelAndView.getViewName());
+            assertEquals("apuntesEnVenta", modelAndView.getViewName());
         }
     @Test
     public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVista() {
@@ -83,7 +83,7 @@ public class ControladorUsuarioApunteTest {
 
         assertEquals("Error al realizar la compra", modelMap.get("error"));
 
-        assertEquals("apuntes", modelAndView.getViewName());
+        assertEquals("apuntesEnVenta", modelAndView.getViewName());
     }
 
     @Test

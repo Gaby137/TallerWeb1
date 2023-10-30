@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -85,7 +84,6 @@ public class ControladorApunte {
     public ModelAndView eliminar(@PathVariable("id") Long id) {
         ModelMap modelo = new ModelMap();
 
-        // Implementar la lógica para obtener el apunte que deseas editar
         servicioApunte.eliminar(id);
 
         return new ModelAndView("apunteEliminado", modelo);
@@ -112,10 +110,11 @@ public class ControladorApunte {
         model.put("title", "Mis Apuntes");
         return new ModelAndView("misApuntes", model);
     }
-
     @RequestMapping(path = "/detalleApunte/{id}", method = RequestMethod.GET)
-    public ModelAndView getDetalleApunteConListadoDeSusResenas(@PathVariable("id") Long id, HttpServletRequest request) {
+    public ModelAndView getDetalleApunteConListadoDeSusResenas(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
         ModelMap model = new ModelMap();
+
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         Apunte apunte = servicioApunte.obtenerPorId(id);
         request.getSession().setAttribute("idApunte", apunte.getId());
@@ -124,10 +123,14 @@ public class ControladorApunte {
 
         List<Resena> resenas = servicioUsuarioApunteResena.obtenerLista(id);
         model.put("resenas", resenas);
+
+        TipoDeAcceso tipoDeAcceso = servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
+        model.put("tipoDeAcceso", tipoDeAcceso);
+
         return new ModelAndView("apunte-detalle", model);
     }
 
-    @RequestMapping(path = "/apuntes", method = RequestMethod.GET)
+    @RequestMapping(path = "/apuntesEnVenta", method = RequestMethod.GET)
     public ModelAndView apuntesDeOtrosUsuarios(HttpSession session) {
         ModelMap model = new ModelMap();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
@@ -137,7 +140,7 @@ public class ControladorApunte {
         model.put("apuntes", apuntesDeOtrosUsuarios);
         model.put("title", "Apuntes");
         model.put("puntos", "Usted tiene " + usuario.getPuntos() + " puntos");
-        return new ModelAndView("apuntes", model);
+        return new ModelAndView("apuntesEnVenta", model);
     }
 
     @RequestMapping(path = "/comprarApunte/{id}", method = RequestMethod.GET)
@@ -159,10 +162,10 @@ public class ControladorApunte {
             List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(comprador.getId());
             model.put("apuntes", apuntesDeOtrosUsuarios);
 
-            return new ModelAndView("apuntes", model);
+            return new ModelAndView("apuntesEnVenta", model);
         } else {
             model.put("error", "Error al realizar la compra");
-            return new ModelAndView("apuntes", model);
+            return new ModelAndView("apuntesEnVenta", model);
         }
     }
 }

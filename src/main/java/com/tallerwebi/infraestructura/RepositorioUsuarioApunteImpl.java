@@ -1,5 +1,8 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.TipoDeAcceso;
+import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import org.hibernate.Criteria;
@@ -52,13 +55,29 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
         return query.getResultList();
     }
 
-    @Override
     public List<UsuarioApunte> obtenerUsuarioPorIdDeApunte(Long id) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria(UsuarioApunte.class)
-                .createAlias("apunte", "a")
-                .add(Restrictions.eq("a.id", id));
-        return criteria.list();
+
+        String jpql = "SELECT ua FROM UsuarioApunte ua " +
+                "WHERE ua.apunte.id = :apunteId";
+
+        Query<UsuarioApunte> query = session.createQuery(jpql, UsuarioApunte.class);
+        query.setParameter("apunteId", id);
+
+        return query.getResultList();
+    }
+
+    public TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte) {
+        Session session = sessionFactory.getCurrentSession();
+
+        String jpql = "SELECT ua.tipoDeAcceso FROM UsuarioApunte ua " +
+                "WHERE ua.usuario.id = :userId AND ua.apunte.id = :apunteId";
+
+        Query<TipoDeAcceso> query = session.createQuery(jpql, TipoDeAcceso.class);
+        query.setParameter("userId", idUsuario);
+        query.setParameter("apunteId", idApunte);
+
+        return query.getResultList().get(0);
     }
 
 }

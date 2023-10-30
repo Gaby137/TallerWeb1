@@ -4,10 +4,7 @@ import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
-import com.tallerwebi.dominio.servicio.ServicioApunte;
-import com.tallerwebi.dominio.servicio.ServicioResena;
-import com.tallerwebi.dominio.servicio.ServicioUsuario;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
+import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,13 +26,16 @@ public class ControladorResena {
     private ServicioResena servicioResena;
     private ServicioUsuario servicioUsuario;
     private ServicioApunte servicioApunte;
+
+    private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
 
     @Autowired
-    public ControladorResena(ServicioResena servicioResena, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena) {
+    public ControladorResena(ServicioResena servicioResena, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena) {
         this.servicioResena = servicioResena;
         this.servicioUsuario = servicioUsuario;
         this.servicioApunte = servicioApunte;
+        this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
     }
 
@@ -45,6 +45,7 @@ public class ControladorResena {
 
         Usuario usuario=(Usuario) session.getAttribute("usuario");
         model.put("usuario", usuario);
+
         model.put("resena", new Resena());
         model.put("title", "Nueva Reseña");
         return new ModelAndView("formulario-alta-resena", model);
