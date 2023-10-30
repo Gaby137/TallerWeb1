@@ -2,7 +2,7 @@
 <div th:insert="~{nav}"></div>
 <body>
     <main class="container">
-        <a th:href="@{'/formulario-alta-resena'}" class="btn btn-primary">Agregar Reseña</a>
+        <a th:if="${tipoDeAcceso.LEER}" th:href="@{'/formulario-alta-resena'}" class="btn btn-primary">Agregar Reseña</a>
         <p th:text="${apunte.nombre}"></p>
         <p th:text="${apunte.descripcion}"></p>
         <p th:text="${apunte.pathArchivo}"></p>

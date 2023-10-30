@@ -3,10 +3,7 @@ import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
-import com.tallerwebi.dominio.servicio.ServicioApunte;
-import com.tallerwebi.dominio.servicio.ServicioResena;
-import com.tallerwebi.dominio.servicio.ServicioUsuario;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
+import com.tallerwebi.dominio.servicio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +27,7 @@ public class ControladorResenaTest {
     private ServicioResena servicioResena;
     private ServicioUsuario servicioUsuario;
     private ServicioApunte servicioApunte;
+    private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private ControladorResena controladorResena;
     private HttpSession sessionMock;
@@ -40,8 +38,9 @@ public class ControladorResenaTest {
         servicioResena = mock(ServicioResena.class);
         servicioUsuario = mock(ServicioUsuario.class);
         servicioApunte = mock(ServicioApunte.class);
+        servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
         servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
-        controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunteResena);
+        controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena);
         sessionMock = mock(HttpSession.class);
 
     }

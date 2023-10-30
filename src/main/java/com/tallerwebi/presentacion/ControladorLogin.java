@@ -1,39 +1,37 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import com.tallerwebi.dominio.servicio.ServicioLogin;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ControladorLogin {
 
     private ServicioLogin servicioLogin;
-
+    private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
+    private ServicioUsuarioApunte servicioUsuarioApunte;
     @Autowired
-    public ControladorLogin(ServicioLogin servicioLogin) {
+    public ControladorLogin(ServicioLogin servicioLogin, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte) {
         this.servicioLogin = servicioLogin;
+        this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
+        this.servicioUsuarioApunte = servicioUsuarioApunte;
     }
 
 
@@ -100,8 +98,24 @@ public class ControladorLogin {
     }
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)
-    public ModelAndView irAHome() {
-        return new ModelAndView("home");
+    public ModelAndView home(HttpSession session) {
+        ModelMap model = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario.getId());
+
+        List<Apunte> apuntes = new ArrayList<>();
+
+        for (Apunte apunte : todosLosApuntes) {
+            double promedioPuntaje = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+            if (promedioPuntaje >= 4.0) {
+                apuntes.add(apunte);
+            }
+        }
+        model.put("apuntes", apuntes);
+        model.put("title", "Apuntes Destacados");
+        model.put("puntos", "Usted tiene " + usuario.getPuntos() + " puntos");
+        return new ModelAndView("home", model);
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)

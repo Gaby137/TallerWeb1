@@ -16,6 +16,13 @@ public class Resena {
     @OneToOne(mappedBy = "resena", cascade = CascadeType.ALL)
     private UsuarioApunteResena usuarioResenaApunte;
 
+    public Resena(int cantidadDeEstrellas) {
+        this.cantidadDeEstrellas=cantidadDeEstrellas;
+    }
+    public Resena(){
+
+    }
+
     public Long getId() {
         return id;
     }

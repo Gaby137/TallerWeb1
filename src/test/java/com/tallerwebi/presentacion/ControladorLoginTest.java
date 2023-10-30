@@ -1,19 +1,25 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Rol;
 import com.tallerwebi.dominio.servicio.ServicioLogin;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import static org.hamcrest.Matchers.hasSize;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
@@ -29,6 +35,8 @@ public class ControladorLoginTest {
 	private HttpServletRequest requestMock;
 	private HttpSession sessionMock;
 	private ServicioLogin servicioLoginMock;
+	private ServicioUsuarioApunte servicioUsuarioApunte;
+	private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
 
 
 	@BeforeEach
@@ -42,7 +50,9 @@ public class ControladorLoginTest {
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
 		servicioLoginMock = mock(ServicioLogin.class);
-		controladorLogin = new ControladorLogin(servicioLoginMock);
+		servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
+		servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
+		controladorLogin = new ControladorLogin(servicioLoginMock, servicioUsuarioApunteResena, servicioUsuarioApunte);
 
 	}
 
@@ -112,5 +122,30 @@ public class ControladorLoginTest {
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
+	}
+
+	@Test
+	public void homeDeberiaMostrarElApunteConBuenaCalificacionSolamente() {
+		Usuario usuarioMock = mock(Usuario.class);
+		when(sessionMock.getAttribute("usuario")).thenReturn(usuarioMock);
+
+		List<Apunte> apuntes = new ArrayList<>();
+		Apunte apunte1 = new Apunte();
+		apunte1.setId(1L);
+		Apunte apunte2 = new Apunte();
+		apunte2.setId(2L);
+		apuntes.add(apunte1);
+		apuntes.add(apunte2);
+
+		when(servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuarioMock.getId())).thenReturn(apuntes);
+
+		when(servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(1L)).thenReturn(4.5);
+		when(servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(2L)).thenReturn(2.0);
+
+		ModelAndView modelAndView = controladorLogin.home(sessionMock);
+
+		assertThat(modelAndView.getViewName(), equalToIgnoringCase("home"));
+		List<Apunte> apunte = (List<Apunte>) modelAndView.getModel().get("apuntes");
+		assertThat(apunte, hasSize(1));
 	}
 }

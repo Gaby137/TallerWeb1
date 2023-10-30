@@ -5,34 +5,18 @@
     <!-- Sección de Destacados -->
     <section class="my-5">
         <h1 class="text-center">Apuntes Destacados</h1>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="Apunte.jpg" class="card-img-top" alt="Producto 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Apunte 1</h5>
-                        <p class="card-text">Descripción del Apunte 1.</p>
-                        <a th:href="@{/producto/1}" class="btn btn-primary">Ver Detalles</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="Apunte.jpg" class="card-img-top" alt="Producto 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Apunte 2</h5>
-                        <p class="card-text">Descripción del Apunte 2.</p>
-                        <a th:href="@{/producto/2}" class="btn btn-primary">Ver Detalles</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="Apunte.jpg" class="card-img-top" alt="Producto 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Apunte 3</h5>
-                        <p class="card-text">Descripción del Apunte 3.</p>
-                        <a th:href="@{/producto/3}" class="btn btn-primary">Ver Detalles</a>
+        <p th:if="${puntos}" style="color: greenyellow;" th:text="${puntos}"></p>
+        <div class="container">
+            <div class="row">
+                <div th:each="apunte : ${apuntes}" class="col">
+                    <div class="card my-2" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 th:text="${apunte.nombre}" class="card-title"></h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
+                            <p th:text="${apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
+                            <p th:text="${apunte.precio}" class="card-text" style="height: 6rem;"></p>
+                            <a class="btn btn-success" th:href="@{/comprarApunte/{id}(id=${apunte.id})}">Comprar</a>
+                        </div>
                     </div>
                 </div>
             </div>
