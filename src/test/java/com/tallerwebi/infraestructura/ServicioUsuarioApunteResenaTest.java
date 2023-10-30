@@ -134,6 +134,7 @@ public class ServicioUsuarioApunteResenaTest {
 
         when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(apunteId)).thenReturn(List.of(resena1, resena2, resena3, resena4, resena5));
         when(servicioUsuarioApunteMock.obtenerVendedorPorApunte(apunteId)).thenReturn(usuario);
+        when(servicioApunteMock.obtenerPorId(apunteId)).thenReturn(apunte);
 
         boolean resultado = servicioUsuarioApunteResena.dar100PuntosAlUsuarioPorBuenasResenas(apunteId);
 
