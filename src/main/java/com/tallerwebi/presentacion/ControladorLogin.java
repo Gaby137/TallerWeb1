@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import com.tallerwebi.dominio.servicio.ServicioLogin;
+import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,11 @@ public class ControladorLogin {
     private ServicioLogin servicioLogin;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private ServicioUsuarioApunte servicioUsuarioApunte;
+    private ServicioUsuario servicioUsuario;
     @Autowired
-    public ControladorLogin(ServicioLogin servicioLogin, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte) {
+    public ControladorLogin(ServicioLogin servicioLogin, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario) {
         this.servicioLogin = servicioLogin;
+        this.servicioUsuario = servicioUsuario;
         this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
     }
@@ -102,17 +105,12 @@ public class ControladorLogin {
         ModelMap model = new ModelMap();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario.getId());
+        List<Apunte> mejoresApuntes = servicioUsuarioApunteResena.obtenerMejoresApuntes(usuario.getId());
 
-        List<Apunte> apuntes = new ArrayList<>();
+        List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
 
-        for (Apunte apunte : todosLosApuntes) {
-            double promedioPuntaje = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
-            if (promedioPuntaje >= 4.0) {
-                apuntes.add(apunte);
-            }
-        }
-        model.put("apuntes", apuntes);
+        model.put("usuariosDestacados", usuariosDestacados);
+        model.put("apuntes", mejoresApuntes);
         model.put("title", "Apuntes Destacados");
         model.put("puntos", "Usted tiene " + usuario.getPuntos() + " puntos");
         return new ModelAndView("home", model);

@@ -14,10 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -26,6 +23,7 @@ public class ServicioUsuarioApunteResenaTest {
 
     private ServicioUsuarioApunteResenaImpl servicioUsuarioApunteResena;
     private RepositorioUsuarioApunteResena repositorioUsuarioApunteResenaMock;
+    private RepositorioUsuarioApunte repositorioUsuarioApunteMock;
     private ServicioUsuarioApunte servicioUsuarioApunteMock;
     private ServicioUsuario servicioUsuarioMock;
     private ServicioApunte servicioApunteMock;
@@ -33,12 +31,14 @@ public class ServicioUsuarioApunteResenaTest {
     @BeforeEach
     public void init() {
         repositorioUsuarioApunteResenaMock = mock(RepositorioUsuarioApunteResena.class);
+        repositorioUsuarioApunteMock = mock(RepositorioUsuarioApunte.class);
         servicioUsuarioApunteMock = mock(ServicioUsuarioApunte.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioApunteMock = mock(ServicioApunte.class);
 
         servicioUsuarioApunteResena = new ServicioUsuarioApunteResenaImpl(
                 repositorioUsuarioApunteResenaMock,
+                repositorioUsuarioApunteMock,
                 servicioUsuarioApunteMock,
                 servicioUsuarioMock,
                 servicioApunteMock
@@ -181,6 +181,120 @@ public class ServicioUsuarioApunteResenaTest {
         assertFalse(resultado2);
         assertEquals(200, usuario.getPuntos());
 
+    }
+
+    @Test
+    public void calcularPromedioPuntajeResenasDeUnApunteSinResenas() {
+        Long apunteId = 1L;
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(apunteId)).thenReturn(new ArrayList<>());
+
+        double resultado = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunteId);
+
+        assertEquals(0.0, resultado);
+    }
+
+    @Test
+    public void calcularPromedioPuntajeResenasDeUnApunteConResenas() {
+        Long apunteId = 1L;
+        Resena resena1 = new Resena();
+        resena1.setCantidadDeEstrellas(5);
+        Resena resena2 = new Resena();
+        resena2.setCantidadDeEstrellas(4);
+        Resena resena3 = new Resena();
+        resena3.setCantidadDeEstrellas(3);
+        List<Resena> resenas = Arrays.asList(resena1, resena2, resena3);
+
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(apunteId)).thenReturn(resenas);
+
+        double resultado = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunteId);
+
+        assertEquals(4.0, resultado);
+    }
+
+    @Test
+    public void obtener2ApuntesConPromedioSuperiorA4Y1ConMenos() {
+        Long usuarioId = 1L;
+        Apunte apunte1 = new Apunte();
+        apunte1.setId(1L);
+        Apunte apunte2 = new Apunte();
+        apunte2.setId(2L);
+        Apunte apunte3 = new Apunte();
+        apunte3.setId(3L);
+
+        List<Apunte> todosLosApuntes = List.of(apunte1, apunte2, apunte3);
+
+        when(servicioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(usuarioId)).thenReturn(todosLosApuntes);
+
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(1L)).thenReturn(List.of(new Resena(5)));
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(2L)).thenReturn(List.of(new Resena(5)));
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(3L)).thenReturn(List.of(new Resena(3)));
+
+        List<Apunte> mejoresApuntes = servicioUsuarioApunteResena.obtenerMejoresApuntes(usuarioId);
+
+        assertEquals(2, mejoresApuntes.size());
+    }
+
+    @Test
+    public void calcularPromedioPuntajeResenasPorUsuarioSinApuntes() {
+        Long usuarioId = 1L;
+        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuarioId)).thenReturn(Collections.emptyList());
+
+        double resultado = servicioUsuarioApunteResena.calcularPromedioPuntajeResenasPorUsuario(usuarioId);
+
+        assertEquals(0.0, resultado);
+    }
+
+    @Test
+    public void calcularPromedioPuntajeResenasPorLasResenasDeLosApuntesDelUsuario() {
+        Long usuarioId = 1L;
+        Apunte apunte1 = new Apunte();
+        apunte1.setId(1L);
+        Apunte apunte2 = new Apunte();
+        apunte2.setId(2L);
+
+        UsuarioApunte usuarioApunte1 = new UsuarioApunte();
+        usuarioApunte1.setApunte(apunte1);
+        usuarioApunte1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+
+        UsuarioApunte usuarioApunte2 = new UsuarioApunte();
+        usuarioApunte2.setApunte(apunte2);
+        usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+
+        List<UsuarioApunte> usuarioApuntes = Arrays.asList(usuarioApunte1, usuarioApunte2);
+
+        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuarioId)).thenReturn(usuarioApuntes);
+
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(1L)).thenReturn(List.of(new Resena(5), new Resena(3)));
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(2L)).thenReturn(List.of(new Resena(1), new Resena(3)));
+
+        double resultado = servicioUsuarioApunteResena.calcularPromedioPuntajeResenasPorUsuario(usuarioId);
+
+        assertEquals(3.0, resultado);
+    }
+
+    @Test
+    public void obtenerUsuariosDestacadosEnOrden() {
+        Long usuarioId = 1L;
+
+        Usuario usuario2 = new Usuario(2L);
+        Usuario usuario3 = new Usuario(3L);
+        Usuario usuario4 = new Usuario(4L);
+
+        when(servicioUsuarioMock.buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(usuarioId)).thenReturn(Arrays.asList(
+                usuario2,
+                usuario3,
+                usuario4
+        ));
+
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdApunte(anyLong()))
+                .thenReturn(List.of(new Resena(5)))
+                .thenReturn(List.of(new Resena(4)))
+                .thenReturn(List.of(new Resena(3)));
+
+        List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuarioId);
+
+        Usuario[] usuariosEsperados = {usuario2, usuario3, usuario4};
+        assertArrayEquals(usuariosEsperados, usuariosDestacados.toArray());
     }
 
 

@@ -17,4 +17,9 @@ public interface ServicioUsuarioApunteResena {
     List<Resena> obtenerLista(Long idApunte);
     boolean dar100PuntosAlUsuarioPorBuenasResenas(Long idApunte);
     double calcularPromedioPuntajeResenas(Long apunteId);
+    double calcularPromedioPuntajeResenasPorUsuario(Long usuarioId);
+
+    List<Apunte> obtenerMejoresApuntes(Long usuarioId);
+
+    List<Usuario> obtenerUsuariosDestacados(Long usuarioId);
 }

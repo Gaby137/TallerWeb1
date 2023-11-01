@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.entidad.Rol;
 import com.tallerwebi.dominio.servicio.ServicioLogin;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
+import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +36,7 @@ public class ControladorLoginTest {
 	private HttpServletRequest requestMock;
 	private HttpSession sessionMock;
 	private ServicioLogin servicioLoginMock;
+    private ServicioUsuario servicioUsuarioMock;
 	private ServicioUsuarioApunte servicioUsuarioApunte;
 	private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
 
@@ -50,9 +52,10 @@ public class ControladorLoginTest {
 		requestMock = mock(HttpServletRequest.class);
 		sessionMock = mock(HttpSession.class);
 		servicioLoginMock = mock(ServicioLogin.class);
+        servicioUsuarioMock = mock(ServicioUsuario.class);
 		servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
 		servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
-		controladorLogin = new ControladorLogin(servicioLoginMock, servicioUsuarioApunteResena, servicioUsuarioApunte);
+		controladorLogin = new ControladorLogin(servicioLoginMock, servicioUsuarioApunteResena, servicioUsuarioApunte, servicioUsuarioMock);
 
 	}
 
