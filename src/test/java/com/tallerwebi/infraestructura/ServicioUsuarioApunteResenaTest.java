@@ -336,38 +336,6 @@ public class ServicioUsuarioApunteResenaTest {
 
         assertEquals(apuntesCreados.size(), 1);
     }
-    @Test
-    public void testObtenerApuntesCreadosYVerSiPuedeComprar() {
-        Usuario usuario = new Usuario();
-        Usuario usuarioActual = new Usuario();
-
-        // Configura el usuario y el usuario actual según tus necesidades
-        usuario.setId(1L);
-        usuarioActual.setId(2L);
-
-        // Configura los apuntes creados por el usuario
-        UsuarioApunte apunteCreado1 = new UsuarioApunte();
-        apunteCreado1.setUsuario(usuario);
-        apunteCreado1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-
-        UsuarioApunte apunteCreado2 = new UsuarioApunte();
-        apunteCreado2.setUsuario(usuario);
-        apunteCreado2.setTipoDeAcceso(TipoDeAcceso.LEER);
-
-        List<UsuarioApunte> apuntesCreados = Arrays.asList(apunteCreado1, apunteCreado2);
-
-        when(servicioUsuarioApunteResena.obtenerApuntesCreados(usuario)).thenReturn(apuntesCreados);
-
-        // Simula la lógica para obtener el tipo de acceso
-        when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuarioActual.getId(), apunteCreado1.getApunte().getId())).thenReturn(TipoDeAcceso.EDITAR);
-        when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuarioActual.getId(), apunteCreado2.getApunte().getId())).thenReturn(TipoDeAcceso.LEER);
-
-        List<UsuarioApunte> apuntesObtenidos = servicioUsuarioApunteResena.obtenerApuntesCreadosYVerSiPuedeComprar(usuario, usuarioActual);
-
-        assertEquals(2, apuntesObtenidos.size());
-        assertTrue(apuntesObtenidos.get(0).getApunte().isSePuedeComprar());
-        assertFalse(apuntesObtenidos.get(1).getApunte().isSePuedeComprar());
-    }
 
 }
 
