@@ -120,8 +120,12 @@ public class ControladorApunte {
         List<Resena> resenas = servicioUsuarioApunteResena.obtenerLista(id);
         model.put("resenas", resenas);
 
-        TipoDeAcceso tipoDeAcceso = servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
-        model.put("tipoDeAcceso", tipoDeAcceso);
+        if(servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId()).equals(TipoDeAcceso.LEER)){
+            model.put("tipoDeAcceso", true);
+        }else{
+            model.put("tipoDeAcceso", false);
+        }
+
 
         boolean hayResena = servicioUsuarioApunteResena.existeResena(usuario.getId(), id);
         model.put("hayResena", hayResena);
