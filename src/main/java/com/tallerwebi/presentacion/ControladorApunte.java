@@ -2,10 +2,12 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.servicio.ServicioApunte;
+import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +23,14 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ControladorApunte {
     private ServicioApunte servicioApunte;
+    private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
 
     @Autowired
-    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena){
+    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuario servicioUsuario){
         this.servicioApunte = servicioApunte;
+        this.servicioUsuario = servicioUsuario;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
     }
@@ -93,17 +97,9 @@ public class ControladorApunte {
         ModelMap model = new ModelMap();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        List<UsuarioApunte> apuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
-        List<UsuarioApunte> apuntesComprados = new ArrayList<>();
-        List<UsuarioApunte> apuntesCreados = new ArrayList<>();
+        List<UsuarioApunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
+        List<UsuarioApunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
-        for (UsuarioApunte apunte : apuntes) {
-            if (apunte.getTipoDeAcceso() == TipoDeAcceso.LEER) {
-                apuntesComprados.add(apunte);
-            } else if (apunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR) {
-                apuntesCreados.add(apunte);
-            }
-        }
 
         model.put("apuntesComprados", apuntesComprados);
         model.put("apuntesCreados", apuntesCreados);
@@ -142,6 +138,22 @@ public class ControladorApunte {
         model.put("puntos", "Usted tiene " + usuario.getPuntos() + " puntos");
         return new ModelAndView("apuntesEnVenta", model);
     }
+
+    @RequestMapping(path = "/perfilUsuario/{id}", method = RequestMethod.GET)
+    public ModelAndView verPerfilUsuario(@PathVariable("id") Long id, HttpSession session) {
+        ModelMap model = new ModelMap();
+        Usuario usuarioActual = (Usuario) session.getAttribute("usuario");
+
+        Usuario usuario = servicioUsuario.obtenerPorId(id);
+
+        List<UsuarioApunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreadosYVerSiPuedeComprar(usuario, usuarioActual);
+
+        model.put("apuntesCreados", apuntesCreados);
+        model.put("usuarioActual", usuarioActual);
+        model.put("usuario", usuario);
+        return new ModelAndView("perfilUsuario", model);
+    }
+
 
     @RequestMapping(path = "/comprarApunte/{id}", method = RequestMethod.GET)
     public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpSession session) {

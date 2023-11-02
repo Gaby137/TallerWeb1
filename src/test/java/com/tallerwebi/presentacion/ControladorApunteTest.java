@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.ServicioApunte;
 
+import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ public class ControladorApunteTest {
     private ControladorApunte controladorApunte;
     private Apunte apunteMock;
     private ServicioApunte servicioApunteMock;
+    private ServicioUsuario servicioUsuarioMock;
     private ServicioUsuarioApunte servicioUsuarioApunteMock;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResenaMock;
     private HttpServletRequest requestMock;
@@ -47,7 +49,8 @@ public class ControladorApunteTest {
         requestMock = mock(HttpServletRequest.class);
         sessionMock = mock(HttpSession.class);
         servicioApunteMock = mock(ServicioApunte.class);
-        controladorApunte = new ControladorApunte(servicioApunteMock, servicioUsuarioApunteMock, servicioUsuarioApunteResenaMock);
+        servicioUsuarioMock = mock(ServicioUsuario.class);
+        controladorApunte = new ControladorApunte(servicioApunteMock, servicioUsuarioApunteMock, servicioUsuarioApunteResenaMock, servicioUsuarioMock);
     }
 
     @Test
