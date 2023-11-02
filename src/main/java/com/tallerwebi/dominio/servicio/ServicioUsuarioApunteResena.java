@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio.servicio;
 
-import com.tallerwebi.dominio.entidad.Apunte;
-import com.tallerwebi.dominio.entidad.Resena;
-import com.tallerwebi.dominio.entidad.Usuario;
-import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
+import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import com.tallerwebi.presentacion.DatosPuntaje;
 import com.tallerwebi.presentacion.DatosRegistro;
@@ -18,8 +15,9 @@ public interface ServicioUsuarioApunteResena {
     boolean dar100PuntosAlUsuarioPorBuenasResenas(Long idApunte);
     double calcularPromedioPuntajeResenas(Long apunteId);
     double calcularPromedioPuntajeResenasPorUsuario(Long usuarioId);
-
     List<Apunte> obtenerMejoresApuntes(Long usuarioId);
-
     List<Usuario> obtenerUsuariosDestacados(Long usuarioId);
+    List<UsuarioApunte> obtenerApuntesComprados(Usuario usuario);
+    List<UsuarioApunte> obtenerApuntesCreados(Usuario usuario);
+    List<UsuarioApunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual);
 }

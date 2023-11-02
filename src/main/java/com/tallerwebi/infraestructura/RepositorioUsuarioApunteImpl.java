@@ -13,6 +13,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.List;
 
 @Repository("repositorioUsuarioApunte")
@@ -21,7 +22,7 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
     private SessionFactory sessionFactory;
 
     @Autowired
-    public RepositorioUsuarioApunteImpl(SessionFactory sessionFactory){
+    public RepositorioUsuarioApunteImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -42,6 +43,7 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
 
         return query.getResultList();
     }
+
     public List<UsuarioApunte> obtenerApuntesDeOtrosUsuarios(Long userId) {
         Session session = sessionFactory.getCurrentSession();
 
@@ -77,7 +79,15 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
         query.setParameter("userId", idUsuario);
         query.setParameter("apunteId", idApunte);
 
-        return query.getResultList().get(0);
-    }
+        System.out.println("Ejecutando consulta para idUsuario=" + idUsuario + " e idApunte=" + idApunte);
 
+        List<TipoDeAcceso> resultados = query.getResultList();
+
+        if (!resultados.isEmpty()) {
+            return resultados.get(0);
+        } else {
+            System.out.println("No se encontró una relación entre el usuario y el apunte.");
+            return null;
+        }
+    }
 }

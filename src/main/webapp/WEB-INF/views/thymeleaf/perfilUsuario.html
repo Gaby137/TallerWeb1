@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+</head>
+<div th:insert="~{nav}"></div>
+<body>
+        <div class="row">
+            <h2>Apuntes creados por <span th:text="${usuario.nombre}"></span></h2>
+            <div th:each="apunte : ${apuntesCreados}" class="card my-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 th:text="${apunte.apunte.nombre}" class="card-title"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
+                    <p th:text="${apunte.apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
+                    <p th:text="${apunte.apunte.precio}" class="card-text" style="height: 6rem;"></p>
+                    <div th:if="${apunte.apunte.isSePuedeComprar()}">
+                        <a class="btn btn-success" th:href="@{/comprarApunte/{id}(id=${apunte.apunte.id})}">Comprar</a>
+                    </div>
+                    <div th:unless="${apunte.apunte.isSePuedeComprar()}">
+                        Ya comprado
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>

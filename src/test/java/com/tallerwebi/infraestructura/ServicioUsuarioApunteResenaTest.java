@@ -212,7 +212,7 @@ public class ServicioUsuarioApunteResenaTest {
     }
 
     @Test
-    public void obtener2ApuntesConPromedioSuperiorA4Y1ConMenos() {
+    public void obtener2ApuntesConPromedioSuperiorA4EstrellasY1ConMenos() {
         Long usuarioId = 1L;
         Apunte apunte1 = new Apunte();
         apunte1.setId(1L);
@@ -297,6 +297,77 @@ public class ServicioUsuarioApunteResenaTest {
         assertArrayEquals(usuariosEsperados, usuariosDestacados.toArray());
     }
 
+    @Test
+    public void obtener1ApunteComprado() {
+        Usuario usuario = new Usuario();
+        List<UsuarioApunte> apuntes = new ArrayList<>();
+
+        UsuarioApunte usuarioApunteComprado = new UsuarioApunte();
+        usuarioApunteComprado.setTipoDeAcceso(TipoDeAcceso.LEER);
+        apuntes.add(usuarioApunteComprado);
+
+        UsuarioApunte usuarioApunteCreado2 = new UsuarioApunte();
+        usuarioApunteCreado2.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        apuntes.add(usuarioApunteCreado2);
+
+        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId())).thenReturn(apuntes);
+
+        List<UsuarioApunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
+
+        assertEquals(apuntesComprados.size(), 1);
+    }
+
+    @Test
+    public void obtener1ApunteCreado() {
+        Usuario usuario = new Usuario();
+        List<UsuarioApunte> apuntes = new ArrayList<>();
+
+        UsuarioApunte usuarioApunteCreado = new UsuarioApunte();
+        usuarioApunteCreado.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        apuntes.add(usuarioApunteCreado);
+
+        UsuarioApunte usuarioApunteCreado2 = new UsuarioApunte();
+        usuarioApunteCreado2.setTipoDeAcceso(TipoDeAcceso.LEER);
+        apuntes.add(usuarioApunteCreado2);
+
+        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId())).thenReturn(apuntes);
+
+        List<UsuarioApunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+
+        assertEquals(apuntesCreados.size(), 1);
+    }
+    @Test
+    public void testObtenerApuntesCreadosYVerSiPuedeComprar() {
+        Usuario usuario = new Usuario();
+        Usuario usuarioActual = new Usuario();
+
+        // Configura el usuario y el usuario actual según tus necesidades
+        usuario.setId(1L);
+        usuarioActual.setId(2L);
+
+        // Configura los apuntes creados por el usuario
+        UsuarioApunte apunteCreado1 = new UsuarioApunte();
+        apunteCreado1.setUsuario(usuario);
+        apunteCreado1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+
+        UsuarioApunte apunteCreado2 = new UsuarioApunte();
+        apunteCreado2.setUsuario(usuario);
+        apunteCreado2.setTipoDeAcceso(TipoDeAcceso.LEER);
+
+        List<UsuarioApunte> apuntesCreados = Arrays.asList(apunteCreado1, apunteCreado2);
+
+        when(servicioUsuarioApunteResena.obtenerApuntesCreados(usuario)).thenReturn(apuntesCreados);
+
+        // Simula la lógica para obtener el tipo de acceso
+        when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuarioActual.getId(), apunteCreado1.getApunte().getId())).thenReturn(TipoDeAcceso.EDITAR);
+        when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuarioActual.getId(), apunteCreado2.getApunte().getId())).thenReturn(TipoDeAcceso.LEER);
+
+        List<UsuarioApunte> apuntesObtenidos = servicioUsuarioApunteResena.obtenerApuntesCreadosYVerSiPuedeComprar(usuario, usuarioActual);
+
+        assertEquals(2, apuntesObtenidos.size());
+        assertTrue(apuntesObtenidos.get(0).getApunte().isSePuedeComprar());
+        assertFalse(apuntesObtenidos.get(1).getApunte().isSePuedeComprar());
+    }
 
 }
 

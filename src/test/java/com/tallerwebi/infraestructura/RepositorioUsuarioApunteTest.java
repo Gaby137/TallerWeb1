@@ -1,9 +1,6 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.entidad.Apunte;
-import com.tallerwebi.dominio.entidad.Resena;
-import com.tallerwebi.dominio.entidad.Usuario;
-import com.tallerwebi.dominio.entidad.UsuarioApunte;
+import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioResenaImpl;
@@ -75,6 +72,25 @@ public class RepositorioUsuarioApunteTest {
         for (UsuarioApunte usuarioApunte : apuntesOtrosUsuarios) {
             assertNotEquals(usuario1.getId(), usuarioApunte.getUsuario().getId());
         }
+    }
+    @Transactional
+    @Rollback
+    @Test
+    public void obtenerTipoDeAccesoPorIdsDeUsuarioYApunte() {
+        Usuario usuario = new Usuario();
+        Apunte apunte = new Apunte();
+
+        TipoDeAcceso tipoEsperado = TipoDeAcceso.EDITAR;
+        UsuarioApunte usuarioApunte = new UsuarioApunte();
+        usuarioApunte.setUsuario(usuario);
+        usuarioApunte.setApunte(apunte);
+        usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+
+        repositorioUsuarioApunte.registrar(usuarioApunte);
+
+        TipoDeAcceso tipoObtenido = repositorioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
+
+        assertEquals(tipoEsperado, tipoObtenido);
     }
 }
 

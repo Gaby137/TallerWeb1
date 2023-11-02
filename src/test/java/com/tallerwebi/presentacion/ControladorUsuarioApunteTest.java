@@ -25,6 +25,7 @@ import static org.mockito.Mockito.*;
 public class ControladorUsuarioApunteTest {
 
     private HttpServletRequest requestMock;
+    private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioApunte servicioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
@@ -35,9 +36,10 @@ public class ControladorUsuarioApunteTest {
     public void init() {
     requestMock = mock(HttpServletRequest.class);
     servicioApunte = mock(ServicioApunte.class);
+    servicioUsuario = mock(ServicioUsuario.class);
     servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
     servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
-    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena);
+    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, servicioUsuario);
     sessionMock = mock(HttpSession.class);
     }
 
@@ -84,38 +86,6 @@ public class ControladorUsuarioApunteTest {
         assertEquals("Error al realizar la compra", modelMap.get("error"));
 
         assertEquals("apuntesEnVenta", modelAndView.getViewName());
-    }
-
-    @Test
-    public void queAparezcan3ApuntesCompradosY1Guardado() {
-        Usuario usuario = new Usuario();
-        usuario.setId(1L);
-
-        UsuarioApunte apunteComprado1 = new UsuarioApunte(usuario, new Apunte());
-        UsuarioApunte apunteComprado2 = new UsuarioApunte(usuario, new Apunte());
-        UsuarioApunte apunteComprado3 = new UsuarioApunte(usuario, new Apunte());
-        UsuarioApunte apunteGuardado = new UsuarioApunte(usuario, new Apunte());
-        apunteComprado1.setTipoDeAcceso(TipoDeAcceso.LEER);
-        apunteComprado2.setTipoDeAcceso(TipoDeAcceso.LEER);
-        apunteComprado3.setTipoDeAcceso(TipoDeAcceso.LEER);
-        apunteGuardado.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-
-        List<UsuarioApunte> apuntes = Arrays.asList(apunteComprado1, apunteComprado2, apunteComprado3, apunteGuardado);
-
-        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
-
-        when(servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId())).thenReturn(apuntes);
-
-        ModelAndView modelAndView = controladorApunte.misApuntes(sessionMock);
-
-        ModelMap modelMap = modelAndView.getModelMap();
-
-        List<UsuarioApunte> apuntesComprados = (List<UsuarioApunte>) modelMap.get("apuntesComprados");
-        List<UsuarioApunte> apuntesGuardados = (List<UsuarioApunte>) modelMap.get("apuntesCreados");
-
-        assertEquals(3, apuntesComprados.size());
-        assertEquals(1, apuntesGuardados.size());
-
     }
 
     }

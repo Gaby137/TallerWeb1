@@ -73,7 +73,6 @@ public class ControladorLogin {
         } else {
             ModelAndView successModelAndView = new ModelAndView("redirect:/login");
             try {
-
                     servicioLogin.registrar(usuario);
             } catch (UsuarioExistente e) {
                 // En caso de un usuario existente, puedes agregar un mensaje de error al modelo y redirigir nuevamente al formulario

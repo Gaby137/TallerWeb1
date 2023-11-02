@@ -164,5 +164,58 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         int numeroUsuariosAMostrar = 6;
         return usuariosDestacados.subList(0, Math.min(numeroUsuariosAMostrar, usuariosDestacados.size()));
     }
+
+    @Override
+    public List<UsuarioApunte> obtenerApuntesComprados(Usuario usuario) {
+        List<UsuarioApunte> apuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
+        List<UsuarioApunte> apuntesComprados = new ArrayList<>();
+
+        for (UsuarioApunte apunte : apuntes) {
+            if (apunte.getTipoDeAcceso() == TipoDeAcceso.LEER) {
+                apuntesComprados.add(apunte);
+            }
+        }
+
+        return apuntesComprados;
+    }
+
+    @Override
+    public List<UsuarioApunte> obtenerApuntesCreados(Usuario usuario) {
+        List<UsuarioApunte> apuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
+        List<UsuarioApunte> apuntesCreados = new ArrayList<>();
+
+        for (UsuarioApunte apunte : apuntes) {
+            if (apunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR) {
+                apuntesCreados.add(apunte);
+            }
+        }
+
+        return apuntesCreados;
+    }
+
+    public List<UsuarioApunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual) {
+        List<UsuarioApunte> apuntesCreados = obtenerApuntesCreados(usuario);
+
+        List<UsuarioApunte> apuntesComprados = obtenerApuntesComprados(usuarioActual);
+
+        List<Long> idsApuntesComprados = new ArrayList<>();
+        for (UsuarioApunte apunte : apuntesComprados) {
+            idsApuntesComprados.add(apunte.getApunte().getId());
+        }
+
+        for (UsuarioApunte apunte : apuntesCreados) {
+            Long apunteId = apunte.getApunte().getId();
+            apunte.getApunte().setSePuedeComprar(!idsApuntesComprados.contains(apunteId));
+        }
+
+        return apuntesCreados;
+    }
+
+
+
+
+
+
+
 }
 
