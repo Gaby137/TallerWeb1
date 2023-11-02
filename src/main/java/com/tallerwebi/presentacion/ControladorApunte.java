@@ -154,6 +154,7 @@ public class ControladorApunte {
         return new ModelAndView("perfilUsuario", model);
     }
 
+
     @RequestMapping(path = "/comprarApunte/{id}", method = RequestMethod.GET)
     public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpSession session) {
         ModelMap model = new ModelMap();
