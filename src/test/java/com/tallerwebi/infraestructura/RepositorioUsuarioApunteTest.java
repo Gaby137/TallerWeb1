@@ -53,7 +53,7 @@ public class RepositorioUsuarioApunteTest {
     @Rollback
     @Test
     public void queAlObtenerApuntesDeOtrosUsuariosNoObtengaElDelUsuarioQueLosSolicita() {
-
+// TESTS A ARREGLAR
         Usuario usuario1 = new Usuario();
         Usuario usuario2 = new Usuario();
         Usuario usuario3 = new Usuario();
