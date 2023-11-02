@@ -128,6 +128,7 @@ public class ControladorLogin {
         session.removeAttribute("usuario");
         session.removeAttribute("ROL");
         request.getSession().invalidate();
+
         return new ModelAndView("redirect:/login");
     }
 
