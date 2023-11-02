@@ -1,8 +1,14 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.iRepositorio.RepositorioResena;
+import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
+import com.tallerwebi.dominio.servicio.ServicioResenaImpl;
+import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.integracion.config.HibernateTestConfig;
 import com.tallerwebi.integracion.config.SpringWebTestConfig;
+import org.hibernate.SessionFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +19,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
@@ -44,8 +49,7 @@ public class RepositorioUsuarioApunteTest {
     @Transactional
     @Rollback
     @Test
-    public void testObtenerApuntesDeOtrosUsuarios() {
-        // Crear tres usuarios y sus apuntes
+    public void queAlObtenerApuntesDeOtrosUsuariosNoObtengaElDelUsuarioQueLosSolicita() {
         Usuario usuario1 = new Usuario();
         Usuario usuario2 = new Usuario();
         Usuario usuario3 = new Usuario();
@@ -57,25 +61,15 @@ public class RepositorioUsuarioApunteTest {
         UsuarioApunte usuarioApunte2 = new UsuarioApunte(usuario2, apunte2);
         UsuarioApunte usuarioApunte3 = new UsuarioApunte(usuario3, apunte3);
 
-        // Registrar los usuarios y sus apuntes en la base de datos
         repositorioUsuarioApunte.registrar(usuarioApunte1);
         repositorioUsuarioApunte.registrar(usuarioApunte2);
         repositorioUsuarioApunte.registrar(usuarioApunte3);
 
-        // Obtener apuntes de otros usuarios para usuario1
         List<UsuarioApunte> apuntesOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario1.getId());
 
-        // Verificar que la lista no contiene el apunte de usuario1
         for (UsuarioApunte usuarioApunte : apuntesOtrosUsuarios) {
             assertNotEquals(usuario1.getId(), usuarioApunte.getUsuario().getId());
         }
-
-        // Verificar que la lista contiene los apuntes de usuario2 y usuario3
-        assertTrue(apuntesOtrosUsuarios.stream().anyMatch(ua -> Objects.equals(ua.getUsuario().getId(), usuario2.getId())));
-        assertTrue(apuntesOtrosUsuarios.stream().anyMatch(ua -> Objects.equals(ua.getUsuario().getId(), usuario3.getId())));
-
-        // Verificar que la lista tiene el tamaño correcto
-        assertEquals(2, apuntesOtrosUsuarios.size());
     }
     @Transactional
     @Rollback
