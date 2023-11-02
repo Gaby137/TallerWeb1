@@ -53,6 +53,7 @@ public class RepositorioUsuarioApunteTest {
     @Rollback
     @Test
     public void queAlObtenerApuntesDeOtrosUsuariosNoObtengaElDelUsuarioQueLosSolicita() {
+
         Usuario usuario1 = new Usuario();
         Usuario usuario2 = new Usuario();
         Usuario usuario3 = new Usuario();
@@ -75,6 +76,7 @@ public class RepositorioUsuarioApunteTest {
         for (UsuarioApunte usuarioApunte : apuntesOtrosUsuarios) {
             assertNotEquals(usuario1.getId(), usuarioApunte.getUsuario().getId());
         }
+        
     }
 }
 
