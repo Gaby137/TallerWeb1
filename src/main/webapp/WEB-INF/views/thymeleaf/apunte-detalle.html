@@ -10,7 +10,10 @@
                 <h2 th:text="${apunte.nombre}"></h2>
                 <p class="fw-bold">Descripción: <span class="fw-normal" th:text="${apunte.descripcion}"></span></p>
                 <p class="fw-bold">Path: <span class="fw-normal" th:text="${apunte.pathArchivo}"></span></p>
-                <a th:if="${tipoDeAcceso.LEER}" th:href="@{'/formulario-alta-resena'}" class="btn btn-primary">Agregar Reseña</a>
+                <div th:if="${!hayResena}">
+                    <a th:if="${tipoDeAcceso.LEER}" th:href="@{'/formulario-alta-resena'}" class="btn btn-primary">Agregar Reseña</a>
+                </div>
+
             </div>
         </div>
         <hr>
