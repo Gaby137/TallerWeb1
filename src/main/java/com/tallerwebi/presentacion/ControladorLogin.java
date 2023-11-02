@@ -123,5 +123,12 @@ public class ControladorLogin {
         return new ModelAndView("redirect:/login");
     }
 
+    @RequestMapping(path = "/cerrarSesion", method = RequestMethod.GET)
+    public ModelAndView cerrarSesion(HttpSession session, HttpServletRequest request) {
+        session.removeAttribute("usuario");
+        session.removeAttribute("ROL");
+        request.getSession().invalidate();
+        return new ModelAndView("redirect:/login");
+    }
 
 }
