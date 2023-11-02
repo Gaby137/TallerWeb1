@@ -123,6 +123,8 @@ public class ControladorApunte {
         TipoDeAcceso tipoDeAcceso = servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
         model.put("tipoDeAcceso", tipoDeAcceso);
 
+        boolean hayResena = servicioUsuarioApunteResena.existeResena(usuario.getId(), id);
+        model.put("hayResena", hayResena);
         return new ModelAndView("apunte-detalle", model);
     }
 
