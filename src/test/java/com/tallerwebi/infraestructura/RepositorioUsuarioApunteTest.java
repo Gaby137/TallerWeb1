@@ -70,6 +70,7 @@ public class RepositorioUsuarioApunteTest {
         for (UsuarioApunte usuarioApunte : apuntesOtrosUsuarios) {
             assertNotEquals(usuario1.getId(), usuarioApunte.getUsuario().getId());
         }
+        
     }
     @Transactional
     @Rollback
