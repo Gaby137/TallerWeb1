@@ -62,5 +62,40 @@
             </div>
         </div>
     </div>
+    <div class="col-12 col-md-8 col-lg-6 mt-5 mx-auto">
+        <div id="map" class="w-100 rounded-lg border border-2 border-primary shadow-lg" style="height: 350px;"></div>
+    </div>
 </main>
 </body>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvZj61EiOcl1RlGGo3dt9u2OpyqqYkohk"></script>
+<script th:inline="javascript">
+    var usuario = /*[[${usuario}]]*/ null;
+        function initMap() {
+        var geocoder = new google.maps.Geocoder();
+        var lat = usuario.latitud;
+        var lng = usuario.longitud;
+
+
+        var myLatLng = {lat: lat, lng: lng};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: myLatLng,
+            disableDefaultUI: true,
+            zoomControl: true,
+            gestureHandling: 'cooperative'
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'Marcador'
+        });
+    }
+
+    // Inicializar el mapa cuando la página haya cargado
+    window.onload = function() {
+        initMap();
+    };
+
+</script>

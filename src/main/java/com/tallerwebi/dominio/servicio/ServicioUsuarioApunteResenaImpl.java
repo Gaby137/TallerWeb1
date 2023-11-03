@@ -222,6 +222,10 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
         return apuntesCreados;
     }
+    @Override
+    public boolean existeResena(Long idUsuario, Long idApunte) {
+        return repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(idUsuario, idApunte);
+    }
 
 }
 

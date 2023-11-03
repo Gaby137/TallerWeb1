@@ -26,6 +26,10 @@ public class DatosRegistro {
     private String password;
     private MultipartFile fotoPerfil;
 
+    private Double latitud;
+
+    private Double longitud;
+
     public DatosRegistro(){
 
     }
@@ -76,4 +80,21 @@ public class DatosRegistro {
     public void setFotoPerfil(MultipartFile fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
     }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
 }

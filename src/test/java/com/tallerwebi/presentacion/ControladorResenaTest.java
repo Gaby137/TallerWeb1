@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ public class ControladorResenaTest {
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private ControladorResena controladorResena;
     private HttpSession sessionMock;
+    private BindingResult resultMock;
 
     @BeforeEach
     public void init() {
@@ -42,6 +44,7 @@ public class ControladorResenaTest {
         servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
         controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena);
         sessionMock = mock(HttpSession.class);
+        resultMock = mock(BindingResult.class);
 
     }
 
@@ -103,7 +106,7 @@ public class ControladorResenaTest {
 
 
         // Ejecución
-        ModelAndView modelAndView = controladorResena.guardarResena(resena, sessionMock);
+        ModelAndView modelAndView = controladorResena.guardarResena(resena, resultMock, sessionMock);
 
         // Verificación
 

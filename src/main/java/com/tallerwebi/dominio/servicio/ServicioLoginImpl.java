@@ -46,7 +46,7 @@ public class ServicioLoginImpl implements ServicioLogin {
             usuario.getFotoPerfil().transferTo(imageFile);
 
             if (usuario.getFotoPerfil().getOriginalFilename() !=null ){
-                Usuario u1 = new Usuario(usuario.getNombre(),usuario.getApellido(),100, usuario.getEmail(),usuario.getPassword(),Rol.USUARIO,false, usuario.getFotoPerfil().getOriginalFilename(),new Date(),new Date());
+                Usuario u1 = new Usuario(usuario.getNombre(),usuario.getApellido(),100, usuario.getEmail(),usuario.getPassword(),Rol.USUARIO,false, usuario.getFotoPerfil().getOriginalFilename(), usuario.getLatitud(), usuario.getLongitud(), new Date(),new Date());
                 servicioLoginDao.guardar(u1);
             }
 
