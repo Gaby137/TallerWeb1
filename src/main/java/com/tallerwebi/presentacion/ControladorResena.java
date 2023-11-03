@@ -8,6 +8,7 @@ import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import java.util.Date;
 import java.util.List;
@@ -52,13 +54,18 @@ public class ControladorResena {
     }
 
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
-    public ModelAndView guardarResena(@ModelAttribute("resena") Resena resena, HttpSession session) {
-        ModelMap modelo = new ModelMap();
-        Usuario usuario=(Usuario) session.getAttribute("usuario");
-        Long id = (Long) session.getAttribute("idApunte");
-        Apunte apunte = servicioApunte.obtenerPorId(id);
-        modelo.put("id", id);
+    public ModelAndView guardarResena(@Valid Resena resena, BindingResult result, HttpSession session) {
 
+        if (result.hasErrors()) {
+            ModelMap modelo = new ModelMap();
+            modelo.put("resena", resena);
+            return new ModelAndView("formulario-alta-resena", modelo);
+        }else{
+            ModelMap modelo = new ModelMap();
+            Usuario usuario=(Usuario) session.getAttribute("usuario");
+            Long id = (Long) session.getAttribute("idApunte");
+            Apunte apunte = servicioApunte.obtenerPorId(id);
+            modelo.put("id", id);
         if (resena != null) {
             if(servicioUsuarioApunteResena.registrar(usuario ,apunte, resena)){
                 return new ModelAndView("redirect:/misApuntes");
@@ -68,6 +75,7 @@ public class ControladorResena {
             }
 
 
+        }
         }
 
         return new ModelAndView("redirect:/detalleApunte");
