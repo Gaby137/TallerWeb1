@@ -351,6 +351,7 @@ public class ServicioUsuarioApunteResenaTest {
         Apunte apunte7 = new Apunte();
         apunte6.setId(7L);
 
+
         UsuarioApunte usuarioApunte2 = new UsuarioApunte(usuario2, apunte1);
         usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.EDITAR);
         UsuarioApunte usuarioApunte3 = new UsuarioApunte(usuario3, apunte2);
