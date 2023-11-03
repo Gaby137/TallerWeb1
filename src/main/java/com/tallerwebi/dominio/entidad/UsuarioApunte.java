@@ -27,6 +27,11 @@ public class UsuarioApunte {
     public UsuarioApunte() {
     }
 
+    public UsuarioApunte(Apunte apunte, TipoDeAcceso tipoDeAcceso) {
+        this.apunte = apunte;
+        this.tipoDeAcceso = tipoDeAcceso;
+    }
+
     public Long getId() {
         return id;
     }
