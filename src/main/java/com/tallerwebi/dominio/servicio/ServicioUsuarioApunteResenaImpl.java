@@ -15,15 +15,13 @@ import java.util.*;
 public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteResena {
 
     private RepositorioUsuarioApunteResena repositorioUsuarioApunteResena;
-    private RepositorioUsuarioApunte repositorioUsuarioApunte;
     private ServicioApunte servicioApunte;
     private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
 
     @Autowired
-    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
+    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
         this.repositorioUsuarioApunteResena = repositorioUsuarioApunteResena;
-        this.repositorioUsuarioApunte = repositorioUsuarioApunte;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuario = servicioUsuario;
         this.servicioApunte = servicioApunte;
@@ -109,12 +107,22 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuarioId);
         List<Apunte> mejoresApuntes = new ArrayList<>();
 
+        Comparator<Apunte> porPromedioPuntaje = (apunte1, apunte2) -> {
+            double promedioPuntaje1 = calcularPromedioPuntajeResenas(apunte1.getId());
+            double promedioPuntaje2 = calcularPromedioPuntajeResenas(apunte2.getId());
+            return Double.compare(promedioPuntaje2, promedioPuntaje1);
+        };
+
+        todosLosApuntes.sort(porPromedioPuntaje);
+
         for (Apunte apunte : todosLosApuntes) {
             double promedioPuntaje = calcularPromedioPuntajeResenas(apunte.getId());
             if (promedioPuntaje >= 4.0) {
                 mejoresApuntes.add(apunte);
             }
         }
+
+        mejoresApuntes = mejoresApuntes.subList(0, Math.min(mejoresApuntes.size(), 6));
 
         return mejoresApuntes;
     }
@@ -144,7 +152,8 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
             return 0.0;
         }
 
-        return totalPromedioPuntajeApuntes / totalApuntes;
+        double promedioTotal=totalPromedioPuntajeApuntes / totalApuntes;
+        return promedioTotal;
     }
     @Override
     public List<Usuario> obtenerUsuariosDestacados(Long usuarioId) {
@@ -154,7 +163,9 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
         for (Usuario otroUsuario : otrosUsuarios) {
             double promedioPuntaje = calcularPromedioPuntajeResenasPorUsuario(otroUsuario.getId());
-            usuariosConPromedios.put(otroUsuario, promedioPuntaje);
+            if (promedioPuntaje >= 4.0) {
+                usuariosConPromedios.put(otroUsuario, promedioPuntaje);
+            }
         }
 
         List<Usuario> usuariosDestacados = new ArrayList<>(usuariosConPromedios.keySet());
@@ -193,6 +204,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         return apuntesCreados;
     }
 
+    @Override
     public List<UsuarioApunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual) {
         List<UsuarioApunte> apuntesCreados = obtenerApuntesCreados(usuario);
 
@@ -210,12 +222,6 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
         return apuntesCreados;
     }
-
-
-
-
-
-
 
 }
 

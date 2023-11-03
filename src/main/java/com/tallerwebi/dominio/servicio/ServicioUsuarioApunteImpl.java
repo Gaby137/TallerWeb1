@@ -22,10 +22,12 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
         this.servicioUsuario = servicioUsuario;
     }
 
+    @Override
     public List<UsuarioApunte> obtenerApuntesPorUsuario(Long id) {
         return this.repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
     }
 
+    @Override
     public List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id) {
         List<UsuarioApunte> apuntesDeOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(id);
 

@@ -49,6 +49,10 @@ public class Apunte {
         this.id = id;
     }
 
+    public Apunte(long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface ServicioUsuario {
     Usuario obtenerPorId(Long id);
-
     boolean actualizar(Usuario usuario);
-
     List<Usuario> buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(Long id);
 }
