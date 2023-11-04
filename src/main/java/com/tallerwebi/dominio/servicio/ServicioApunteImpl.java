@@ -39,16 +39,8 @@ public class ServicioApunteImpl implements ServicioApunte {
     };
 
     @Override
-    public boolean registrar(DatosApunte datosApunte, Usuario usuario) {
-        boolean result;
-        Integer precio= datosApunte.getPrecio();
-        if (datosApunte.getPathArchivo() == null || datosApunte.getPathArchivo().isEmpty() ||
-                datosApunte.getNombre() == null || datosApunte.getNombre().isEmpty() ||
-                datosApunte.getDescripcion() == null || datosApunte.getDescripcion().isEmpty() ||
-                precio==null){
+    public void registrar(DatosApunte datosApunte, Usuario usuario) {
 
-            result = false;
-        }else {
             Apunte apunte = new Apunte(datosApunte.getPathArchivo(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
 
             UsuarioApunte usuarioApunte = new UsuarioApunte();
@@ -57,9 +49,6 @@ public class ServicioApunteImpl implements ServicioApunte {
             usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
             repositorioApunte.registrarApunte(apunte);
             repositorioUsuarioApunte.registrar(usuarioApunte);
-            result = true;
-        }
-       return result;
 
     }
 
