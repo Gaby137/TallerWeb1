@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 @Controller
 public class ControladorApunte {
     private ServicioApunte servicioApunte;
@@ -44,15 +47,18 @@ public class ControladorApunte {
     }
 
     @RequestMapping(path = "/subirApunte", method = RequestMethod.POST)
-    public ModelAndView publicar(@ModelAttribute("datosApunte") DatosApunte datosApunte, HttpSession session) {
+    public ModelAndView publicar(@Valid DatosApunte datosApunte, BindingResult result, HttpSession session) {
         Usuario usuario=(Usuario) session.getAttribute("usuario");
-        if( servicioApunte.registrar(datosApunte, usuario)){
-            return new ModelAndView("redirect:/misApuntes");
-        } else {
+
+        if (result.hasErrors()) {
             ModelMap model = new ModelMap();
-            model.put("error", "Por favor complete todos los campos");
+            model.put("usuario", datosApunte);
             return new ModelAndView("altaApunte", model);
+        } else {
+            servicioApunte.registrar(datosApunte, usuario);
+            return new ModelAndView("redirect:/misApuntes");
         }
+
     }
 
     @RequestMapping(path = "/editarApunte/{id}", method = RequestMethod.GET)
