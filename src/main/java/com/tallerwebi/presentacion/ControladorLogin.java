@@ -111,7 +111,6 @@ public class ControladorLogin {
         model.put("usuariosDestacados", usuariosDestacados);
         model.put("apuntes", mejoresApuntes);
         model.put("title", "Apuntes Destacados");
-        model.put("puntos", "Usted tiene " + usuario.getPuntos() + " puntos");
         return new ModelAndView("home", model);
     }
 
