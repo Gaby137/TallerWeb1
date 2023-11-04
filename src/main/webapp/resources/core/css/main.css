@@ -12,6 +12,10 @@ body, html {
     height: 100%;
 }
 
+p {
+    margin: 0 !important;
+}
+
 .nav-container {
     background-color: var(--c-primario);
 }

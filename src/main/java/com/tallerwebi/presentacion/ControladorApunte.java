@@ -141,7 +141,6 @@ public class ControladorApunte {
 
         model.put("apuntes", apuntesDeOtrosUsuarios);
         model.put("title", "Apuntes");
-        model.put("puntos", "Usted tiene " + usuario.getPuntos() + " puntos");
         return new ModelAndView("apuntesEnVenta", model);
     }
 
@@ -175,7 +174,6 @@ public class ControladorApunte {
 
         if (compraExitosa) {
             model.put("mensaje", "Compra exitosa");
-            model.put("puntos", "Usted tiene " + comprador.getPuntos() + " puntos");
 
             List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(comprador.getId());
             model.put("apuntes", apuntesDeOtrosUsuarios);

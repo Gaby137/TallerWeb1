@@ -5,7 +5,6 @@
     <!-- Sección de Destacados -->
     <section class="my-5">
         <h1 class="text-center">Apuntes Destacados</h1>
-        <p th:if="${puntos}" style="color: greenyellow;" th:text="${puntos}"></p>
         <div class="container">
             <div class="row">
                 <div th:each="apunte : ${apuntes}" class="col">
@@ -100,13 +99,23 @@
     <section class="my-5">
         <h1 class="text-center">Usuarios Destacados</h1>
         <div class="row">
-            <div th:each="usuario : ${usuariosDestacados}" class="col-md-4 text-center">
+            <!-- <div th:each="usuario : ${usuariosDestacados}" class="col-md-4 text-center">
                 <div class="card">
                     <img th:src="@{'/img/' + ${usuario.fotoPerfil}}" alt="Foto de perfil" width="150" height="150">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${usuario.nombre}"></h5>
                         <p class="card-text" th:text="${usuario.email}"></p>
                         <a th:href="@{'/perfilUsuario/' + ${usuario.id}}" class="btn btn-primary">Ver perfil y apuntes</a>
+                    </div>
+                </div>
+            </div> -->
+            <div class="col-md-4 text-center">
+                <div class="card">
+                    <img th:src="${'/img/' + session.usuario.fotoPerfil}" alt="Foto de perfil" width="150" height="150">
+                    <div class="card-body">
+                        <h5 class="card-title">Juan</h5>
+                        <p class="card-text">main@mail.com</p>
+                        <a href="#" class="btn btn-primary">Ver perfil y apuntes</a>
                     </div>
                 </div>
             </div>
