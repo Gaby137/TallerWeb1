@@ -33,7 +33,7 @@
 <body>
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-6 mb-4">
       <form action="#" th:action="@{/registrarme}" method="POST" th:object="${datosRegistro}" accept-charset="UTF-8"
             enctype="multipart/form-data">
         <h3 class="text-center mt-5 p-10">Crear cuenta</h3>
@@ -96,7 +96,14 @@
             <p th:errors="*{fotoPerfil}"></p>
           </div>
         </div>
-        <button id="btn-registrarme" type="Submit" class="btn btn-primary btn-block mt-4">Registrarme</button>
+        <div class="mt-4 d-flex justify-content-between">
+          <button id="btn-registrarme" type="submit" class="btn btn-primary btn-block">Registrarme</button>
+          <a th:href="@{/login}">
+            <button type="button" class="btn btn-secondary btn-block">
+              Volver
+            </button>
+          </a>
+        </div>
         <div th:if="${error != null}" class="alert alert-danger mt-3">
           <p th:text="'Error: ' + ${error}"></p>
         </div>
