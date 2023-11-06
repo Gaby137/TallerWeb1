@@ -55,7 +55,7 @@ public class ControladorApunte {
             model.put("usuario", datosApunte);
             return new ModelAndView("altaApunte", model);
         } else {
-            servicioApunte.registrar(datosApunte, usuario);
+            servicioUsuarioApunteResena.registrarApunte(datosApunte, usuario);
             return new ModelAndView("redirect:/misApuntes");
         }
 

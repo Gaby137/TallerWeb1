@@ -174,4 +174,5 @@ public class Usuario {
     public void setLongitud(Double longitud) {
         this.longitud = longitud;
     }
+
 }
