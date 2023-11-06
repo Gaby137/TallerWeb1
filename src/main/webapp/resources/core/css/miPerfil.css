@@ -3,5 +3,5 @@
 }
 .botonPerfil button{
   min-width: 100%;
-  background: #e3f2fd;
+  background: var(--c-background);
 }

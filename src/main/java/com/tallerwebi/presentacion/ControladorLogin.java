@@ -104,14 +104,17 @@ public class ControladorLogin {
         ModelMap model = new ModelMap();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        List<Apunte> mejoresApuntes = servicioUsuarioApunteResena.obtenerMejoresApuntes(usuario.getId());
+        if (usuario != null) {
+            List<Apunte> mejoresApuntes = servicioUsuarioApunteResena.obtenerMejoresApuntes(usuario.getId());
+            List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
 
-        List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
-
-        model.put("usuariosDestacados", usuariosDestacados);
-        model.put("apuntes", mejoresApuntes);
-        model.put("title", "Apuntes Destacados");
-        return new ModelAndView("home", model);
+            model.put("usuariosDestacados", usuariosDestacados);
+            model.put("apuntes", mejoresApuntes);
+            model.put("title", "Apuntes Destacados");
+            return new ModelAndView("home", model);
+        } else {
+            return new ModelAndView("redirect:/login");
+        }
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
