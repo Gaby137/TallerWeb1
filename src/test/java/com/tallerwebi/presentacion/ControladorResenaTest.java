@@ -14,9 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -96,7 +94,7 @@ public class ControladorResenaTest {
 
         // Configuración del servicioResena para evitar excepciones
 
-        when(servicioUsuarioApunteResena.registrar(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
+        when(servicioUsuarioApunteResena.registrarResena(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
 
         // Configuración del servicioUsuario para evitar excepciones
         when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);

@@ -7,9 +7,8 @@ import com.tallerwebi.presentacion.DatosApunte;
 
 import java.util.List;
 
-public interface ServicioApunte {
+public interface ServicioApunte{
     List<Apunte> obtenerApuntes();
-    void registrar(DatosApunte datosApunte, Usuario usuario);
     Apunte obtenerPorId(Long id);
     Apunte obtenerApuntePorIdResena(Long idResena);
     List<UsuarioApunteResena> getListadoDeResenasConSusUsuariosPorIdApunte(Long idApunte);

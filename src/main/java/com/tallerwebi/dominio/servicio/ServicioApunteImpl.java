@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.presentacion.DatosApunte;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,20 +38,6 @@ public class ServicioApunteImpl implements ServicioApunte {
     public List<UsuarioApunteResena> getListadoDeResenasConSusUsuariosPorIdApunte(Long idApunte) {
         return this.repositorioApunte.getListadoDeResenasConSusUsuariosPorIdApunte(idApunte);
     };
-
-    @Override
-    public void registrar(DatosApunte datosApunte, Usuario usuario) {
-
-            Apunte apunte = new Apunte(datosApunte.getPathArchivo(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
-
-            UsuarioApunte usuarioApunte = new UsuarioApunte();
-            usuarioApunte.setApunte(apunte);
-            usuarioApunte.setUsuario(usuario);
-            usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-            repositorioApunte.registrarApunte(apunte);
-            repositorioUsuarioApunte.registrar(usuarioApunte);
-
-    }
 
     @Override
     public Apunte obtenerPorId(Long id) {
