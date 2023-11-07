@@ -102,7 +102,6 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         List<Resena> resenas = obtenerResenasPorIdDeUsuario(usuario.getId());
         List<UsuarioApunte> apuntes = obtenerApuntesCreados(usuario);
 
-
         int puntosApuntes = apuntes.size() / 5 * 25;
 
         int puntosResenas = resenas.size() / 5 * 25;

@@ -11,7 +11,7 @@
                     <p th:text="${apunte.apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
                     <p th:text="${apunte.apunte.precio}" class="card-text" style="height: 6rem;"></p>
                     <div th:if="${apunte.apunte.isSePuedeComprar()}">
-                        <a class="btn btn-success" th:href="@{/comprarApunte/{id}(id=${apunte.apunte.id})}">Comprar</a>
+                        <a class="btn btn-success" th:href="@{/comprarApuntePorPerfil/{id}(id=${apunte.apunte.id})}">Comprar</a>
                     </div>
                     <div th:unless="${apunte.apunte.isSePuedeComprar()}">
                         Ya comprado

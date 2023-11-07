@@ -190,4 +190,23 @@ public class ControladorApunte {
             return new ModelAndView("apuntesEnVenta", model);
         }
     }
+
+    @RequestMapping(path = "/comprarApuntePorPerfil/{id}", method = RequestMethod.GET)
+    public ModelAndView comprarApuntePorPerfil(@PathVariable("id") Long id, HttpSession session) {
+        ModelMap model = new ModelMap();
+
+        Usuario comprador = (Usuario) session.getAttribute("usuario");
+
+        Apunte apunte = servicioApunte.obtenerPorId(id);
+
+        Usuario vendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(apunte.getId());
+
+        boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
+
+        if (compraExitosa) {
+            return verPerfilUsuario(vendedor.getId(), session);
+        } else {
+            return verPerfilUsuario(vendedor.getId(), session);
+        }
+    }
 }
