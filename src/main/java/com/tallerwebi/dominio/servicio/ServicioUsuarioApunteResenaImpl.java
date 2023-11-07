@@ -1,8 +1,10 @@
 package com.tallerwebi.dominio.servicio;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunteResena;
+import com.tallerwebi.presentacion.DatosApunte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +17,17 @@ import java.util.*;
 public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteResena {
 
     private RepositorioUsuarioApunteResena repositorioUsuarioApunteResena;
+    private RepositorioApunte repositorioApunte;
+    private RepositorioUsuarioApunte repositorioUsuarioApunte;
     private ServicioApunte servicioApunte;
     private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
 
     @Autowired
-    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
+    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, RepositorioApunte repositorioApunte, RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
         this.repositorioUsuarioApunteResena = repositorioUsuarioApunteResena;
+        this.repositorioApunte = repositorioApunte;
+        this.repositorioUsuarioApunte = repositorioUsuarioApunte;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuario = servicioUsuario;
         this.servicioApunte = servicioApunte;
@@ -29,7 +35,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     }
 
     @Override
-    public boolean registrar(Usuario usuario, Apunte apunte, Resena resena) {
+    public boolean registrarResena(Usuario usuario, Apunte apunte, Resena resena) {
 
         if (repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(usuario.getId(), apunte.getId())) {
             return false;
@@ -37,28 +43,34 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
             UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
             resena.setCreated_at(new Date());
-
-            usuario.setPuntos(usuario.getPuntos() + 10);
-
+            usuario.setPuntos(usuario.getPuntos() + 3);
             servicioUsuario.actualizar(usuario);
-
             usuarioApunteResena.setResena(resena);
-
             usuarioApunteResena.setUsuario(usuario);
-
             usuarioApunteResena.setApunte(apunte);
-
             repositorioUsuarioApunteResena.guardar(usuarioApunteResena);
-
             dar100PuntosAlUsuarioPorBuenasResenas(apunte.getId());
-
+            List<Resena> resenasCreadas = obtenerResenasPorIdDeUsuario(usuario.getId());
+            if (resenasCreadas.size() % 5 == 0) {
+                darPuntosAlUsuarioPorParticipacionContinua(usuario);
+            }
             return true;
         }
     }
 
     @Override
-    public List<Resena> obtenerLista(Long idApunte) {
-        return repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(idApunte);
+    public void registrarApunte(DatosApunte datosApunte, Usuario usuario) {
+        Apunte apunte = new Apunte(datosApunte.getPathArchivo(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
+        UsuarioApunte usuarioApunte = new UsuarioApunte();
+        usuarioApunte.setApunte(apunte);
+        usuarioApunte.setUsuario(usuario);
+        usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        repositorioApunte.registrarApunte(apunte);
+        repositorioUsuarioApunte.registrar(usuarioApunte);
+        List<UsuarioApunte> apuntesCreados = obtenerApuntesCreados(usuario);
+        if (apuntesCreados.size() % 5 == 0) {
+            darPuntosAlUsuarioPorParticipacionContinua(usuario);
+        }
     }
 
     @Override
@@ -84,6 +96,35 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
             }
         }
         return false;
+    }
+
+    public void darPuntosAlUsuarioPorParticipacionContinua(Usuario usuario) {
+        List<Resena> resenas = obtenerResenasPorIdDeUsuario(usuario.getId());
+        List<UsuarioApunte> apuntes = obtenerApuntesCreados(usuario);
+
+
+        int puntosApuntes = apuntes.size() / 5 * 25;
+
+        int puntosResenas = resenas.size() / 5 * 25;
+
+        int puntosTotales=puntosResenas+puntosApuntes;
+
+        if (puntosTotales > 25) {
+            puntosTotales = 25;
+        }
+
+        usuario.setPuntos(usuario.getPuntos() + puntosTotales);
+
+        servicioUsuario.actualizar(usuario);
+    }
+
+    @Override
+    public List<Resena> obtenerLista(Long idApunte) {
+        return repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(idApunte);
+    }
+    @Override
+    public List<Resena> obtenerResenasPorIdDeUsuario(Long idUsuario){
+        return repositorioUsuarioApunteResena.obtenerResenasPorIdUsuario(idUsuario);
     }
 
     @Override

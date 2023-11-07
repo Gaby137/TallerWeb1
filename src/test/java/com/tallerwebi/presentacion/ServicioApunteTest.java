@@ -8,9 +8,10 @@ import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioApunteImpl;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
@@ -39,52 +40,6 @@ public class ServicioApunteTest {
         repositorioUsuarioApunteMock = mock(RepositorioUsuarioApunte.class);
         servicioApunte = new ServicioApunteImpl(repositorioApunteMock, repositorioUsuarioApunteMock);
 
-
-    }
-
-    @Test
-    public void unUsuarioPuedeSubirUnApunteExitosamente() {
-        // Configuración de datos de ejemplo
-        DatosApunte datosApunteMock = mock(DatosApunte.class);
-        Usuario usuarioMock = mock(Usuario.class);
-
-        when(datosApunteMock.getPathArchivo()).thenReturn("asasas.pdf");
-        when(datosApunteMock.getNombre()).thenReturn("apunte1");
-        when(datosApunteMock.getDescripcion()).thenReturn("descripcion de apunte");
-        when(datosApunteMock.getPrecio()).thenReturn(100);
-
-        doNothing().when(repositorioApunteMock).registrarApunte(any(Apunte.class));
-        doNothing().when(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
-
-        // Ejecución de la pruebas
-         servicioApunte.registrar(datosApunteMock, usuarioMock);
-
-        // Verificación
-        //assertTrue(resultado);
-        // Verifica que se llamó al método del repositorioApunteMock
-       verify(repositorioApunteMock).registrarApunte(any(Apunte.class));
-       verify(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
-    }
-
-    @Test
-    public void SiUnApunteSeSubeVacioDebeDarError() {
-        // Configuración de datos de ejemplo
-        DatosApunte datosApunteMock = mock(DatosApunte.class);
-        Usuario usuarioMock = mock(Usuario.class);
-
-        when(datosApunteMock.getPathArchivo()).thenReturn("");
-        when(datosApunteMock.getNombre()).thenReturn("");
-        when(datosApunteMock.getDescripcion()).thenReturn("");
-        when(datosApunteMock.getPrecio()).thenReturn(100);
-
-        doNothing().when(repositorioApunteMock).registrarApunte(any(Apunte.class));
-        doNothing().when(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
-
-        // Ejecución de la pruebas
-        servicioApunte.registrar(datosApunteMock, usuarioMock);
-
-        // Verificación
-        // assertFalse(resultado);
 
     }
 

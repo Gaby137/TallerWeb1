@@ -3,24 +3,18 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
-import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
-import java.util.Date;
-import java.util.List;
 
 @Controller
 public class ControladorResena {
@@ -67,7 +61,7 @@ public class ControladorResena {
             Apunte apunte = servicioApunte.obtenerPorId(id);
             modelo.put("id", id);
         if (resena != null) {
-            if(servicioUsuarioApunteResena.registrar(usuario ,apunte, resena)){
+            if(servicioUsuarioApunteResena.registrarResena(usuario ,apunte, resena)){
                 return new ModelAndView("redirect:/misApuntes");
             }else {
                 modelo.put("error", "No puede dar mas de una reseña");

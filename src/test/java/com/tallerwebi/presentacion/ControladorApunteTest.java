@@ -50,6 +50,7 @@ public class ControladorApunteTest {
 
         requestMock = mock(HttpServletRequest.class);
         sessionMock = mock(HttpSession.class);
+        servicioUsuarioApunteResenaMock = mock(ServicioUsuarioApunteResena.class);
         servicioApunteMock = mock(ServicioApunte.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
         controladorApunte = new ControladorApunte(servicioApunteMock, servicioUsuarioApunteMock, servicioUsuarioApunteResenaMock, servicioUsuarioMock);
@@ -61,7 +62,7 @@ public class ControladorApunteTest {
         // Configuración de objetos simulados
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
-        doNothing().when(servicioApunteMock).registrar(datosApunteMock, usuarioMock);
+        doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
 
         // Ejecución de la prueba
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock, resultMock, sessionMock);
@@ -76,7 +77,7 @@ public class ControladorApunteTest {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         datosApunteMock.setNombre(null);
         Usuario usuarioMock = mock(Usuario.class);
-        doNothing().when(servicioApunteMock).registrar(datosApunteMock, usuarioMock);
+        doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
 
         // Ejecución de la prueba
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock, resultMock, sessionMock);
