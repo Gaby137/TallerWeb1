@@ -3,6 +3,7 @@ package com.tallerwebi.presentacion;
 import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
+import com.tallerwebi.dominio.servicio.ServicioApunte;
 import com.tallerwebi.dominio.servicio.ServicioLogin;
 import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
@@ -29,12 +30,15 @@ public class ControladorLogin {
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuario servicioUsuario;
+    private ServicioApunte servicioApunte;
+
     @Autowired
-    public ControladorLogin(ServicioLogin servicioLogin, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario) {
+    public ControladorLogin(ServicioLogin servicioLogin, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
         this.servicioLogin = servicioLogin;
         this.servicioUsuario = servicioUsuario;
         this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
+        this.servicioApunte = servicioApunte;
     }
 
 
@@ -107,9 +111,12 @@ public class ControladorLogin {
         if (usuario != null) {
             List<Apunte> mejoresApuntes = servicioUsuarioApunteResena.obtenerMejoresApuntes(usuario.getId());
             List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
+            List<Apunte> apuntesNovedades = servicioApunte.obtenerApuntesNovedades();
+
 
             model.put("usuariosDestacados", usuariosDestacados);
             model.put("apuntes", mejoresApuntes);
+            model.put("novedades", apuntesNovedades);
             model.put("title", "Apuntes Destacados");
             return new ModelAndView("home", model);
         } else {

@@ -14,4 +14,5 @@ public interface ServicioApunte{
     List<UsuarioApunteResena> getListadoDeResenasConSusUsuariosPorIdApunte(Long idApunte);
     boolean actualizar(Apunte apunte);
     void eliminar(Long id);
+    List<Apunte> obtenerApuntesNovedades();
 }

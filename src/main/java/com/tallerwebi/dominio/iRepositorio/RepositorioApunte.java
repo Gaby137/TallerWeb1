@@ -3,6 +3,7 @@ package com.tallerwebi.dominio.iRepositorio;
 import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RepositorioApunte {
@@ -14,4 +15,5 @@ public interface RepositorioApunte {
     void modificarApunte(Apunte apunte);
     void eliminarApunte(Apunte apunte);
     List<Apunte> obtenerApuntes();
+    List<Apunte> obtenerApuntesEntreFechas(Date desde, Date hasta);
 }
