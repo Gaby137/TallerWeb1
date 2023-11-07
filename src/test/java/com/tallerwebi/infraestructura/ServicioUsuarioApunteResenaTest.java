@@ -10,6 +10,7 @@ import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.validation.constraints.AssertFalse;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -712,6 +713,56 @@ public class ServicioUsuarioApunteResenaTest {
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
 
         Assert.assertEquals(50, usuario.getPuntos());
+    }
+
+    @Test
+    public void saberSiUnApuntePuedeSerCompradoPorUnUsuarioEnCasoDeNoTenerloCompradoYVisceversa(){
+        Apunte apunte1 = new Apunte(1L);
+        Apunte apunte4 = new Apunte(2L);
+        Apunte apunte5 = new Apunte(3L);
+        Apunte apunte6 = new Apunte(4L);
+
+
+        Usuario usuarioActual=new Usuario(1L);
+        Usuario usuarioVendedor=new Usuario(2L);
+
+        //Actual
+        UsuarioApunte usuarioApunte1 = new UsuarioApunte();
+        usuarioApunte1.setApunte(apunte1);
+        usuarioApunte1.setTipoDeAcceso(TipoDeAcceso.LEER);
+        UsuarioApunte usuarioApunte2 = new UsuarioApunte();
+        usuarioApunte2.setApunte(apunte4);
+        usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.LEER);
+
+        //Vendedor
+        UsuarioApunte usuarioApunte6 = new UsuarioApunte();
+        usuarioApunte6.setApunte(apunte1);
+        usuarioApunte6.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte7 = new UsuarioApunte();
+        usuarioApunte7.setApunte(apunte4);
+        usuarioApunte7.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte8 = new UsuarioApunte();
+        usuarioApunte8.setApunte(apunte5);
+        usuarioApunte8.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte9 = new UsuarioApunte();
+        usuarioApunte9.setApunte(apunte6);
+        usuarioApunte9.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+
+        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(2L))
+                .thenReturn(List.of(usuarioApunte6, usuarioApunte7, usuarioApunte8, usuarioApunte9));
+
+        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(1L))
+                .thenReturn(List.of(usuarioApunte1, usuarioApunte2));
+
+        servicioUsuarioApunteResena.obtenerApuntesCreados(usuarioVendedor);
+        servicioUsuarioApunteResena.obtenerApuntesComprados(usuarioActual);
+
+        servicioUsuarioApunteResena.obtenerApuntesCreadosYVerSiPuedeComprar(usuarioVendedor, usuarioActual);
+
+        Assert.assertFalse(apunte1.isSePuedeComprar());
+        Assert.assertFalse(apunte4.isSePuedeComprar());
+        Assert.assertTrue(apunte5.isSePuedeComprar());
+        Assert.assertTrue(apunte6.isSePuedeComprar());
     }
 }
 
