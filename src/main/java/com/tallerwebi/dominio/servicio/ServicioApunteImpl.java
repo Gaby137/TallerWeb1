@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -79,5 +82,13 @@ public class ServicioApunteImpl implements ServicioApunte {
         Apunte apunte = repositorioApunte.obtenerApunte(id);
 
         repositorioApunte.eliminarApunte(apunte);
+    }
+
+    @Override
+    public List<Apunte> obtenerApuntesNovedades() {
+        Date now = new Date();
+        LocalDate haceUnaSemana = LocalDate.now().minusDays(7);
+        Date dateHaceUnaSemana = Date.from(haceUnaSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return repositorioApunte.obtenerApuntesEntreFechas(dateHaceUnaSemana, now);
     }
 }

@@ -12,12 +12,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
  
 import org.springframework.beans.factory.annotation.Autowired;
- 
+import org.springframework.test.annotation.Rollback;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class ServicioApunteTest {
@@ -125,6 +131,33 @@ public class ServicioApunteTest {
 
         // Verificar que se llamó al método del repositorio para eliminar el apunte
         verify(repositorioApunteMock).eliminarApunte(apunteEjemplo);
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void deberiaDevolverLosApuntesCreadosEnLaUltimaSemana() {
+        Apunte apunte1 = new Apunte();
+        apunte1.setNombre("Nombre Apunte 1");
+        Apunte apunte2 = new Apunte();
+        apunte2.setNombre("Nombre Apunte 2");
+        Apunte apunte3 = new Apunte();
+        apunte3.setNombre("Nombre Apunte 3");
+
+        apunte1.setCreated_at(new Date("2023/05/05"));
+        apunte2.setCreated_at(new Date());
+        apunte3.setCreated_at(new Date());
+
+        List <Apunte> listadoResp = new ArrayList<>();
+        listadoResp.add(apunte2);
+        listadoResp.add(apunte3);
+
+        when(repositorioApunteMock.obtenerApuntesEntreFechas(any(Date.class), any(Date.class))).thenReturn(listadoResp);
+
+        List<Apunte> novedadesObtenidas = servicioApunte.obtenerApuntesNovedades();
+
+        assertEquals(2, novedadesObtenidas.size());
+
     }
 
 

@@ -17,6 +17,10 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 import javax.transaction.Transactional;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
@@ -94,6 +98,35 @@ public class RepositorioApunteTest {
         // Verificar que se encuentre el apunte
         assertEquals(apunte, apunteObtenido, "El apunte encontrado debe ser igual al apunte original");
         assertEquals(apunte.getId(), apunteObtenido.getId(), "Debe haber exactamente un apunte");
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void deberiaDevolverLosApuntesCreadosEnLaUltimaSemana() {
+        Apunte apunte1 = new Apunte();
+        apunte1.setNombre("Nombre Apunte 1");
+        Apunte apunte2 = new Apunte();
+        apunte2.setNombre("Nombre Apunte 2");
+        Apunte apunte3 = new Apunte();
+        apunte3.setNombre("Nombre Apunte 3");
+
+        repositorioApunte.registrarApunte(apunte1);
+        repositorioApunte.registrarApunte(apunte2);
+        repositorioApunte.registrarApunte(apunte3);
+
+        apunte1.setCreated_at(new Date("2023/05/05"));
+        apunte2.setCreated_at(new Date());
+        apunte3.setCreated_at(new Date());
+
+        Date now = new Date();
+        LocalDate haceUnaSemana = LocalDate.now().minusDays(7);
+        Date dateHaceUnaSemana = Date.from(haceUnaSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        List<Apunte> novedadesObtenidas = repositorioApunte.obtenerApuntesEntreFechas(dateHaceUnaSemana, now);
+
+        assertEquals(2, novedadesObtenidas.size());
+
     }
 
 
