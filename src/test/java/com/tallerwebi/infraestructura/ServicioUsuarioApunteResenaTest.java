@@ -560,6 +560,57 @@ public class ServicioUsuarioApunteResenaTest {
     }
 
     @Test
+    public void noDarle25PuntosAlUsuarioPorHaberSubidoMenosDe5Apuntes() {
+        Usuario usuario = new Usuario();
+        usuario.setPuntos(0);
+
+        Apunte apunte1 = new Apunte();
+        Apunte apunte2 = new Apunte();
+        Apunte apunte3 = new Apunte();
+        Apunte apunte4 = new Apunte();
+
+        UsuarioApunte usuarioApunte1 = new UsuarioApunte();
+        usuarioApunte1.setApunte(apunte1);
+        usuarioApunte1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte2 = new UsuarioApunte();
+        usuarioApunte2.setApunte(apunte2);
+        usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte3 = new UsuarioApunte();
+        usuarioApunte3.setApunte(apunte3);
+        usuarioApunte3.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte4 = new UsuarioApunte();
+        usuarioApunte4.setApunte(apunte4);
+        usuarioApunte4.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+
+        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId()))
+                .thenReturn(List.of(usuarioApunte1, usuarioApunte2, usuarioApunte3, usuarioApunte4));
+
+        servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+
+        servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
+        Assert.assertEquals(0, usuario.getPuntos());
+    }
+    @Test
+    public void noDarle25PuntosAlUsuarioPorHaberSubidoMenosDe5Resenas() {
+        Usuario usuario = new Usuario();
+        usuario.setPuntos(0);
+
+        Resena resena1 = new Resena();
+        Resena resena2 = new Resena();
+        Resena resena3 = new Resena();
+        Resena resena4 = new Resena();
+
+
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdUsuario(usuario.getId()))
+                .thenReturn(List.of(resena1, resena2, resena3, resena4));
+
+        servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
+
+        servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
+        Assert.assertEquals(0, usuario.getPuntos());
+    }
+
+    @Test
     public void saberSiUnApuntePuedeSerCompradoPorUnUsuarioEnCasoDeNoTenerloCompradoYVisceversa(){
         Apunte apunte1 = new Apunte(1L);
         Apunte apunte4 = new Apunte(2L);
