@@ -1,5 +1,7 @@
 package com.tallerwebi.presentacion;
 
+import com.mercadopago.client.payment.PaymentClient;
+import com.mercadopago.client.payment.PaymentCreateRequest;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.servicio.ServicioMercadoPago;
 import org.springframework.stereotype.Controller;
@@ -25,11 +27,10 @@ public class ControladorMercadoPago {
         ModelMap model = new ModelMap();
         Usuario usuario=(Usuario) session.getAttribute("usuario");
 
-
         DatosPagoRespuesta responsePago = servicioMercadoPago.procesarPago(pack, usuario);
 
         model.put("responsePago", responsePago);
-        return new ModelAndView("resultadoCompra", model);
+        return new ModelAndView("redirect:"+responsePago.urlCheckout, model);
     }
     @RequestMapping(path = "/planes", method = RequestMethod.GET)
     public ModelAndView apunte() {
