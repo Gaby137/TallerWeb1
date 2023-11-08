@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service("servicioUsuarioApunte")
 @Transactional
@@ -21,29 +19,23 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
     @Autowired
     public ServicioUsuarioApunteImpl(RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuario servicioUsuario) {
         this.repositorioUsuarioApunte = repositorioUsuarioApunte;
-        this.servicioUsuario=servicioUsuario;
+        this.servicioUsuario = servicioUsuario;
     }
 
-
-    public List<Apunte> obtenerApuntesPorUsuario(Long id) {
-        List<UsuarioApunte> usuarioApuntes = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
-
-        List<Apunte> apuntesPorUsuario = new ArrayList<>();
-
-        for (UsuarioApunte usuarioApunte : usuarioApuntes) {
-            apuntesPorUsuario.add(usuarioApunte.getApunte());
-        }
-
-        return apuntesPorUsuario;
+    @Override
+    public List<UsuarioApunte> obtenerApuntesPorUsuario(Long id) {
+        return this.repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
     }
+
+    @Override
     public List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id) {
         List<UsuarioApunte> apuntesDeOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(id);
 
         List<Apunte> apuntesDeOtrosUsuariosList = new ArrayList<>();
 
         for (UsuarioApunte usuarioApunte : apuntesDeOtrosUsuarios) {
-            if(usuarioApunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR)
-            apuntesDeOtrosUsuariosList.add(usuarioApunte.getApunte());
+            if (usuarioApunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR)
+                apuntesDeOtrosUsuariosList.add(usuarioApunte.getApunte());
         }
 
         return apuntesDeOtrosUsuariosList;
@@ -51,11 +43,11 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
 
 
     @Override
-    public Usuario obtenerVendedorPorApunte(Long id){
+    public Usuario obtenerVendedorPorApunte(Long id) {
         List<UsuarioApunte> usuarioApuntes = repositorioUsuarioApunte.obtenerUsuarioPorIdDeApunte(id);
 
-        for (UsuarioApunte usuarioApunte : usuarioApuntes){
-            if(usuarioApunte.getTipoDeAcceso()== TipoDeAcceso.EDITAR){
+        for (UsuarioApunte usuarioApunte : usuarioApuntes) {
+            if (usuarioApunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR) {
                 return usuarioApunte.getUsuario();
             }
         }
@@ -88,5 +80,8 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
 
         return false;
     }
+    @Override
+    public TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte) {
+        return repositorioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(idUsuario, idApunte);
+    }
 }
-

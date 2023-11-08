@@ -1,6 +1,9 @@
 package com.tallerwebi.dominio.entidad;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Entity
@@ -9,12 +12,22 @@ public class Resena {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
+    @NotEmpty(message = "La descripcion no puede estar en blanco.")
     private String descripcion;
+    @Min(value = 1, message = "La calificación debe ser al menos 1.")
+    @Max(value = 5, message = "La calificación no puede ser mayor de 5.")
     private int cantidadDeEstrellas;
     private Date created_at;
 
     @OneToOne(mappedBy = "resena", cascade = CascadeType.ALL)
     private UsuarioApunteResena usuarioResenaApunte;
+
+    public Resena(int cantidadDeEstrellas) {
+        this.cantidadDeEstrellas=cantidadDeEstrellas;
+    }
+    public Resena(){
+
+    }
 
     public Long getId() {
         return id;

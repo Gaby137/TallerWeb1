@@ -3,22 +3,18 @@ import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
-import com.tallerwebi.dominio.servicio.ServicioApunte;
-import com.tallerwebi.dominio.servicio.ServicioResena;
-import com.tallerwebi.dominio.servicio.ServicioUsuario;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
+import com.tallerwebi.dominio.servicio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,9 +26,11 @@ public class ControladorResenaTest {
     private ServicioResena servicioResena;
     private ServicioUsuario servicioUsuario;
     private ServicioApunte servicioApunte;
+    private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private ControladorResena controladorResena;
     private HttpSession sessionMock;
+    private BindingResult resultMock;
 
     @BeforeEach
     public void init() {
@@ -40,9 +38,11 @@ public class ControladorResenaTest {
         servicioResena = mock(ServicioResena.class);
         servicioUsuario = mock(ServicioUsuario.class);
         servicioApunte = mock(ServicioApunte.class);
+        servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
         servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
-        controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunteResena);
+        controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena);
         sessionMock = mock(HttpSession.class);
+        resultMock = mock(BindingResult.class);
 
     }
 
@@ -94,7 +94,7 @@ public class ControladorResenaTest {
 
         // Configuración del servicioResena para evitar excepciones
 
-        when(servicioUsuarioApunteResena.registrar(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
+        when(servicioUsuarioApunteResena.registrarResena(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
 
         // Configuración del servicioUsuario para evitar excepciones
         when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);
@@ -104,7 +104,7 @@ public class ControladorResenaTest {
 
 
         // Ejecución
-        ModelAndView modelAndView = controladorResena.guardarResena(resena, sessionMock);
+        ModelAndView modelAndView = controladorResena.guardarResena(resena, resultMock, sessionMock);
 
         // Verificación
 

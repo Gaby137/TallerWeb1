@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service("servicioUsuario")
 @Transactional
@@ -27,9 +28,13 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         if (usuario == null || usuario.getNombre() == null || usuario.getNombre().isEmpty() || usuario.getId() == null) {
             return false;
         }
-
         repositorioUsuario.modificar(usuario);
         return true;
+    }
+
+    @Override
+    public List<Usuario> buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(Long id){
+        return repositorioUsuario.buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(id);
     }
 }
 

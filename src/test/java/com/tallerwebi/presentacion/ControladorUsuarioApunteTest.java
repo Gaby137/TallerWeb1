@@ -1,7 +1,9 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.TipoDeAcceso;
 import com.tallerwebi.dominio.entidad.Usuario;
+import com.tallerwebi.dominio.entidad.UsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
@@ -14,12 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class ControladorUsuarioApunteTest {
 
     private HttpServletRequest requestMock;
+    private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioApunte servicioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
@@ -30,9 +36,10 @@ public class ControladorUsuarioApunteTest {
     public void init() {
     requestMock = mock(HttpServletRequest.class);
     servicioApunte = mock(ServicioApunte.class);
+    servicioUsuario = mock(ServicioUsuario.class);
     servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
     servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
-    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena);
+    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, servicioUsuario);
     sessionMock = mock(HttpSession.class);
     }
 
@@ -57,7 +64,7 @@ public class ControladorUsuarioApunteTest {
             ModelMap modelMap = modelAndView.getModelMap();
             assertEquals("Compra exitosa", modelMap.get("mensaje"));
 
-            assertEquals("apuntes", modelAndView.getViewName());
+            assertEquals("apuntesEnVenta", modelAndView.getViewName());
         }
     @Test
     public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVista() {
@@ -78,8 +85,7 @@ public class ControladorUsuarioApunteTest {
 
         assertEquals("Error al realizar la compra", modelMap.get("error"));
 
-        assertEquals("apuntes", modelAndView.getViewName());
+        assertEquals("apuntesEnVenta", modelAndView.getViewName());
     }
-
 
     }

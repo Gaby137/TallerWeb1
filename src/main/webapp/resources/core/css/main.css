@@ -6,10 +6,15 @@
     box-sizing: border-box;
 
     --c-primario: #4caf50;
+    --c-background: #e3f2fd;
 }
 
 body, html {
     height: 100%;
+}
+
+p {
+    margin: 0 !important;
 }
 
 .nav-container {
@@ -32,4 +37,29 @@ button {
 
 button:hover {
     cursor: pointer;
+}
+
+.card-home {
+    min-height: 250px;
+    max-height: 250px;
+}
+.card {
+    background-color: var(--c-background);
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.apunte-descrip {
+    overflow: hidden;
+    max-height: 120px;
+}
+
+.novedad-descrip {
+    overflow: hidden;
+    max-height: 145px;
+}
+
+.boton-apunte {
+    position: absolute;
+    bottom: 15px;
 }

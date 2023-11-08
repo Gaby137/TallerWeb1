@@ -8,16 +8,23 @@ import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioApunteImpl;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
- 
-import org.springframework.beans.factory.annotation.Autowired;
- 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class ServicioApunteTest {
@@ -33,52 +40,6 @@ public class ServicioApunteTest {
         repositorioUsuarioApunteMock = mock(RepositorioUsuarioApunte.class);
         servicioApunte = new ServicioApunteImpl(repositorioApunteMock, repositorioUsuarioApunteMock);
 
-
-    }
-
-    @Test
-    public void unUsuarioPuedeSubirUnApunteExitosamente() {
-        // Configuración de datos de ejemplo
-        DatosApunte datosApunteMock = mock(DatosApunte.class);
-        Usuario usuarioMock = mock(Usuario.class);
-
-        when(datosApunteMock.getPathArchivo()).thenReturn("asasas.pdf");
-        when(datosApunteMock.getNombre()).thenReturn("apunte1");
-        when(datosApunteMock.getDescripcion()).thenReturn("descripcion de apunte");
-        when(datosApunteMock.getPrecio()).thenReturn(100);
-
-        doNothing().when(repositorioApunteMock).registrarApunte(any(Apunte.class));
-        doNothing().when(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
-
-        // Ejecución de la pruebas
-        boolean resultado = servicioApunte.registrar(datosApunteMock, usuarioMock);
-
-        // Verificación
-        assertTrue(resultado);
-        // Verifica que se llamó al método del repositorioApunteMock
-       verify(repositorioApunteMock).registrarApunte(any(Apunte.class));
-       verify(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
-    }
-
-    @Test
-    public void SiUnApunteSeSubeVacioDebeDarError() {
-        // Configuración de datos de ejemplo
-        DatosApunte datosApunteMock = mock(DatosApunte.class);
-        Usuario usuarioMock = mock(Usuario.class);
-
-        when(datosApunteMock.getPathArchivo()).thenReturn("");
-        when(datosApunteMock.getNombre()).thenReturn("");
-        when(datosApunteMock.getDescripcion()).thenReturn("");
-        when(datosApunteMock.getPrecio()).thenReturn(100);
-
-        doNothing().when(repositorioApunteMock).registrarApunte(any(Apunte.class));
-        doNothing().when(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
-
-        // Ejecución de la pruebas
-        boolean resultado = servicioApunte.registrar(datosApunteMock, usuarioMock);
-
-        // Verificación
-        assertFalse(resultado);
 
     }
 
@@ -125,6 +86,33 @@ public class ServicioApunteTest {
 
         // Verificar que se llamó al método del repositorio para eliminar el apunte
         verify(repositorioApunteMock).eliminarApunte(apunteEjemplo);
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void deberiaDevolverLosApuntesCreadosEnLaUltimaSemana() {
+        Apunte apunte1 = new Apunte();
+        apunte1.setNombre("Nombre Apunte 1");
+        Apunte apunte2 = new Apunte();
+        apunte2.setNombre("Nombre Apunte 2");
+        Apunte apunte3 = new Apunte();
+        apunte3.setNombre("Nombre Apunte 3");
+
+        apunte1.setCreated_at(new Date("2023/05/05"));
+        apunte2.setCreated_at(new Date());
+        apunte3.setCreated_at(new Date());
+
+        List <Apunte> listadoResp = new ArrayList<>();
+        listadoResp.add(apunte2);
+        listadoResp.add(apunte3);
+
+        when(repositorioApunteMock.obtenerApuntesEntreFechas(any(Date.class), any(Date.class))).thenReturn(listadoResp);
+
+        List<Apunte> novedadesObtenidas = servicioApunte.obtenerApuntesNovedades();
+
+        assertEquals(2, novedadesObtenidas.size());
+
     }
 
 

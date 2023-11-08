@@ -7,12 +7,12 @@ import com.tallerwebi.presentacion.DatosApunte;
 
 import java.util.List;
 
-public interface ServicioApunte {
+public interface ServicioApunte{
     List<Apunte> obtenerApuntes();
-    boolean registrar(DatosApunte datosApunte, Usuario usuario);
     Apunte obtenerPorId(Long id);
     Apunte obtenerApuntePorIdResena(Long idResena);
     List<UsuarioApunteResena> getListadoDeResenasConSusUsuariosPorIdApunte(Long idApunte);
     boolean actualizar(Apunte apunte);
     void eliminar(Long id);
+    List<Apunte> obtenerApuntesNovedades();
 }

@@ -5,42 +5,41 @@
     <!-- Sección de Destacados -->
     <section class="my-5">
         <h1 class="text-center">Apuntes Destacados</h1>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="Apunte.jpg" class="card-img-top" alt="Producto 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Apunte 1</h5>
-                        <p class="card-text">Descripción del Apunte 1.</p>
-                        <a th:href="@{/producto/1}" class="btn btn-primary">Ver Detalles</a>
+        <div class="container">
+            <div class="row">
+                <div th:each="apunte : ${apuntes}" class="col-12 col-sm-6 col-md-4 col-xl-3">
+                    <div class="card card-home my-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <span>
+                                    <h5 th:text="${apunte.nombre}" class="card-title"></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
+                                </span>
+                                <span>
+                                    <h5 th:text="${apunte.precio}" class="card-text"></h5>
+                                </span>
+                            </div>
+                            <div class="apunte-descrip mb-2">
+                                <p th:text="${apunte.descripcion}" class="mb-2"></p>
+                            </div>
+                            <a class="btn btn-success boton-apunte" th:href="@{/comprarApunte/{id}(id=${apunte.id})}">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+                <div  th:if="${#lists.isEmpty(apuntes)}" class="col-12">
+                    <div class="card card-home my-2">
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <h3 class="text-muted fw-light">Nada para ver</h3>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="Apunte.jpg" class="card-img-top" alt="Producto 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Apunte 2</h5>
-                        <p class="card-text">Descripción del Apunte 2.</p>
-                        <a th:href="@{/producto/2}" class="btn btn-primary">Ver Detalles</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="Apunte.jpg" class="card-img-top" alt="Producto 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Apunte 3</h5>
-                        <p class="card-text">Descripción del Apunte 3.</p>
-                        <a th:href="@{/producto/3}" class="btn btn-primary">Ver Detalles</a>
-                    </div>
-                </div>
-            </div>
+            <hr>
         </div>
     </section>
 
     <!-- Sección de Ofertas -->
-    <section class="my-5">
+    <!-- <section class="my-5">
         <h1 class="text-center">Ofertas Especiales</h1>
         <div class="row">
             <div class="col-md-4">
@@ -74,73 +73,52 @@
                 </div>
             </div>
         </div>
-    </section>
+        <hr>
+    </section> -->
 
     <!-- Sección de Novedades -->
     <section class="my-5">
         <h1 class="text-center">Novedades</h1>
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="novedad1.jpg" class="card-img-top" alt="Novedad 1">
+            <div th:each="novedad : ${novedades}" class="col-12 col-sm-6 col-md-4 col-xl-3">
+                <div class="card card-home my-2">
                     <div class="card-body">
-                        <h5 class="card-title">Novedad 1</h5>
-                        <p class="card-text">Descripción de la novedad 1.</p>
-                        <a th:href="@{/novedad/1}" class="btn btn-primary">Ver Novedad</a>
+                        <h5 th:text="${novedad.nombre}" class="card-title"></h5>
+                        <div class="novedad-descrip mb-2">
+                            <p  th:text="${novedad.descripcion}" class="mb-2"></p>
+                        </div>
+                        <a class="btn btn-primary boton-apunte"  th:href="@{/detalleApunte/{id}(id=${novedad.id})}">Ver Novedad</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="novedad2.jpg" class="card-img-top" alt="Novedad 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Novedad 2</h5>
-                        <p class="card-text">Descripción de la novedad 2.</p>
-                        <a th:href="@{/novedad/2}" class="btn btn-primary">Ver Novedad</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="novedad3.jpg" class="card-img-top" alt="Novedad 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Novedad 3</h5>
-                        <p class="card-text">Descripción de la novedad 3.</p>
-                        <a th:href="@{/novedad/3}" class="btn btn-primary">Ver Novedad</a>
+            <div  th:if="${#lists.isEmpty(novedades)}" class="col-12">
+                <div class="card card-home my-2">
+                    <div class="card-body d-flex justify-content-center align-items-center">
+                        <h3 class="text-muted fw-light">Nada para ver</h3>
                     </div>
                 </div>
             </div>
         </div>
+        <hr>
     </section>
 
-    <!-- Sección de Usuarios Destacados -->
     <section class="my-5">
         <h1 class="text-center">Usuarios Destacados</h1>
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="usuario1.jpg" class="card-img-top" alt="Usuario 1">
+            <div th:each="usuario : ${usuariosDestacados}" class="col-md-4 text-center mb-2">
+                <div class="card d-flex align-items-center p-2">
+                    <img th:src="@{'/img/' + ${usuario.fotoPerfil}}" alt="Foto de perfil" width="150" height="150">
                     <div class="card-body">
-                        <h5 class="card-title">Usuario 1</h5>
-                        <p class="card-text">Descripción del Usuario 1.</p>
+                        <h5 class="card-title" th:text="${usuario.nombre}"></h5>
+                        <p class="card-text" th:text="${usuario.email}"></p>
+                        <a th:href="@{'/perfilUsuario/' + ${usuario.id}}" class="btn btn-primary">Ver perfil y apuntes</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="usuario2.jpg" class="card-img-top" alt="Usuario 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Usuario 2</h5>
-                        <p class="card-text">Descripción del Usuario 2.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="usuario3.jpg" class="card-img-top" alt="Usuario 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Usuario 3</h5>
-                        <p class="card-text">Descripción del Usuario 3.</p>
+            <div  th:if="${#lists.isEmpty(usuariosDestacados)}" class="col-12">
+                <div class="card card-home my-2">
+                    <div class="card-body d-flex justify-content-center align-items-center">
+                        <h3 class="text-muted fw-light">Nada para ver</h3>
                     </div>
                 </div>
             </div>
@@ -149,7 +127,6 @@
 </main>
 
 <footer class="bg-dark text-light text-center py-3">
-    <!-- Pie de página de tu sitio web -->
     <p>&copy; Derechos - Privacidad - Etc.</p>
 </footer>
 </body>

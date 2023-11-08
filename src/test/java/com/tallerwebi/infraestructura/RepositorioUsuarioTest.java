@@ -32,17 +32,29 @@ public class RepositorioUsuarioTest {
     @Rollback
     @Test
     public void buscarUsuarioPorId() {
-        // Crear un nuevo apunte
         Usuario usuario = new Usuario();
         usuario.setNombre("Nombre Usuario");
 
-        // Guardar el apunte en la base de datos
         repositorioUsuario.guardar(usuario);
 
         Usuario usuarioObtenido = repositorioUsuario.buscarPorId(usuario.getId());
 
-        // Verificar que se encuentre el usuario
         assertEquals(usuario, usuarioObtenido, "El apunte encontrado debe ser igual al apunte original");
     }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void buscarPorIdATodosLosUsuariosMenosAlUsuarioActual() {
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Nombre Usuario");
+        repositorioUsuario.guardar(usuario);
+
+        List<Usuario> usuarios = repositorioUsuario.buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(usuario.getId());
+
+        assertTrue(usuarios.isEmpty());
+    }
+
+
 
 }

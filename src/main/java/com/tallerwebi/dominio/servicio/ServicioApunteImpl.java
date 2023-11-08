@@ -4,10 +4,14 @@ import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.presentacion.DatosApunte;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -39,31 +43,6 @@ public class ServicioApunteImpl implements ServicioApunte {
     };
 
     @Override
-    public boolean registrar(DatosApunte datosApunte, Usuario usuario) {
-        boolean result;
-        Integer precio= datosApunte.getPrecio();
-        if (datosApunte.getPathArchivo() == null || datosApunte.getPathArchivo().isEmpty() ||
-                datosApunte.getNombre() == null || datosApunte.getNombre().isEmpty() ||
-                datosApunte.getDescripcion() == null || datosApunte.getDescripcion().isEmpty() ||
-                precio==null){
-
-            result = false;
-        }else {
-            Apunte apunte = new Apunte(datosApunte.getPathArchivo(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
-
-            UsuarioApunte usuarioApunte = new UsuarioApunte();
-            usuarioApunte.setApunte(apunte);
-            usuarioApunte.setUsuario(usuario);
-            usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-            repositorioApunte.registrarApunte(apunte);
-            repositorioUsuarioApunte.registrar(usuarioApunte);
-            result = true;
-        }
-       return result;
-
-    }
-
-    @Override
     public Apunte obtenerPorId(Long id) {
 
         return repositorioApunte.obtenerApunte(id);
@@ -90,5 +69,13 @@ public class ServicioApunteImpl implements ServicioApunte {
         Apunte apunte = repositorioApunte.obtenerApunte(id);
 
         repositorioApunte.eliminarApunte(apunte);
+    }
+
+    @Override
+    public List<Apunte> obtenerApuntesNovedades() {
+        Date now = new Date();
+        LocalDate haceUnaSemana = LocalDate.now().minusDays(7);
+        Date dateHaceUnaSemana = Date.from(haceUnaSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return repositorioApunte.obtenerApuntesEntreFechas(dateHaceUnaSemana, now);
     }
 }

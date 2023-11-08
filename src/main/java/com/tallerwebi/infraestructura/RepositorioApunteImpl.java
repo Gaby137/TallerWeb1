@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository("repositorioApunte")
@@ -67,6 +68,14 @@ public class RepositorioApunteImpl implements RepositorioApunte {
     public List<Apunte> obtenerApuntes() {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(Apunte.class);
+        return criteria.list();
+    }
+
+    @Override
+    public List<Apunte> obtenerApuntesEntreFechas(Date desde, Date hasta) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Apunte.class)
+            .add(Restrictions.between("created_at", desde, hasta));
         return criteria.list();
     }
 }

@@ -1,13 +1,15 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.dominio.entidad.Rol;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuario;
 import com.tallerwebi.dominio.entidad.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("repositorioUsuario")
 public class RepositorioUsuarioImpl implements RepositorioUsuario {
@@ -60,6 +62,21 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
                 .add(Restrictions.eq("id", id))
                 .uniqueResult();
     }
+
+    @Override
+    public List<Usuario> buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(Long id) {
+        Session session = sessionFactory.getCurrentSession();
+
+        String jpql = "SELECT u FROM Usuario u " +
+                "WHERE u.id <> :usuarioId";
+
+        Query<Usuario> query = session.createQuery(jpql, Usuario.class);
+        query.setParameter("usuarioId", id);
+
+        return query.getResultList();
+    }
+
+
 
 
 

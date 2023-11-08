@@ -24,6 +24,8 @@ public class Usuario {
     private Rol rol;
     private Boolean activo = false;
     private String fotoPerfil;
+    private Double latitud;
+    private Double longitud;
     private Date created_at;
     private Date updated_at;
     @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
@@ -34,7 +36,7 @@ public class Usuario {
 
     public Usuario(){}
 
-    public Usuario(String nombre, String apellido, int puntos, String email, String password, Rol rol, Boolean activo, String fotoPerfil, Date created_at, Date updated_at) {
+    public Usuario(String nombre, String apellido, int puntos, String email, String password, Rol rol, Boolean activo, String fotoPerfil, Double latitud, Double longitud, Date created_at, Date updated_at) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.puntos = puntos;
@@ -43,6 +45,8 @@ public class Usuario {
         this.rol = rol;
         this.activo = activo;
         this.fotoPerfil = fotoPerfil;
+        this.latitud = latitud;
+        this.longitud = longitud;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -154,4 +158,21 @@ public class Usuario {
     public void setUsuarioResenaApunte(UsuarioApunteResena usuarioResenaApunte) {
         this.usuarioResenaApunte = usuarioResenaApunte;
     }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
 }

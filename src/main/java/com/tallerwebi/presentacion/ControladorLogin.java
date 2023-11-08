@@ -1,39 +1,44 @@
 package com.tallerwebi.presentacion;
 
+import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
+import com.tallerwebi.dominio.servicio.ServicioApunte;
 import com.tallerwebi.dominio.servicio.ServicioLogin;
+import com.tallerwebi.dominio.servicio.ServicioUsuario;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ControladorLogin {
 
     private ServicioLogin servicioLogin;
+    private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
+    private ServicioUsuarioApunte servicioUsuarioApunte;
+    private ServicioUsuario servicioUsuario;
+    private ServicioApunte servicioApunte;
 
     @Autowired
-    public ControladorLogin(ServicioLogin servicioLogin) {
+    public ControladorLogin(ServicioLogin servicioLogin, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
         this.servicioLogin = servicioLogin;
+        this.servicioUsuario = servicioUsuario;
+        this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
+        this.servicioUsuarioApunte = servicioUsuarioApunte;
+        this.servicioApunte = servicioApunte;
     }
 
 
@@ -72,7 +77,6 @@ public class ControladorLogin {
         } else {
             ModelAndView successModelAndView = new ModelAndView("redirect:/login");
             try {
-
                     servicioLogin.registrar(usuario);
             } catch (UsuarioExistente e) {
                 // En caso de un usuario existente, puedes agregar un mensaje de error al modelo y redirigir nuevamente al formulario
@@ -100,8 +104,24 @@ public class ControladorLogin {
     }
 
     @RequestMapping(path = "/home", method = RequestMethod.GET)
-    public ModelAndView irAHome() {
-        return new ModelAndView("home");
+    public ModelAndView home(HttpSession session) {
+        ModelMap model = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        if (usuario != null) {
+            List<Apunte> mejoresApuntes = servicioUsuarioApunteResena.obtenerMejoresApuntes(usuario.getId());
+            List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
+            List<Apunte> apuntesNovedades = servicioApunte.obtenerApuntesNovedades();
+
+
+            model.put("usuariosDestacados", usuariosDestacados);
+            model.put("apuntes", mejoresApuntes);
+            model.put("novedades", apuntesNovedades);
+            model.put("title", "Apuntes Destacados");
+            return new ModelAndView("home", model);
+        } else {
+            return new ModelAndView("redirect:/login");
+        }
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
@@ -109,5 +129,13 @@ public class ControladorLogin {
         return new ModelAndView("redirect:/login");
     }
 
+    @RequestMapping(path = "/cerrarSesion", method = RequestMethod.GET)
+    public ModelAndView cerrarSesion(HttpSession session, HttpServletRequest request) {
+        session.removeAttribute("usuario");
+        session.removeAttribute("ROL");
+        request.getSession().invalidate();
+
+        return new ModelAndView("redirect:/login");
+    }
 
 }

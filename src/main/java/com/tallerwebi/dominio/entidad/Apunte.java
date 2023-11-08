@@ -16,6 +16,8 @@ public class Apunte {
     private int precio;
     private Date created_at;
     private Date updated_at;
+    private boolean cienPuntosPorBuenPromedioDeResenas;
+    private boolean sePuedeComprar;
 
     @OneToMany(mappedBy = "apunte")
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
@@ -44,6 +46,10 @@ public class Apunte {
 
     public Apunte(String apunte, Long id) {
         this.nombre = apunte;
+        this.id = id;
+    }
+
+    public Apunte(long id) {
         this.id = id;
     }
 
@@ -116,5 +122,21 @@ public class Apunte {
 
     public void setMateria(Materia materia) {
         this.materia = materia;
+    }
+
+    public boolean isCienPuntosPorBuenPromedioDeResenas() {
+        return cienPuntosPorBuenPromedioDeResenas;
+    }
+
+    public void setCienPuntosPorBuenPromedioDeResenas(boolean cienPuntosPorBuenPromedioDeResenas) {
+        this.cienPuntosPorBuenPromedioDeResenas = cienPuntosPorBuenPromedioDeResenas;
+    }
+
+    public boolean isSePuedeComprar() {
+        return sePuedeComprar;
+    }
+
+    public void setSePuedeComprar(boolean sePuedeComprar) {
+        this.sePuedeComprar = sePuedeComprar;
     }
 }

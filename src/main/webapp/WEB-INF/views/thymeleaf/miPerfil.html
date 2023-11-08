@@ -1,66 +1,88 @@
 <!DOCTYPE html>
 <div th:insert="~{nav}"></div>
 <body>
-<main>
-    <div class="nombreYFoto">
-        <div>
-            <button> <img th:src="@{'/img/' + ${usuario.fotoPerfil}}" alt="Foto de perfil"></button>
-
-        </div>
-        <div th:if="${usuario != null}">
-            <p th:text="${usuario.nombre}"></p>
-            <p th:text="${usuario.email}"></p>
-        </div>
-    </div>
-
-    <br><br>
-    <div class="container text-center">
-        <div class="row">
-            <div class="col">
-                <button>
-                    <i class="fa-solid fa-address-card" style="color: black; font-size: 25px;"></i>
+<main class="container">
+    <div class="text-center">
+        <div class="row align-items-center">
+            <!-- <div class="botonPerfil p-2 col-6 col-md-4 col-lg-3">
+                <button class="d-flex align-items-center flex-column py-2">
+                    <i class="fs-1 fa-solid fa-address-card"></i>
                     Información Personal
                 </button>
             </div>
-            <div class="col">
-                <button>
-                    <i class="fa-solid fa-wallet" style="color: #000000;"></i>
+            <div class="botonPerfil p-2 col-6 col-md-4 col-lg-3">
+                <button class="d-flex align-items-center flex-column py-2">
+                    <i class="fs-1 fa-solid fa-wallet"></i>
                     Mis puntos
                 </button>
             </div>
-            <div class="col">
-                <button>
-                    <i class="fa-solid fa-lock" style="color: black; font-size: 25px;"></i>
-                    Privacidad
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <br><br>
-
-    <br><br>
-    <div class="container text-center">
-        <div class="row">
-            <div class="col">
-                <button class="icon-button">
-                    <i class="fa-solid fa-shopping-bag"></i>
+            <div class="botonPerfil p-2 col-6 col-md-4 col-lg-3">
+                <button class="d-flex align-items-center flex-column py-2">
+                    <i class="fs-1 fa-solid fa-shopping-bag"></i>
                     Mis compras
                 </button>
             </div>
-            <div class="col">
-                <button class="icon-button">
-                    <i class="fa-solid fa-money-bill-wave"></i>
+            <div class="botonPerfil p-2 col-6 col-md-4 col-lg-3">
+                <button class="d-flex align-items-center flex-column py-2">
+                    <i class="fs-1 fa-solid fa-money-bill-wave"></i>
                     Mis ventas
                 </button>
             </div>
-            <div class="col">
-                <button class="icon-button">
-                    <i class="fa-solid fa-book"></i>
-                    Mis apuntes
-                </button>
-            </div>
+            <div class="botonPerfil p-2 col-6 col-md-4 col-lg-3">
+                <a th:href="@{'/misApuntes'}">
+                    <button class="d-flex align-items-center flex-column py-2">
+                        <i class="fs-1 fa-solid fa-book"></i>
+                        Mis apuntes
+                    </button>
+                </a>
+            </div> -->
         </div>
+    </div>
+    <div class="d-flex mt-5 p-2" style="background: #e3f2fd;">
+        <div class="fotoPerfil">
+            <img th:src="@{'/img/' + ${usuario.fotoPerfil}}" alt="Foto de perfil">
+        </div>
+        <div style="margin-left: 18px;" th:if="${usuario != null}">
+            <p class="font-weight-bold">Nombre: <span th:text="${usuario.apellido +', '+ usuario.nombre}"></span></p>
+            <p class="font-weight-bold">Email: <span th:text="${usuario.email}"></span></p>
+            <p class="font-weight-bold">Rol: <span th:text="${usuario.rol}"></span></p>
+            <p class="font-weight-bold">Puntos: <span th:text="${usuario.puntos}"></span></p>
+        </div>
+    </div>
+    <div class="col-12 col-md-8 col-lg-6 mt-5 mx-auto">
+        <div id="map" class="w-100 rounded-lg border border-2 border-primary shadow-lg" style="height: 350px;"></div>
     </div>
 </main>
 </body>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvZj61EiOcl1RlGGo3dt9u2OpyqqYkohk"></script>
+<script th:inline="javascript">
+    var usuario = /*[[${usuario}]]*/ null;
+        function initMap() {
+        var geocoder = new google.maps.Geocoder();
+        var lat = usuario.latitud;
+        var lng = usuario.longitud;
+
+
+        var myLatLng = {lat: lat, lng: lng};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: myLatLng,
+            disableDefaultUI: true,
+            zoomControl: true,
+            gestureHandling: 'cooperative'
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            title: 'Marcador'
+        });
+    }
+
+    // Inicializar el mapa cuando la página haya cargado
+    window.onload = function() {
+        initMap();
+    };
+
+</script>

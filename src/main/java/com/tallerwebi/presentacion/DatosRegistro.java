@@ -2,10 +2,7 @@ package com.tallerwebi.presentacion;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class DatosRegistro {
     @NotEmpty(message = "El nombre no puede estar en blanco.")
@@ -25,6 +22,10 @@ public class DatosRegistro {
     @NotBlank
     private String password;
     private MultipartFile fotoPerfil;
+    @NotNull(message = "La dirección no puede ser estar en blanco.")
+    private Double latitud;
+    @NotNull(message = "La dirección no puede ser estar en blanco.")
+    private Double longitud;
 
     public DatosRegistro(){
 
@@ -76,4 +77,21 @@ public class DatosRegistro {
     public void setFotoPerfil(MultipartFile fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
     }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
 }
