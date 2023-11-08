@@ -1,6 +1,6 @@
 package com.tallerwebi.presentacion;
 
-public class DatosPagoRespuesta {
+public class DatosPreferenciaRespuesta {
     private String id;
     public String nombreCliente;
     private String apellidoCliente;
@@ -8,7 +8,7 @@ public class DatosPagoRespuesta {
     private String fechaPago;
     public String urlCheckout;
 
-    public DatosPagoRespuesta(String id, String nombreCliente, String apellidoCliente, String telefono, String fechaPago, String urlCheckout) {
+    public DatosPreferenciaRespuesta(String id, String nombreCliente, String apellidoCliente, String telefono, String fechaPago, String urlCheckout) {
         this.id = id;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
