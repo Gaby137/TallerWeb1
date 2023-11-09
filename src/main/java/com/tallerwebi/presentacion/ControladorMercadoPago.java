@@ -23,19 +23,22 @@ public class ControladorMercadoPago {
     }
 
     @RequestMapping(path = "/crear-orden", method = RequestMethod.POST)
-    public ModelAndView crearOrden(@RequestParam("pack") String pack) {
+    public ModelAndView crearOrden(@RequestParam("pack") String pack, HttpSession session) {
         ModelMap model = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        DatosPreferenciaRespuesta responsePreferencia = servicioMercadoPago.crearPreferencia(pack);
+        if(usuario != null){
+            DatosPreferenciaRespuesta responsePreferencia = servicioMercadoPago.crearPreferencia(pack);
 
-        model.put("responsePago", responsePreferencia);
-        return new ModelAndView("redirect:"+responsePreferencia.urlCheckout, model);
+            model.put("responsePago", responsePreferencia);
+            return new ModelAndView("redirect:"+responsePreferencia.urlCheckout, model);
+        } else {
+            return new ModelAndView("redirect:/login");
+        }
     }
     @RequestMapping(path = "/packs", method = RequestMethod.GET)
-    public ModelAndView planes() {
-        ModelMap model = new ModelMap();
-        model.put("datosPago", new DatosPago());
-        return new ModelAndView("packs", model);
+    public ModelAndView packs() {
+        return new ModelAndView("packs");
     }
 
     @RequestMapping(path = "/validar-pago", method = RequestMethod.GET)
