@@ -88,6 +88,10 @@ public class ServicioUsuarioApunteResenaTest {
         when(usuarioApunteResenaMock.getApunte()).thenReturn(apunteMock);
         when(usuarioApunteResenaMock.getResena()).thenReturn(resenaMock);
 
+        List<UsuarioApunteResena> ls = new ArrayList<>();
+        ls.add(new UsuarioApunteResena(usuarioMock,resenaMock,apunteMock));
+
+        when(repositorioUsuarioApunteResenaMock.existeResenaConApunteYUsuario(10L, 1L)).thenReturn(ls);
 
         boolean result = servicioUsuarioApunteResena.registrarResena(usuarioMock, apunteMock, resenaMock);
 
