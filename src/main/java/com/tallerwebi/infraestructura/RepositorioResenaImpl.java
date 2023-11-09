@@ -33,10 +33,17 @@ public class RepositorioResenaImpl implements RepositorioResena {
 
     @Override
     public void borrar(Long id) {
-        Session session = sessionFactory.getCurrentSession();
-        Resena resena = session.get(Resena.class, id);
-        if (resena != null) {
-            session.delete(resena);
+        Session session = sessionFactory.openSession();
+
+        Resena r = (Resena) sessionFactory.getCurrentSession().createCriteria(Resena.class)
+                .add(Restrictions.eq("id", id))
+                .uniqueResult();
+
+        if (r != null) {
+            session.beginTransaction();
+            session.delete(r);
+            session.getTransaction().commit();
+            session.close();
         }
     }
 
