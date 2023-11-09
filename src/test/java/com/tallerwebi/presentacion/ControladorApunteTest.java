@@ -32,6 +32,7 @@ public class ControladorApunteTest {
     private ServicioUsuario servicioUsuarioMock;
     private ServicioUsuarioApunte servicioUsuarioApunteMock;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResenaMock;
+    private ControladorLogin controladorLogin;
     private HttpServletRequest requestMock;
     private HttpSession sessionMock;
     private BindingResult resultMock;
@@ -47,7 +48,9 @@ public class ControladorApunteTest {
         servicioUsuarioApunteResenaMock = mock(ServicioUsuarioApunteResena.class);
         servicioApunteMock = mock(ServicioApunte.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
-        controladorApunte = new ControladorApunte(servicioApunteMock, servicioUsuarioApunteMock, servicioUsuarioApunteResenaMock, servicioUsuarioMock);
+        controladorLogin = mock(ControladorLogin.class);
+
+        controladorApunte = new ControladorApunte(servicioApunteMock, servicioUsuarioApunteMock, servicioUsuarioApunteResenaMock, servicioUsuarioMock, controladorLogin);
         resultMock = mock(BindingResult.class);
     }
 
