@@ -4,7 +4,7 @@
 <main role="main" class="container">
     <div class="container">
         <h1>Formulario de Registro de Apunte</h1>
-        <form th:action="@{/subirApunte}" method="post" th:object="${datosApunte}" class="needs-validation" novalidate>
+        <form th:action="@{/subirApunte}" method="post" th:object="${datosApunte}" class="needs-validation" novalidate enctype="multipart/form-data">
             <div class="form-group">
                 <label for="nombre">Nombre del Apunte:</label>
                 <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required="required" />
@@ -23,7 +23,7 @@
 
             <div class="form-group">
                 <label for="archivo">Path del Archivo:</label>
-                <input type="text" id="archivo" th:field="*{pathArchivo}" class="form-control" required="required" />
+                <input type="file" id="archivo" accept="application/pdf" th:field="*{pathArchivo}" class="form-control" required />
             </div>
             <div th:if="${#fields.hasErrors('pathArchivo')}" class="text-danger">
                 <p th:errors="*{pathArchivo}"></p>

@@ -9,10 +9,13 @@ import com.tallerwebi.presentacion.DatosApunte;
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 public class ServicioUsuarioApunteResenaTest {
@@ -24,9 +27,11 @@ public class ServicioUsuarioApunteResenaTest {
     private ServicioUsuarioApunte servicioUsuarioApunteMock;
     private ServicioUsuario servicioUsuarioMock;
     private ServicioApunte servicioApunteMock;
+    private MockMultipartFile pdf;
 
     @BeforeEach
     public void init() {
+        pdf = mock(MockMultipartFile.class);
         repositorioUsuarioApunteResenaMock = mock(RepositorioUsuarioApunteResena.class);
         repositorioApunteMock = mock(RepositorioApunte.class);
         repositorioUsuarioApunteMock = mock(RepositorioUsuarioApunte.class);
@@ -87,7 +92,8 @@ public class ServicioUsuarioApunteResenaTest {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
 
-        when(datosApunteMock.getPathArchivo()).thenReturn("asasas.pdf");
+        when(datosApunteMock.getPathArchivo()).thenReturn(pdf);
+        when(datosApunteMock.getPathArchivo().getOriginalFilename()).thenReturn("pdf.pdf");
         when(datosApunteMock.getNombre()).thenReturn("apunte1");
         when(datosApunteMock.getDescripcion()).thenReturn("descripcion de apunte");
         when(datosApunteMock.getPrecio()).thenReturn(100);
@@ -105,7 +111,8 @@ public class ServicioUsuarioApunteResenaTest {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
 
-        when(datosApunteMock.getPathArchivo()).thenReturn("");
+        when(datosApunteMock.getPathArchivo()).thenReturn(pdf);
+        when(datosApunteMock.getPathArchivo().getOriginalFilename()).thenReturn("pdf.pdf");
         when(datosApunteMock.getNombre()).thenReturn("");
         when(datosApunteMock.getDescripcion()).thenReturn("");
         when(datosApunteMock.getPrecio()).thenReturn(100);
