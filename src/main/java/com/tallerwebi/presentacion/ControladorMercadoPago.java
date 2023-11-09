@@ -37,8 +37,14 @@ public class ControladorMercadoPago {
         }
     }
     @RequestMapping(path = "/packs", method = RequestMethod.GET)
-    public ModelAndView packs() {
-        return new ModelAndView("packs");
+    public ModelAndView packs(HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+
+        if(usuario != null){
+            return new ModelAndView("packs");
+        } else {
+            return new ModelAndView("redirect:/login");
+        }
     }
 
     @RequestMapping(path = "/validar-pago", method = RequestMethod.GET)
