@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import java.util.Date;
 
+import static junit.framework.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -111,6 +113,18 @@ public class ControladorResenaTest {
         // Verifica que la vista sea la esperada (listarResenas)
         assertEquals("redirect:/misApuntes", modelAndView.getViewName());
 
+    }
+    @Test
+    public void queSiBorroReseñaSeRedireccioneAVistaDetalle(){
+        Long idResena = 1L;
+        final Long idApunte = 4L;
+        when(sessionMock.getAttribute("idApunte")).thenReturn(idApunte);
+        doNothing().when(servicioResena).borrar(idResena);
+
+        ModelAndView modelAndView = controladorResena.borrar(4L,sessionMock);
+
+        assertEquals("success",modelAndView.getModel().get("status"));
+        Assertions.assertEquals("redirect:/detalleApunte/"+idApunte, modelAndView.getViewName());
     }
 }
 

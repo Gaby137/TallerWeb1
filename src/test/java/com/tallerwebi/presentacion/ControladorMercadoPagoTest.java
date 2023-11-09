@@ -57,7 +57,7 @@ public class ControladorMercadoPagoTest {
         DatosPreferenciaRespuesta responsePreferencia = (DatosPreferenciaRespuesta) modelAndView.getModel().get("responsePago");
 
         assertNull(responsePreferencia);
-        Assertions.assertEquals("redirect:/login", modelAndView.getViewName());
+        assertEquals("redirect:/login", modelAndView.getViewName());
     }
 
     @Test

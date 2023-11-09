@@ -9,7 +9,7 @@ public class UsuarioApunteResena {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;
 
@@ -17,7 +17,7 @@ public class UsuarioApunteResena {
     @JoinColumn(name = "resena_id", referencedColumnName = "id")
     private Resena resena;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "apunte_id", referencedColumnName = "id")
     private Apunte apunte;
     

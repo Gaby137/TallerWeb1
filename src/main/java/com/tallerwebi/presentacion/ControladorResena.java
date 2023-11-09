@@ -62,7 +62,7 @@ public class ControladorResena {
             modelo.put("id", id);
         if (resena != null) {
             if(servicioUsuarioApunteResena.registrarResena(usuario ,apunte, resena)){
-                return new ModelAndView("redirect:/misApuntes");
+                return new ModelAndView("redirect:/detalleApunte/"+id);
             }else {
                 modelo.put("error", "No puede dar mas de una reseña");
                 return new ModelAndView("formulario-alta-resena", modelo);
@@ -79,15 +79,15 @@ public class ControladorResena {
     public ModelAndView borrar(@PathVariable("id") Long id, HttpSession session) {
         ModelMap modelo = new ModelMap();
         Long idApunte = (Long) session.getAttribute("idApunte");
-        modelo.put("id", idApunte);
         try {
             servicioResena.borrar(id);
-            modelo.put("mensaje", "Reseña borrada exitosamente");
+            modelo.put("status", "success");
 
         } catch (Exception e) {
-            modelo.put("error", "Error al intentar borrar la reseña");
+            modelo.put("status", "error");
+            modelo.put("error", e);
         }
-        return new ModelAndView("redirect:/detalleApunte/{id}", modelo);
+        return new ModelAndView("redirect:/detalleApunte/"+idApunte, modelo);
     }
 
 }
