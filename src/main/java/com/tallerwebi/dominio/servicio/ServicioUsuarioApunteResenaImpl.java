@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.io.File;
 import java.util.*;
 
 
@@ -60,13 +62,29 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
     @Override
     public void registrarApunte(DatosApunte datosApunte, Usuario usuario) {
-        Apunte apunte = new Apunte(datosApunte.getPathArchivo(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
-        UsuarioApunte usuarioApunte = new UsuarioApunte();
-        usuarioApunte.setApunte(apunte);
-        usuarioApunte.setUsuario(usuario);
-        usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-        repositorioApunte.registrarApunte(apunte);
-        repositorioUsuarioApunte.registrar(usuarioApunte);
+        File uploadDirectory = new File("src/main/webapp/resources/core/pdf/");
+        if (uploadDirectory.exists()) {
+            if (datosApunte.getPathArchivo() != null){
+                File pdfFile = new File(uploadDirectory, datosApunte.getPathArchivo().getOriginalFilename());
+                try {
+                    datosApunte.getPathArchivo().transferTo(pdfFile);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+
+                Apunte apunte = new Apunte(datosApunte.getPathArchivo().getOriginalFilename(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
+
+                UsuarioApunte usuarioApunte = new UsuarioApunte();
+                usuarioApunte.setApunte(apunte);
+                usuarioApunte.setUsuario(usuario);
+                usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+                repositorioApunte.registrarApunte(apunte);
+                repositorioUsuarioApunte.registrar(usuarioApunte);
+
+            }
+        }
+
+
         List<UsuarioApunte> apuntesCreados = obtenerApuntesCreados(usuario);
         if (apuntesCreados.size() % 5 == 0) {
             darPuntosAlUsuarioPorParticipacionContinua(usuario);

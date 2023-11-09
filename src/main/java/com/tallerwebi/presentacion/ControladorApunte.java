@@ -55,8 +55,15 @@ public class ControladorApunte {
             model.put("usuario", datosApunte);
             return new ModelAndView("altaApunte", model);
         } else {
-            servicioUsuarioApunteResena.registrarApunte(datosApunte, usuario);
-            return new ModelAndView("redirect:/misApuntes");
+            try {
+                servicioUsuarioApunteResena.registrarApunte(datosApunte, usuario);
+                return new ModelAndView("redirect:/misApuntes");
+            } catch (Exception e) {
+                ModelMap model = new ModelMap();
+                model.put("usuario", datosApunte);
+                model.put("error", e.getMessage());
+                return new ModelAndView("altaApunte", model);
+            }
         }
 
     }
