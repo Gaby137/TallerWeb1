@@ -72,17 +72,17 @@ public class ControladorApunteTest {
     public void testPublicarFallo() {
         // Configuración de objetos simulados
         DatosApunte datosApunteMock = mock(DatosApunte.class);
-        datosApunteMock.setNombre(null);
         Usuario usuarioMock = mock(Usuario.class);
+
+        when(resultMock.hasErrors()).thenReturn(true);
         doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
 
         // Ejecución de la prueba
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock, resultMock, sessionMock);
 
         // Verificación
-        assertEquals("redirect:/misApuntes", modelAndView.getViewName());
+        assertEquals("altaApunte", modelAndView.getViewName());
     }
-
 
 
 }

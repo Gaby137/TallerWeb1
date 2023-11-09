@@ -9,6 +9,8 @@ import com.tallerwebi.presentacion.DatosApunte;
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.mock.web.MockMultipartFile;
 
 import javax.validation.constraints.AssertFalse;
@@ -78,9 +80,18 @@ public class ServicioUsuarioApunteResenaTest {
         Usuario usuarioMock = mock(Usuario.class);
         Resena resenaMock = mock(Resena.class);
 
+        UsuarioApunteResena usuarioApunteResenaMock= mock(UsuarioApunteResena.class);
+
         when(apunteMock.getId()).thenReturn(1L);
         when(usuarioMock.getId()).thenReturn(10L);
-        when(repositorioUsuarioApunteResenaMock.existeResenaConApunteYUsuario(10L, 1L)).thenReturn(true); // Supongamos que ya existe una reseña
+        when(usuarioApunteResenaMock.getUsuario()).thenReturn(usuarioMock);
+        when(usuarioApunteResenaMock.getApunte()).thenReturn(apunteMock);
+        when(usuarioApunteResenaMock.getResena()).thenReturn(resenaMock);
+
+        List<UsuarioApunteResena> ls = new ArrayList<>();
+        ls.add(new UsuarioApunteResena(usuarioMock,resenaMock,apunteMock));
+
+        when(repositorioUsuarioApunteResenaMock.existeResenaConApunteYUsuario(10L, 1L)).thenReturn(ls);
 
         boolean result = servicioUsuarioApunteResena.registrarResena(usuarioMock, apunteMock, resenaMock);
 
@@ -1027,6 +1038,34 @@ public class ServicioUsuarioApunteResenaTest {
             this.usuarioApunte5 = usuarioApunte5;
         }
     }
+    @Test
+    public void queNoSePuedaDarUnaResenaSiYaDioUna(){
+        //preparacion
+        Resena resenaMock1 = mock(Resena.class);
+        Apunte apunteMock1 = mock(Apunte.class);
+        Usuario usuarioMock1 = mock(Usuario.class);
+        UsuarioApunteResena usuarioApunteResena = mock(UsuarioApunteResena.class);
+
+        when(apunteMock1.getId()).thenReturn(1L);
+        when(usuarioMock1.getId()).thenReturn(1L);
+        when(usuarioApunteResena.getApunte()).thenReturn(apunteMock1);
+        when(usuarioApunteResena.getUsuario()).thenReturn(usuarioMock1);
+        when(usuarioApunteResena.getResena()).thenReturn(resenaMock1);
+
+        List<UsuarioApunteResena> ls = new ArrayList<>();
+        ls.add(new UsuarioApunteResena(usuarioMock1,resenaMock1,apunteMock1));
+
+        when(repositorioUsuarioApunteResenaMock.existeResenaConApunteYUsuario(1L, 1L)).thenReturn(ls);
+
+        //ejecucion
+        boolean respuesta = servicioUsuarioApunteResena.existeResena(1L, 1L);
+
+        //verificacion
+        assertTrue(respuesta);
+        verify(repositorioUsuarioApunteResenaMock).existeResenaConApunteYUsuario(usuarioMock1.getId(), apunteMock1.getId());
+
+    }
+
 }
 
 
