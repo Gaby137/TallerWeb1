@@ -63,7 +63,7 @@ public class RepositorioUsuarioApunteResenaTest {
 
         repositorioUsuarioApunteResena.guardar(usuarioApunteResena);
 
-        boolean existeResena = repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(usuario.getId(), apunte.getId());
+        boolean existeResena = repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(usuario.getId(), apunte.getId()).size() > 0;
 
         assertTrue(existeResena);
     }
