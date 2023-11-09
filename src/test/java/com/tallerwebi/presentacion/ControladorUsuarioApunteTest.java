@@ -31,6 +31,7 @@ public class ControladorUsuarioApunteTest {
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private HttpSession sessionMock;
     private ControladorApunte controladorApunte;
+    private ControladorLogin controladorLogin;
 
     @BeforeEach
     public void init() {
@@ -39,7 +40,9 @@ public class ControladorUsuarioApunteTest {
     servicioUsuario = mock(ServicioUsuario.class);
     servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
     servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
-    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, servicioUsuario);
+    controladorLogin = mock(ControladorLogin.class);
+
+    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, servicioUsuario, controladorLogin);
     sessionMock = mock(HttpSession.class);
     }
 

@@ -29,13 +29,15 @@ public class ControladorApunte {
     private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
+    private ControladorLogin controladorLogin;
 
     @Autowired
-    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuario servicioUsuario){
+    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuario servicioUsuario, ControladorLogin controladorLogin){
         this.servicioApunte = servicioApunte;
         this.servicioUsuario = servicioUsuario;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
+        this.controladorLogin = controladorLogin;
     }
 
     @RequestMapping(path = "/formulario-alta-apunte", method = RequestMethod.GET)
@@ -216,4 +218,23 @@ public class ControladorApunte {
             return verPerfilUsuario(vendedor.getId(), session);
         }
     }
+    @RequestMapping(path = "/comprarApunteEnElHome/{id}", method = RequestMethod.GET)
+    public ModelAndView comprarApunteEnElHome(@PathVariable("id") Long id, HttpSession session) {
+        ModelMap model = new ModelMap();
+
+        Usuario comprador = (Usuario) session.getAttribute("usuario");
+
+        Apunte apunte = servicioApunte.obtenerPorId(id);
+
+        Usuario vendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(apunte.getId());
+
+        boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
+
+        if (compraExitosa) {
+            return controladorLogin.home(session);
+        } else {
+            return controladorLogin.home(session);
+        }
+    }
+
 }
