@@ -39,7 +39,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     @Override
     public boolean registrarResena(Usuario usuario, Apunte apunte, Resena resena) {
 
-        if (repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(usuario.getId(), apunte.getId())) {
+        if (this.existeResena(usuario.getId(), apunte.getId())) {
             return false;
         } else {
 
@@ -282,7 +282,8 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     }
     @Override
     public boolean existeResena(Long idUsuario, Long idApunte) {
-        return repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(idUsuario, idApunte);
+
+        return repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(idUsuario, idApunte).size()>0;
     }
 
 }
