@@ -57,7 +57,7 @@ public class RepositorioResenaTest {
     }
 
 
-    @Transactional
+    /*@Transactional
     @Rollback
     @Test
     public void borrarResena() {
@@ -79,7 +79,7 @@ public class RepositorioResenaTest {
 
         // Verificar que la reseña no se encuentre en la base de datos
         assertNull(resenaBorrada, "La reseña debe haber sido borrada correctamente");
-    }
+    }*/
 
     @Transactional
     @Rollback

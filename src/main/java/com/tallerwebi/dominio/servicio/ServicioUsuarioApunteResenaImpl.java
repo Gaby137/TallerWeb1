@@ -115,25 +115,87 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         }
         return false;
     }
-
+    @Override
     public void darPuntosAlUsuarioPorParticipacionContinua(Usuario usuario) {
         List<Resena> resenas = obtenerResenasPorIdDeUsuario(usuario.getId());
         List<UsuarioApunte> apuntes = obtenerApuntesCreados(usuario);
 
-        int puntosApuntes = apuntes.size() / 5 * 25;
+        boolean flag10Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_10_RESENAS");
+        boolean flag20Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_20_RESENAS");
+        boolean flag30Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_30_RESENAS");
+        boolean flag40Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_40_RESENAS");
+        boolean flag50Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_50_RESENAS");
+        boolean flag100Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_100_RESENAS");
 
-        int puntosResenas = resenas.size() / 5 * 25;
-
-        int puntosTotales=puntosResenas+puntosApuntes;
-
-        if (puntosTotales > 25) {
-            puntosTotales = 25;
+        if (resenas.size() == 10 && !flag10Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_10_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 25);
         }
 
-        usuario.setPuntos(usuario.getPuntos() + puntosTotales);
+        if (resenas.size() == 20 && !flag20Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_20_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 30);
+        }
+
+        if (resenas.size() == 30 && !flag30Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_30_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 35);
+        }
+
+        if (resenas.size() == 40 && !flag40Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_40_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 40);
+        }
+
+        if (resenas.size() == 50 && !flag50Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_50_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 50);
+        }
+        if (resenas.size() == 100 && !flag100Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_100_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 100);
+        }
+
+        boolean flag10Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_10_APUNTES");
+        boolean flag20Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_20_APUNTES");
+        boolean flag30Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_30_APUNTES");
+        boolean flag40Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_40_APUNTES");
+        boolean flag50Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_50_APUNTES");
+        boolean flag100Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_100_APUNTES");
+
+        if (apuntes.size() == 10 && !flag10Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_10_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 35);
+        }
+
+        if (apuntes.size() == 20 && !flag20Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_20_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 45);
+        }
+
+        if (apuntes.size() == 30 && !flag30Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_30_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 55);
+        }
+
+        if (apuntes.size() == 40 && !flag40Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_40_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 70);
+        }
+
+        if (apuntes.size() == 50 && !flag50Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_50_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 100);
+        }
+
+        if (apuntes.size() == 100 && !flag100Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_100_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 200);
+        }
 
         servicioUsuario.actualizar(usuario);
     }
+
 
     @Override
     public List<Resena> obtenerLista(Long idApunte) {

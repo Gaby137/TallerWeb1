@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,8 +27,12 @@ public class Usuario {
     private String fotoPerfil;
     private Double latitud;
     private Double longitud;
+    @ElementCollection
+    private Set<String> flagsDeParticipacionContinua;
     private Date created_at;
     private Date updated_at;
+
+
     @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
@@ -47,6 +52,7 @@ public class Usuario {
         this.fotoPerfil = fotoPerfil;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.flagsDeParticipacionContinua = new HashSet<>();
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -175,4 +181,11 @@ public class Usuario {
         this.longitud = longitud;
     }
 
+    public Set<String> getFlagsDeParticipacionContinua() {
+        return flagsDeParticipacionContinua;
+    }
+
+    public void setFlagsDeParticipacionContinua(Set<String> flagsDeParticipacionContinua) {
+        this.flagsDeParticipacionContinua = flagsDeParticipacionContinua;
+    }
 }
