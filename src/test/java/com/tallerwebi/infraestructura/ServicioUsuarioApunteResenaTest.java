@@ -692,7 +692,6 @@ public class ServicioUsuarioApunteResenaTest {
 
     @Test
     public void queNoSePuedaDarUnaResenaSiYaDioUna(){
-        //preparacion
         Resena resenaMock1 = mock(Resena.class);
         Apunte apunteMock1 = mock(Apunte.class);
         Usuario usuarioMock1 = mock(Usuario.class);
@@ -709,10 +708,8 @@ public class ServicioUsuarioApunteResenaTest {
 
         when(repositorioUsuarioApunteResenaMock.existeResenaConApunteYUsuario(1L, 1L)).thenReturn(ls);
 
-        //ejecucion
         boolean respuesta = servicioUsuarioApunteResena.existeResena(1L, 1L);
 
-        //verificacion
         assertTrue(respuesta);
         verify(repositorioUsuarioApunteResenaMock).existeResenaConApunteYUsuario(usuarioMock1.getId(), apunteMock1.getId());
 
