@@ -196,6 +196,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         servicioUsuario.actualizar(usuario);
     }
 
+
     @Override
     public List<Resena> obtenerLista(Long idApunte) {
         return repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(idApunte);
