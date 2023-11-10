@@ -727,7 +727,6 @@ public class ServicioUsuarioApunteResenaTest {
 
 
 
-
 //METODOS PRIVADOS
 
     private static ListaDe10UsuarioApunteConSuApunte getListaDe10UsuarioApunteConSuApunte(Usuario usuario, ListaDe10Apuntes listaDe10Apuntes) {
