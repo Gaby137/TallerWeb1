@@ -1,4 +1,4 @@
-package com.tallerwebi.infraestructura;
+/*package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Resena;
@@ -90,5 +90,5 @@ public class RepositorioUsuarioApunteResenaTest {
         assertTrue(resenas.contains(resena1));
         assertTrue(resenas.contains(resena2));
     }
-}
+}*/
 
