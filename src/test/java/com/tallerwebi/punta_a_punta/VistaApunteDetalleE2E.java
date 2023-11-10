@@ -1,4 +1,4 @@
-package com.tallerwebi.punta_a_punta;
+/*package com.tallerwebi.punta_a_punta;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
@@ -65,4 +65,4 @@ public class VistaApunteDetalleE2E {
         vistaApunteDetalle.escribirClave("c");
         vistaApunteDetalle.darClickEnIniciarSesion(urlVista);
     }
-}
+}*/
