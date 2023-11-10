@@ -511,62 +511,15 @@ public class ServicioUsuarioApunteResenaTest {
 
         Assert.assertEquals(25, usuario.getPuntos());
     }
-
-
-    private static class ListaDe10Resenas {
-        public final Resena resena1;
-        public final Resena resena2;
-        public final Resena resena3;
-        public final Resena resena4;
-        public final Resena resena5;
-        public final Resena resena6;
-        public final Resena resena7;
-        public final Resena resena8;
-        public final Resena resena9;
-        public final Resena resena10;
-
-        public ListaDe10Resenas(Resena resena1, Resena resena2, Resena resena3, Resena resena4, Resena resena5, Resena resena6, Resena resena7, Resena resena8, Resena resena9, Resena resena10) {
-            this.resena1 = resena1;
-            this.resena2 = resena2;
-            this.resena3 = resena3;
-            this.resena4 = resena4;
-            this.resena5 = resena5;
-            this.resena6 = resena6;
-            this.resena7 = resena7;
-            this.resena8 = resena8;
-            this.resena9 = resena9;
-            this.resena10 = resena10;
-        }
-    }
-
     @Test
     public void darle55PuntosAlUsuarioPorHaberSubido20Resenas() {
         Usuario usuario = new Usuario();
         usuario.setFlagsDeParticipacionContinua(new HashSet<>());
 
-        Resena resena1 = new Resena();
-        Resena resena2 = new Resena();
-        Resena resena3 = new Resena();
-        Resena resena4 = new Resena();
-        Resena resena5 = new Resena();
-        Resena resena6 = new Resena();
-        Resena resena7 = new Resena();
-        Resena resena8 = new Resena();
-        Resena resena9 = new Resena();
-        Resena resena10 = new Resena();
-        Resena resena11 = new Resena();
-        Resena resena12 = new Resena();
-        Resena resena13 = new Resena();
-        Resena resena14 = new Resena();
-        Resena resena15 = new Resena();
-        Resena resena16 = new Resena();
-        Resena resena17 = new Resena();
-        Resena resena18 = new Resena();
-        Resena resena19 = new Resena();
-        Resena resena20 = new Resena();
+        ListaDe20Resenas listaDe20Resenas = getListaDe20Resenas();
 
         when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdUsuario(usuario.getId()))
-                .thenReturn(List.of(resena1, resena2, resena3, resena4, resena5, resena6, resena7, resena8, resena9, resena10));
+                .thenReturn(List.of(listaDe20Resenas.resena1, listaDe20Resenas.resena2, listaDe20Resenas.resena3, listaDe20Resenas.resena4, listaDe20Resenas.resena5, listaDe20Resenas.resena6, listaDe20Resenas.resena7, listaDe20Resenas.resena8, listaDe20Resenas.resena9, listaDe20Resenas.resena10));
 
         servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
 
@@ -575,8 +528,8 @@ public class ServicioUsuarioApunteResenaTest {
 
         when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdUsuario(usuario.getId()))
                 .thenReturn(List.of(
-                        resena1, resena2, resena3, resena4, resena5, resena6, resena7, resena8, resena9, resena10,
-                        resena11, resena12, resena13, resena14, resena15, resena16, resena17, resena18, resena19, resena20
+                        listaDe20Resenas.resena1, listaDe20Resenas.resena2, listaDe20Resenas.resena3, listaDe20Resenas.resena4, listaDe20Resenas.resena5, listaDe20Resenas.resena6, listaDe20Resenas.resena7, listaDe20Resenas.resena8, listaDe20Resenas.resena9, listaDe20Resenas.resena10,
+                        listaDe20Resenas.resena11, listaDe20Resenas.resena12, listaDe20Resenas.resena13, listaDe20Resenas.resena14, listaDe20Resenas.resena15, listaDe20Resenas.resena16, listaDe20Resenas.resena17, listaDe20Resenas.resena18, listaDe20Resenas.resena19, listaDe20Resenas.resena20
                 ));
 
         servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
@@ -588,45 +541,55 @@ public class ServicioUsuarioApunteResenaTest {
     }
 
     @Test
-    public void darle50PuntosAlUsuarioPorHaberSubido10Apuntes() {
+    public void darle35PuntosAlUsuarioPorHaberSubido10Apuntes() {
         Usuario usuario = new Usuario();
+        usuario.setFlagsDeParticipacionContinua(new HashSet<>());
 
-        Apunte apunte1 = new Apunte();
-        Apunte apunte2 = new Apunte();
-        Apunte apunte3 = new Apunte();
-        Apunte apunte4 = new Apunte();
-        Apunte apunte5 = new Apunte();
+        ListaDe10Apuntes listaDe10Apuntes = getListaDe10Apuntes();
 
-        ObtenerDe1A5UsuarioApunte obtenerDe1A5UsuarioApunte = getObtenerDe1A5UsuarioApunte(apunte1, apunte2, apunte3, apunte4, apunte5);
+        ListaDe10UsuarioApunteConSuApunte listaDe10UsuarioApunteConSuApunte = getListaDe10UsuarioApunteConSuApunte(usuario, listaDe10Apuntes);
 
         when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId()))
-                .thenReturn(List.of(obtenerDe1A5UsuarioApunte.usuarioApunte1, obtenerDe1A5UsuarioApunte.usuarioApunte2, obtenerDe1A5UsuarioApunte.usuarioApunte3, obtenerDe1A5UsuarioApunte.usuarioApunte4, obtenerDe1A5UsuarioApunte.usuarioApunte5));
+                .thenReturn(List.of(listaDe10UsuarioApunteConSuApunte.usuarioApunte1, listaDe10UsuarioApunteConSuApunte.usuarioApunte2, listaDe10UsuarioApunteConSuApunte.usuarioApunte3, listaDe10UsuarioApunteConSuApunte.usuarioApunte4, listaDe10UsuarioApunteConSuApunte.usuarioApunte5, listaDe10UsuarioApunteConSuApunte.usuarioApunte6, listaDe10UsuarioApunteConSuApunte.usuarioApunte7, listaDe10UsuarioApunteConSuApunte.usuarioApunte8, listaDe10UsuarioApunteConSuApunte.usuarioApunte9, listaDe10UsuarioApunteConSuApunte.usuarioApunte10));
 
         servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
 
-        Apunte apunte6 = new Apunte();
-        Apunte apunte7 = new Apunte();
-        Apunte apunte8 = new Apunte();
-        Apunte apunte9 = new Apunte();
-        Apunte apunte10 = new Apunte();
-
-        ObtenerDe6A10UsuarioApunte obtenerDe6A10UsuarioApunte = getObtenerDe6A10UsuarioApunte(apunte6, apunte7, apunte8, apunte9, apunte10);
-
-        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId()))
-                .thenReturn(List.of(obtenerDe6A10UsuarioApunte.usuarioApunte6, obtenerDe6A10UsuarioApunte.usuarioApunte7, obtenerDe6A10UsuarioApunte.usuarioApunte8, obtenerDe6A10UsuarioApunte.usuarioApunte9, obtenerDe6A10UsuarioApunte.usuarioApunte10));
-
-        servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
-
-        servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
-
-        Assert.assertEquals(50, usuario.getPuntos());
+        Assert.assertEquals(35, usuario.getPuntos());
     }
 
     @Test
-    public void noDarle25PuntosAlUsuarioPorHaberSubidoMenosDe5Apuntes() {
+    public void darle80PuntosAlUsuarioPorHaberSubido20Apuntes() {
         Usuario usuario = new Usuario();
+        usuario.setFlagsDeParticipacionContinua(new HashSet<>());
+
+        ListaDe20Apuntes listaDe20Apuntes = getListaDe20Apuntes();
+
+        ListaDe20UsuarioApuntesConApunte listaDe20UsuarioApuntesConApunte = getListaDe20UsuarioApuntesConApunte(usuario, listaDe20Apuntes);
+
+        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId()))
+                .thenReturn(List.of(listaDe20UsuarioApuntesConApunte.usuarioApunte1, listaDe20UsuarioApuntesConApunte.usuarioApunte2, listaDe20UsuarioApuntesConApunte.usuarioApunte3, listaDe20UsuarioApuntesConApunte.usuarioApunte4, listaDe20UsuarioApuntesConApunte.usuarioApunte5, listaDe20UsuarioApuntesConApunte.usuarioApunte6, listaDe20UsuarioApuntesConApunte.usuarioApunte7, listaDe20UsuarioApuntesConApunte.usuarioApunte8, listaDe20UsuarioApuntesConApunte.usuarioApunte9, listaDe20UsuarioApuntesConApunte.usuarioApunte10));
+
+        servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+
+        servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
+
+        when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId()))
+                .thenReturn(List.of(listaDe20UsuarioApuntesConApunte.usuarioApunte1, listaDe20UsuarioApuntesConApunte.usuarioApunte2, listaDe20UsuarioApuntesConApunte.usuarioApunte3, listaDe20UsuarioApuntesConApunte.usuarioApunte4, listaDe20UsuarioApuntesConApunte.usuarioApunte5, listaDe20UsuarioApuntesConApunte.usuarioApunte6, listaDe20UsuarioApuntesConApunte.usuarioApunte7, listaDe20UsuarioApuntesConApunte.usuarioApunte8, listaDe20UsuarioApuntesConApunte.usuarioApunte9, listaDe20UsuarioApuntesConApunte.usuarioApunte10, listaDe20UsuarioApuntesConApunte.usuarioApunte11, listaDe20UsuarioApuntesConApunte.usuarioApunte12, listaDe20UsuarioApuntesConApunte.usuarioApunte13, listaDe20UsuarioApuntesConApunte.usuarioApunte14, listaDe20UsuarioApuntesConApunte.usuarioApunte15, listaDe20UsuarioApuntesConApunte.usuarioApunte16, listaDe20UsuarioApuntesConApunte.usuarioApunte17, listaDe20UsuarioApuntesConApunte.usuarioApunte18, listaDe20UsuarioApuntesConApunte.usuarioApunte19, listaDe20UsuarioApuntesConApunte.usuarioApunte20));
+
+        servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+
+        servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
+
+        Assert.assertEquals(80, usuario.getPuntos());
+    }
+
+
+    @Test
+    public void noDarle35PuntosAlUsuarioPorHaberSubidoMenosDe5Apuntes() {
+        Usuario usuario = new Usuario();
+        usuario.setFlagsDeParticipacionContinua(new HashSet<>());
         usuario.setPuntos(0);
 
         Apunte apunte1 = new Apunte();
@@ -648,6 +611,7 @@ public class ServicioUsuarioApunteResenaTest {
     @Test
     public void noDarle25PuntosAlUsuarioPorHaberSubidoMenosDe5Resenas() {
         Usuario usuario = new Usuario();
+        usuario.setFlagsDeParticipacionContinua(new HashSet<>());
         usuario.setPuntos(0);
 
         Resena resena1 = new Resena();
@@ -725,8 +689,356 @@ public class ServicioUsuarioApunteResenaTest {
 
 
 
+//METODOS PRIVADOS
 
+    private static ListaDe10UsuarioApunteConSuApunte getListaDe10UsuarioApunteConSuApunte(Usuario usuario, ListaDe10Apuntes listaDe10Apuntes) {
+        UsuarioApunte usuarioApunte1=new UsuarioApunte(usuario, listaDe10Apuntes.apunte1);
+        usuarioApunte1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte2=new UsuarioApunte(usuario, listaDe10Apuntes.apunte2);
+        usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte3=new UsuarioApunte(usuario, listaDe10Apuntes.apunte3);
+        usuarioApunte3.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte4=new UsuarioApunte(usuario, listaDe10Apuntes.apunte4);
+        usuarioApunte4.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte5=new UsuarioApunte(usuario, listaDe10Apuntes.apunte5);
+        usuarioApunte5.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte6=new UsuarioApunte(usuario, listaDe10Apuntes.apunte6);
+        usuarioApunte6.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte7=new UsuarioApunte(usuario, listaDe10Apuntes.apunte7);
+        usuarioApunte7.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte8=new UsuarioApunte(usuario, listaDe10Apuntes.apunte8);
+        usuarioApunte8.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte9=new UsuarioApunte(usuario, listaDe10Apuntes.apunte9);
+        usuarioApunte9.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte10=new UsuarioApunte(usuario, listaDe10Apuntes.apunte10);
+        usuarioApunte10.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        ListaDe10UsuarioApunteConSuApunte listaDe10UsuarioApunteConSuApunte = new ListaDe10UsuarioApunteConSuApunte(usuarioApunte1, usuarioApunte2, usuarioApunte3, usuarioApunte4, usuarioApunte5, usuarioApunte6, usuarioApunte7, usuarioApunte8, usuarioApunte9, usuarioApunte10);
+        return listaDe10UsuarioApunteConSuApunte;
+    }
 
+    private static class ListaDe10UsuarioApunteConSuApunte {
+        public final UsuarioApunte usuarioApunte1;
+        public final UsuarioApunte usuarioApunte2;
+        public final UsuarioApunte usuarioApunte3;
+        public final UsuarioApunte usuarioApunte4;
+        public final UsuarioApunte usuarioApunte5;
+        public final UsuarioApunte usuarioApunte6;
+        public final UsuarioApunte usuarioApunte7;
+        public final UsuarioApunte usuarioApunte8;
+        public final UsuarioApunte usuarioApunte9;
+        public final UsuarioApunte usuarioApunte10;
+
+        public ListaDe10UsuarioApunteConSuApunte(UsuarioApunte usuarioApunte1, UsuarioApunte usuarioApunte2, UsuarioApunte usuarioApunte3, UsuarioApunte usuarioApunte4, UsuarioApunte usuarioApunte5, UsuarioApunte usuarioApunte6, UsuarioApunte usuarioApunte7, UsuarioApunte usuarioApunte8, UsuarioApunte usuarioApunte9, UsuarioApunte usuarioApunte10) {
+            this.usuarioApunte1 = usuarioApunte1;
+            this.usuarioApunte2 = usuarioApunte2;
+            this.usuarioApunte3 = usuarioApunte3;
+            this.usuarioApunte4 = usuarioApunte4;
+            this.usuarioApunte5 = usuarioApunte5;
+            this.usuarioApunte6 = usuarioApunte6;
+            this.usuarioApunte7 = usuarioApunte7;
+            this.usuarioApunte8 = usuarioApunte8;
+            this.usuarioApunte9 = usuarioApunte9;
+            this.usuarioApunte10 = usuarioApunte10;
+        }
+    }
+
+    private static ListaDe10Apuntes getListaDe10Apuntes() {
+        Apunte apunte1 = new Apunte();
+        Apunte apunte2 = new Apunte();
+        Apunte apunte3 = new Apunte();
+        Apunte apunte4 = new Apunte();
+        Apunte apunte5 = new Apunte();
+        Apunte apunte6 = new Apunte();
+        Apunte apunte7 = new Apunte();
+        Apunte apunte8 = new Apunte();
+        Apunte apunte9 = new Apunte();
+        Apunte apunte10 = new Apunte();
+        ListaDe10Apuntes listaDe10Apuntes = new ListaDe10Apuntes(apunte1, apunte2, apunte3, apunte4, apunte5, apunte6, apunte7, apunte8, apunte9, apunte10);
+        return listaDe10Apuntes;
+    }
+
+    private static class ListaDe10Apuntes {
+        public final Apunte apunte1;
+        public final Apunte apunte2;
+        public final Apunte apunte3;
+        public final Apunte apunte4;
+        public final Apunte apunte5;
+        public final Apunte apunte6;
+        public final Apunte apunte7;
+        public final Apunte apunte8;
+        public final Apunte apunte9;
+        public final Apunte apunte10;
+
+        public ListaDe10Apuntes(Apunte apunte1, Apunte apunte2, Apunte apunte3, Apunte apunte4, Apunte apunte5, Apunte apunte6, Apunte apunte7, Apunte apunte8, Apunte apunte9, Apunte apunte10) {
+            this.apunte1 = apunte1;
+            this.apunte2 = apunte2;
+            this.apunte3 = apunte3;
+            this.apunte4 = apunte4;
+            this.apunte5 = apunte5;
+            this.apunte6 = apunte6;
+            this.apunte7 = apunte7;
+            this.apunte8 = apunte8;
+            this.apunte9 = apunte9;
+            this.apunte10 = apunte10;
+        }
+    }
+
+    private static ListaDe20UsuarioApuntesConApunte getListaDe20UsuarioApuntesConApunte(Usuario usuario, ListaDe20Apuntes listaDe20Apuntes) {
+        UsuarioApunte usuarioApunte1=new UsuarioApunte(usuario, listaDe20Apuntes.apunte1);
+        usuarioApunte1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte2=new UsuarioApunte(usuario, listaDe20Apuntes.apunte2);
+        usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte3=new UsuarioApunte(usuario, listaDe20Apuntes.apunte3);
+        usuarioApunte3.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte4=new UsuarioApunte(usuario, listaDe20Apuntes.apunte4);
+        usuarioApunte4.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte5=new UsuarioApunte(usuario, listaDe20Apuntes.apunte5);
+        usuarioApunte5.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte6=new UsuarioApunte(usuario, listaDe20Apuntes.apunte6);
+        usuarioApunte6.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte7=new UsuarioApunte(usuario, listaDe20Apuntes.apunte7);
+        usuarioApunte7.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte8=new UsuarioApunte(usuario, listaDe20Apuntes.apunte8);
+        usuarioApunte8.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte9=new UsuarioApunte(usuario, listaDe20Apuntes.apunte9);
+        usuarioApunte9.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte10=new UsuarioApunte(usuario, listaDe20Apuntes.apunte10);
+        usuarioApunte10.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte11=new UsuarioApunte(usuario, listaDe20Apuntes.apunte11);
+        usuarioApunte11.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte12=new UsuarioApunte(usuario, listaDe20Apuntes.apunte12);
+        usuarioApunte12.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte13=new UsuarioApunte(usuario, listaDe20Apuntes.apunte13);
+        usuarioApunte13.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte14=new UsuarioApunte(usuario, listaDe20Apuntes.apunte14);
+        usuarioApunte14.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte15=new UsuarioApunte(usuario, listaDe20Apuntes.apunte15);
+        usuarioApunte15.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte16=new UsuarioApunte(usuario, listaDe20Apuntes.apunte16);
+        usuarioApunte16.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte17=new UsuarioApunte(usuario, listaDe20Apuntes.apunte17);
+        usuarioApunte17.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte18=new UsuarioApunte(usuario, listaDe20Apuntes.apunte18);
+        usuarioApunte18.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte19=new UsuarioApunte(usuario, listaDe20Apuntes.apunte19);
+        usuarioApunte19.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte20=new UsuarioApunte(usuario, listaDe20Apuntes.apunte20);
+        usuarioApunte20.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        ListaDe20UsuarioApuntesConApunte listaDe20UsuarioApuntesConApunte = new ListaDe20UsuarioApuntesConApunte(usuarioApunte1, usuarioApunte2, usuarioApunte3, usuarioApunte4, usuarioApunte5, usuarioApunte6, usuarioApunte7, usuarioApunte8, usuarioApunte9, usuarioApunte10, usuarioApunte11, usuarioApunte12, usuarioApunte13, usuarioApunte14, usuarioApunte15, usuarioApunte16, usuarioApunte17, usuarioApunte18, usuarioApunte19, usuarioApunte20);
+        return listaDe20UsuarioApuntesConApunte;
+    }
+
+    private static class ListaDe20UsuarioApuntesConApunte {
+        public final UsuarioApunte usuarioApunte1;
+        public final UsuarioApunte usuarioApunte2;
+        public final UsuarioApunte usuarioApunte3;
+        public final UsuarioApunte usuarioApunte4;
+        public final UsuarioApunte usuarioApunte5;
+        public final UsuarioApunte usuarioApunte6;
+        public final UsuarioApunte usuarioApunte7;
+        public final UsuarioApunte usuarioApunte8;
+        public final UsuarioApunte usuarioApunte9;
+        public final UsuarioApunte usuarioApunte10;
+        public final UsuarioApunte usuarioApunte11;
+        public final UsuarioApunte usuarioApunte12;
+        public final UsuarioApunte usuarioApunte13;
+        public final UsuarioApunte usuarioApunte14;
+        public final UsuarioApunte usuarioApunte15;
+        public final UsuarioApunte usuarioApunte16;
+        public final UsuarioApunte usuarioApunte17;
+        public final UsuarioApunte usuarioApunte18;
+        public final UsuarioApunte usuarioApunte19;
+        public final UsuarioApunte usuarioApunte20;
+
+        public ListaDe20UsuarioApuntesConApunte(UsuarioApunte usuarioApunte1, UsuarioApunte usuarioApunte2, UsuarioApunte usuarioApunte3, UsuarioApunte usuarioApunte4, UsuarioApunte usuarioApunte5, UsuarioApunte usuarioApunte6, UsuarioApunte usuarioApunte7, UsuarioApunte usuarioApunte8, UsuarioApunte usuarioApunte9, UsuarioApunte usuarioApunte10, UsuarioApunte usuarioApunte11, UsuarioApunte usuarioApunte12, UsuarioApunte usuarioApunte13, UsuarioApunte usuarioApunte14, UsuarioApunte usuarioApunte15, UsuarioApunte usuarioApunte16, UsuarioApunte usuarioApunte17, UsuarioApunte usuarioApunte18, UsuarioApunte usuarioApunte19, UsuarioApunte usuarioApunte20) {
+            this.usuarioApunte1 = usuarioApunte1;
+            this.usuarioApunte2 = usuarioApunte2;
+            this.usuarioApunte3 = usuarioApunte3;
+            this.usuarioApunte4 = usuarioApunte4;
+            this.usuarioApunte5 = usuarioApunte5;
+            this.usuarioApunte6 = usuarioApunte6;
+            this.usuarioApunte7 = usuarioApunte7;
+            this.usuarioApunte8 = usuarioApunte8;
+            this.usuarioApunte9 = usuarioApunte9;
+            this.usuarioApunte10 = usuarioApunte10;
+            this.usuarioApunte11 = usuarioApunte11;
+            this.usuarioApunte12 = usuarioApunte12;
+            this.usuarioApunte13 = usuarioApunte13;
+            this.usuarioApunte14 = usuarioApunte14;
+            this.usuarioApunte15 = usuarioApunte15;
+            this.usuarioApunte16 = usuarioApunte16;
+            this.usuarioApunte17 = usuarioApunte17;
+            this.usuarioApunte18 = usuarioApunte18;
+            this.usuarioApunte19 = usuarioApunte19;
+            this.usuarioApunte20 = usuarioApunte20;
+        }
+    }
+
+    private static ListaDe20Apuntes getListaDe20Apuntes() {
+        Apunte apunte1 = new Apunte();
+        Apunte apunte2 = new Apunte();
+        Apunte apunte3 = new Apunte();
+        Apunte apunte4 = new Apunte();
+        Apunte apunte5 = new Apunte();
+        Apunte apunte6 = new Apunte();
+        Apunte apunte7 = new Apunte();
+        Apunte apunte8 = new Apunte();
+        Apunte apunte9 = new Apunte();
+        Apunte apunte10 = new Apunte();
+        Apunte apunte11 = new Apunte();
+        Apunte apunte12 = new Apunte();
+        Apunte apunte13 = new Apunte();
+        Apunte apunte14 = new Apunte();
+        Apunte apunte15 = new Apunte();
+        Apunte apunte16 = new Apunte();
+        Apunte apunte17 = new Apunte();
+        Apunte apunte18 = new Apunte();
+        Apunte apunte19 = new Apunte();
+        Apunte apunte20 = new Apunte();
+        ListaDe20Apuntes listaDe20Apuntes = new ListaDe20Apuntes(apunte1, apunte2, apunte3, apunte4, apunte5, apunte6, apunte7, apunte8, apunte9, apunte10, apunte11, apunte12, apunte13, apunte14, apunte15, apunte16, apunte17, apunte18, apunte19, apunte20);
+        return listaDe20Apuntes;
+    }
+
+    private static class ListaDe20Apuntes {
+        public final Apunte apunte1;
+        public final Apunte apunte2;
+        public final Apunte apunte3;
+        public final Apunte apunte4;
+        public final Apunte apunte5;
+        public final Apunte apunte6;
+        public final Apunte apunte7;
+        public final Apunte apunte8;
+        public final Apunte apunte9;
+        public final Apunte apunte10;
+        public final Apunte apunte11;
+        public final Apunte apunte12;
+        public final Apunte apunte13;
+        public final Apunte apunte14;
+        public final Apunte apunte15;
+        public final Apunte apunte16;
+        public final Apunte apunte17;
+        public final Apunte apunte18;
+        public final Apunte apunte19;
+        public final Apunte apunte20;
+
+        public ListaDe20Apuntes(Apunte apunte1, Apunte apunte2, Apunte apunte3, Apunte apunte4, Apunte apunte5, Apunte apunte6, Apunte apunte7, Apunte apunte8, Apunte apunte9, Apunte apunte10, Apunte apunte11, Apunte apunte12, Apunte apunte13, Apunte apunte14, Apunte apunte15, Apunte apunte16, Apunte apunte17, Apunte apunte18, Apunte apunte19, Apunte apunte20) {
+            this.apunte1 = apunte1;
+            this.apunte2 = apunte2;
+            this.apunte3 = apunte3;
+            this.apunte4 = apunte4;
+            this.apunte5 = apunte5;
+            this.apunte6 = apunte6;
+            this.apunte7 = apunte7;
+            this.apunte8 = apunte8;
+            this.apunte9 = apunte9;
+            this.apunte10 = apunte10;
+            this.apunte11 = apunte11;
+            this.apunte12 = apunte12;
+            this.apunte13 = apunte13;
+            this.apunte14 = apunte14;
+            this.apunte15 = apunte15;
+            this.apunte16 = apunte16;
+            this.apunte17 = apunte17;
+            this.apunte18 = apunte18;
+            this.apunte19 = apunte19;
+            this.apunte20 = apunte20;
+        }
+    }
+    private static ListaDe20Resenas getListaDe20Resenas() {
+        Resena resena1 = new Resena();
+        Resena resena2 = new Resena();
+        Resena resena3 = new Resena();
+        Resena resena4 = new Resena();
+        Resena resena5 = new Resena();
+        Resena resena6 = new Resena();
+        Resena resena7 = new Resena();
+        Resena resena8 = new Resena();
+        Resena resena9 = new Resena();
+        Resena resena10 = new Resena();
+        Resena resena11 = new Resena();
+        Resena resena12 = new Resena();
+        Resena resena13 = new Resena();
+        Resena resena14 = new Resena();
+        Resena resena15 = new Resena();
+        Resena resena16 = new Resena();
+        Resena resena17 = new Resena();
+        Resena resena18 = new Resena();
+        Resena resena19 = new Resena();
+        Resena resena20 = new Resena();
+        ListaDe20Resenas listaDe20Resenas = new ListaDe20Resenas(resena1, resena2, resena3, resena4, resena5, resena6, resena7, resena8, resena9, resena10, resena11, resena12, resena13, resena14, resena15, resena16, resena17, resena18, resena19, resena20);
+        return listaDe20Resenas;
+    }
+
+    private static class ListaDe20Resenas {
+        public final Resena resena1;
+        public final Resena resena2;
+        public final Resena resena3;
+        public final Resena resena4;
+        public final Resena resena5;
+        public final Resena resena6;
+        public final Resena resena7;
+        public final Resena resena8;
+        public final Resena resena9;
+        public final Resena resena10;
+        public final Resena resena11;
+        public final Resena resena12;
+        public final Resena resena13;
+        public final Resena resena14;
+        public final Resena resena15;
+        public final Resena resena16;
+        public final Resena resena17;
+        public final Resena resena18;
+        public final Resena resena19;
+        public final Resena resena20;
+
+        public ListaDe20Resenas(Resena resena1, Resena resena2, Resena resena3, Resena resena4, Resena resena5, Resena resena6, Resena resena7, Resena resena8, Resena resena9, Resena resena10, Resena resena11, Resena resena12, Resena resena13, Resena resena14, Resena resena15, Resena resena16, Resena resena17, Resena resena18, Resena resena19, Resena resena20) {
+            this.resena1 = resena1;
+            this.resena2 = resena2;
+            this.resena3 = resena3;
+            this.resena4 = resena4;
+            this.resena5 = resena5;
+            this.resena6 = resena6;
+            this.resena7 = resena7;
+            this.resena8 = resena8;
+            this.resena9 = resena9;
+            this.resena10 = resena10;
+            this.resena11 = resena11;
+            this.resena12 = resena12;
+            this.resena13 = resena13;
+            this.resena14 = resena14;
+            this.resena15 = resena15;
+            this.resena16 = resena16;
+            this.resena17 = resena17;
+            this.resena18 = resena18;
+            this.resena19 = resena19;
+            this.resena20 = resena20;
+        }
+    }
+    private static class ListaDe10Resenas {
+        public final Resena resena1;
+        public final Resena resena2;
+        public final Resena resena3;
+        public final Resena resena4;
+        public final Resena resena5;
+        public final Resena resena6;
+        public final Resena resena7;
+        public final Resena resena8;
+        public final Resena resena9;
+        public final Resena resena10;
+
+        public ListaDe10Resenas(Resena resena1, Resena resena2, Resena resena3, Resena resena4, Resena resena5, Resena resena6, Resena resena7, Resena resena8, Resena resena9, Resena resena10) {
+            this.resena1 = resena1;
+            this.resena2 = resena2;
+            this.resena3 = resena3;
+            this.resena4 = resena4;
+            this.resena5 = resena5;
+            this.resena6 = resena6;
+            this.resena7 = resena7;
+            this.resena8 = resena8;
+            this.resena9 = resena9;
+            this.resena10 = resena10;
+        }
+    }
     private static ListaDe10Resenas getListaDe10Resenas() {
         Resena resena1 = new Resena();
         Resena resena2 = new Resena();
