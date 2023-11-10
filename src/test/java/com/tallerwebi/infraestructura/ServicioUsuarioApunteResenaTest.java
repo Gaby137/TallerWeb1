@@ -496,37 +496,95 @@ public class ServicioUsuarioApunteResenaTest {
     }
 
     @Test
-    public void darle50PuntosAlUsuarioPorHaberSubido10Resenas() {
+    public void darle25PuntosAlUsuarioPorHaberSubido10Resenas() {
         Usuario usuario = new Usuario();
+        usuario.setFlagsDeParticipacionContinua(new HashSet<>());
+
+        ListaDe10Resenas listaDe10Resenas = getListaDe10Resenas();
+
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdUsuario(usuario.getId()))
+                .thenReturn(List.of(listaDe10Resenas.resena1, listaDe10Resenas.resena2, listaDe10Resenas.resena3, listaDe10Resenas.resena4, listaDe10Resenas.resena5, listaDe10Resenas.resena6, listaDe10Resenas.resena7, listaDe10Resenas.resena8, listaDe10Resenas.resena9, listaDe10Resenas.resena10));
+
+        servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
+
+        servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
+
+        Assert.assertEquals(25, usuario.getPuntos());
+    }
+
+
+    private static class ListaDe10Resenas {
+        public final Resena resena1;
+        public final Resena resena2;
+        public final Resena resena3;
+        public final Resena resena4;
+        public final Resena resena5;
+        public final Resena resena6;
+        public final Resena resena7;
+        public final Resena resena8;
+        public final Resena resena9;
+        public final Resena resena10;
+
+        public ListaDe10Resenas(Resena resena1, Resena resena2, Resena resena3, Resena resena4, Resena resena5, Resena resena6, Resena resena7, Resena resena8, Resena resena9, Resena resena10) {
+            this.resena1 = resena1;
+            this.resena2 = resena2;
+            this.resena3 = resena3;
+            this.resena4 = resena4;
+            this.resena5 = resena5;
+            this.resena6 = resena6;
+            this.resena7 = resena7;
+            this.resena8 = resena8;
+            this.resena9 = resena9;
+            this.resena10 = resena10;
+        }
+    }
+
+    @Test
+    public void darle55PuntosAlUsuarioPorHaberSubido20Resenas() {
+        Usuario usuario = new Usuario();
+        usuario.setFlagsDeParticipacionContinua(new HashSet<>());
 
         Resena resena1 = new Resena();
         Resena resena2 = new Resena();
         Resena resena3 = new Resena();
         Resena resena4 = new Resena();
         Resena resena5 = new Resena();
-
-
-        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdUsuario(usuario.getId()))
-                .thenReturn(List.of(resena1, resena2, resena3, resena4, resena5));
-
-        servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
-
-        servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
-
         Resena resena6 = new Resena();
         Resena resena7 = new Resena();
         Resena resena8 = new Resena();
         Resena resena9 = new Resena();
         Resena resena10 = new Resena();
+        Resena resena11 = new Resena();
+        Resena resena12 = new Resena();
+        Resena resena13 = new Resena();
+        Resena resena14 = new Resena();
+        Resena resena15 = new Resena();
+        Resena resena16 = new Resena();
+        Resena resena17 = new Resena();
+        Resena resena18 = new Resena();
+        Resena resena19 = new Resena();
+        Resena resena20 = new Resena();
 
         when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdUsuario(usuario.getId()))
-                .thenReturn(List.of(resena6, resena7, resena8, resena9, resena10));
+                .thenReturn(List.of(resena1, resena2, resena3, resena4, resena5, resena6, resena7, resena8, resena9, resena10));
+
+        servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
+
+        servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
+        System.out.println("Banderas del Usuario: " + usuario.getFlagsDeParticipacionContinua());
+
+        when(repositorioUsuarioApunteResenaMock.obtenerResenasPorIdUsuario(usuario.getId()))
+                .thenReturn(List.of(
+                        resena1, resena2, resena3, resena4, resena5, resena6, resena7, resena8, resena9, resena10,
+                        resena11, resena12, resena13, resena14, resena15, resena16, resena17, resena18, resena19, resena20
+                ));
 
         servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
 
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
 
-        Assert.assertEquals(50, usuario.getPuntos());
+        System.out.println("Banderas del Usuario: " + usuario.getFlagsDeParticipacionContinua());
+        Assert.assertEquals(55, usuario.getPuntos());
     }
 
     @Test
@@ -576,27 +634,17 @@ public class ServicioUsuarioApunteResenaTest {
         Apunte apunte3 = new Apunte();
         Apunte apunte4 = new Apunte();
 
-        UsuarioApunte usuarioApunte1 = new UsuarioApunte();
-        usuarioApunte1.setApunte(apunte1);
-        usuarioApunte1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-        UsuarioApunte usuarioApunte2 = new UsuarioApunte();
-        usuarioApunte2.setApunte(apunte2);
-        usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-        UsuarioApunte usuarioApunte3 = new UsuarioApunte();
-        usuarioApunte3.setApunte(apunte3);
-        usuarioApunte3.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-        UsuarioApunte usuarioApunte4 = new UsuarioApunte();
-        usuarioApunte4.setApunte(apunte4);
-        usuarioApunte4.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        Obter4UsuarioApunteConTipoDeAccesoEditar obtener4UsuarioApunteConTipoDeAccesoEditar = getObter4UsuarioApunteConTipoDeAccesoEditar(apunte1, apunte2, apunte3, apunte4);
 
         when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId()))
-                .thenReturn(List.of(usuarioApunte1, usuarioApunte2, usuarioApunte3, usuarioApunte4));
+                .thenReturn(List.of(obtener4UsuarioApunteConTipoDeAccesoEditar.usuarioApunte1, obtener4UsuarioApunteConTipoDeAccesoEditar.usuarioApunte2, obtener4UsuarioApunteConTipoDeAccesoEditar.usuarioApunte3, obtener4UsuarioApunteConTipoDeAccesoEditar.usuarioApunte4));
 
         servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
         Assert.assertEquals(0, usuario.getPuntos());
     }
+
     @Test
     public void noDarle25PuntosAlUsuarioPorHaberSubidoMenosDe5Resenas() {
         Usuario usuario = new Usuario();
@@ -679,8 +727,22 @@ public class ServicioUsuarioApunteResenaTest {
 
 
 
+    private static ListaDe10Resenas getListaDe10Resenas() {
+        Resena resena1 = new Resena();
+        Resena resena2 = new Resena();
+        Resena resena3 = new Resena();
+        Resena resena4 = new Resena();
+        Resena resena5 = new Resena();
+        Resena resena6 = new Resena();
+        Resena resena7 = new Resena();
+        Resena resena8 = new Resena();
+        Resena resena9 = new Resena();
+        Resena resena10 = new Resena();
+        ListaDe10Resenas listaDe10Resenas = new ListaDe10Resenas(resena1, resena2, resena3, resena4, resena5, resena6, resena7, resena8, resena9, resena10);
+        return listaDe10Resenas;
+    }
 
-    private void calculoDePromedioDe7Apuntes(ListaDe7Apuntes listaDe7Apuntes) {
+    private void  calculoDePromedioDe7Apuntes(ListaDe7Apuntes listaDe7Apuntes) {
         servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(listaDe7Apuntes.apunte1.getId());
         servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(listaDe7Apuntes.apunte2.getId());
         servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(listaDe7Apuntes.apunte3.getId());
@@ -1026,6 +1088,36 @@ public class ServicioUsuarioApunteResenaTest {
             this.usuarioApunte4 = usuarioApunte4;
             this.usuarioApunte5 = usuarioApunte5;
         }
+    }
+    private static class Obter4UsuarioApunteConTipoDeAccesoEditar {
+        public final UsuarioApunte usuarioApunte1;
+        public final UsuarioApunte usuarioApunte2;
+        public final UsuarioApunte usuarioApunte3;
+        public final UsuarioApunte usuarioApunte4;
+
+        public Obter4UsuarioApunteConTipoDeAccesoEditar(UsuarioApunte usuarioApunte1, UsuarioApunte usuarioApunte2, UsuarioApunte usuarioApunte3, UsuarioApunte usuarioApunte4) {
+            this.usuarioApunte1 = usuarioApunte1;
+            this.usuarioApunte2 = usuarioApunte2;
+            this.usuarioApunte3 = usuarioApunte3;
+            this.usuarioApunte4 = usuarioApunte4;
+        }
+    }
+
+    private static Obter4UsuarioApunteConTipoDeAccesoEditar getObter4UsuarioApunteConTipoDeAccesoEditar(Apunte apunte1, Apunte apunte2, Apunte apunte3, Apunte apunte4) {
+        UsuarioApunte usuarioApunte1 = new UsuarioApunte();
+        usuarioApunte1.setApunte(apunte1);
+        usuarioApunte1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte2 = new UsuarioApunte();
+        usuarioApunte2.setApunte(apunte2);
+        usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte3 = new UsuarioApunte();
+        usuarioApunte3.setApunte(apunte3);
+        usuarioApunte3.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte4 = new UsuarioApunte();
+        usuarioApunte4.setApunte(apunte4);
+        usuarioApunte4.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        Obter4UsuarioApunteConTipoDeAccesoEditar obtener4UsuarioApunteConTipoDeAccesoEditar = new Obter4UsuarioApunteConTipoDeAccesoEditar(usuarioApunte1, usuarioApunte2, usuarioApunte3, usuarioApunte4);
+        return obtener4UsuarioApunteConTipoDeAccesoEditar;
     }
 }
 
