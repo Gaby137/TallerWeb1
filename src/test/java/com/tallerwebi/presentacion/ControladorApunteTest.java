@@ -71,10 +71,12 @@ public class ControladorApunteTest {
     @Test
     public void testPublicarFallo() {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
-        datosApunteMock.setNombre(null);
         Usuario usuarioMock = mock(Usuario.class);
+
+        when(resultMock.hasErrors()).thenReturn(true);
         doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock, resultMock, sessionMock);
+
 
         assertEquals("redirect:/misApuntes", modelAndView.getViewName());
     }
@@ -83,5 +85,9 @@ public class ControladorApunteTest {
     //Al comprar apunte en home que redireccione al home
     //Al comprar apunte en perfil redireccione al perfil
     //Al comprar apunte en vista apuntes que redirija a esa vista
+
+
+
+
 
 }
