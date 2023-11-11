@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <div th:insert="~{nav}"></div>
 <body>
-<p th:if="${mensaje}" style="color: greenyellow;" th:text="${mensaje}"></p>
 <div class="container">
     <div class="row">
         <div th:each="apunte : ${apuntes}" class="col">

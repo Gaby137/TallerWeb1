@@ -58,7 +58,7 @@ public class ControladorResenaTest {
         assertEquals(null, resena.getId());
     }
 
-    /*@Test
+    @Test
     void borrarResenaDeberiaLlamarMetodoBorrarDelServicio() {
         // Preparación
         Long idResenaABorrar = 1L;
@@ -74,13 +74,9 @@ public class ControladorResenaTest {
         verify(servicioResena, times(1)).borrar(idResenaABorrar);
 
         // Verificación de la vista y modelo
-        assertEquals("redirect:/detalleApunte/{id}", modelAndView.getViewName());
-        ModelMap modelMap = modelAndView.getModelMap();
-        assertTrue(modelMap.containsKey("mensaje"));
-        assertEquals("Reseña borrada exitosamente", modelMap.get("mensaje"));
-        assertFalse(modelMap.containsKey("error"));
-    }*/
-    /*@Test
+        assertEquals("redirect:/detalleApunte/1", modelAndView.getViewName());
+    }
+    @Test
     void guardarResenaDeberiaGuardarResenaYAgregarPuntos() {
         // Preparación
         Long APUNTE_ID = 1L;
@@ -111,9 +107,9 @@ public class ControladorResenaTest {
         // Verificación
 
         // Verifica que la vista sea la esperada (listarResenas)
-        assertEquals("redirect:/misApuntes", modelAndView.getViewName());
+        assertEquals("redirect:/detalleApunte/1", modelAndView.getViewName());
 
-    }*/
+    }
     @Test
     public void queSiBorroReseñaSeRedireccioneAVistaDetalle(){
         Long idResena = 1L;

@@ -26,6 +26,7 @@
                         </div>
                     </div>
                 </div>
+                <p th:if="${error}" style="color: red;" th:text="${error}"></p>
                 <div  th:if="${#lists.isEmpty(apuntes)}" class="col-12">
                     <div class="card card-home my-2">
                         <div class="card-body d-flex justify-content-center align-items-center">
