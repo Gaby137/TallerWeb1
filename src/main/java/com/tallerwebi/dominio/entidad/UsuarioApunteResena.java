@@ -29,6 +29,8 @@ public class UsuarioApunteResena {
     	this.apunte = apunte;
     }
 
+
+
     public Long getId() {
         return id;
     }

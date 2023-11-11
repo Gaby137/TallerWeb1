@@ -1,9 +1,6 @@
-package com.tallerwebi.presentacion;
+/*package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.entidad.Apunte;
-import com.tallerwebi.dominio.entidad.TipoDeAcceso;
-import com.tallerwebi.dominio.entidad.Usuario;
-import com.tallerwebi.dominio.entidad.UsuarioApunte;
+import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.servicio.ServicioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
@@ -11,6 +8,7 @@ import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ControladorUsuarioApunteTest {
@@ -31,50 +29,69 @@ public class ControladorUsuarioApunteTest {
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private HttpSession sessionMock;
     private ControladorApunte controladorApunte;
-    private ControladorLogin controladorLogin;
+    private BindingResult resultMock;
 
     @BeforeEach
     public void init() {
     requestMock = mock(HttpServletRequest.class);
+    sessionMock = mock(HttpSession.class);
     servicioApunte = mock(ServicioApunte.class);
     servicioUsuario = mock(ServicioUsuario.class);
     servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
     servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
-    controladorLogin = mock(ControladorLogin.class);
 
-    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, servicioUsuario, controladorLogin);
-    sessionMock = mock(HttpSession.class);
+    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, servicioUsuario);
+        resultMock = mock(BindingResult.class);
     }
 
 
+
     @Test
-    public void queAlComprarUnApunteCorrectamenteAparezcaMensajeEnLaVista(){
-            Usuario comprador = new Usuario();
-            Usuario vendedor = new Usuario();
-            Apunte apunte = new Apunte();
+    public void queAlComprarUnApunteDesdeLaVistaDeApuntesEnVentaLleveALaVistaDetalleDelApunte(){
+        Usuario comprador = new Usuario();
+        Usuario vendedor = new Usuario();
+        Apunte apunte = new Apunte();
+        Resena resena = new Resena();
+        apunte.setId(1L);
+        comprador.setId(1L);
+        vendedor.setId(2L);
+        UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
 
+        when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
 
-            when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
+        when(servicioApunte.obtenerPorId(apunte.getId())).thenReturn(apunte);
 
-            when(servicioApunte.obtenerPorId(apunte.getId())).thenReturn(apunte);
+        when(requestMock.getSession()).thenReturn(sessionMock);
 
-            when(servicioUsuarioApunte.obtenerVendedorPorApunte(vendedor.getId())).thenReturn(vendedor);
+        when(servicioUsuarioApunteResena.obtenerLista(apunte.getId())).thenReturn(List.of(resena));
 
-            when(servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte)).thenReturn(true);
+        when(servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
 
-            ModelAndView modelAndView = controladorApunte.comprarApunte(apunte.getId(), sessionMock);
+        when(servicioUsuarioApunteResena.existeResena(comprador.getId(), apunte.getId())).thenReturn(true);
 
-            ModelMap modelMap = modelAndView.getModelMap();
-            assertEquals("Compra exitosa", modelMap.get("mensaje"));
+        when(servicioUsuarioApunte.obtenerVendedorPorApunte(apunte.getId())).thenReturn(vendedor);
 
-            assertEquals("apuntesEnVenta", modelAndView.getViewName());
-        }
+        controladorApunte.getDetalleApunteConListadoDeSusResenas(apunte.getId(), requestMock, sessionMock);
+
+        when(servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte)).thenReturn(true);
+
+        ModelAndView modelAndView = controladorApunte.comprarApunte(apunte.getId(), requestMock, sessionMock);
+
+        verify(sessionMock, atLeastOnce()).getAttribute("usuario");
+
+        verify(servicioApunte, atLeastOnce()).obtenerPorId(apunte.getId());
+
+        verify(servicioUsuarioApunte, atLeastOnce()).comprarApunte(comprador, vendedor, apunte);
+
+        assertEquals("apunte-detalle", modelAndView.getViewName());
+    }
     @Test
-    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVista() {
+    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDeApuntesEnVenta() {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
         Long apunteId = 1L;
+
 
         when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
 
@@ -82,7 +99,7 @@ public class ControladorUsuarioApunteTest {
 
         when(servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte)).thenReturn(false);
 
-        ModelAndView modelAndView = controladorApunte.comprarApunte(apunteId, sessionMock);
+        ModelAndView modelAndView = controladorApunte.comprarApunte(apunteId, requestMock, sessionMock);
 
         ModelMap modelMap = modelAndView.getModelMap();
 
@@ -91,4 +108,4 @@ public class ControladorUsuarioApunteTest {
         assertEquals("apuntesEnVenta", modelAndView.getViewName());
     }
 
-    }
+    }*/

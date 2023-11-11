@@ -108,6 +108,8 @@ public class ControladorLogin {
         ModelMap model = new ModelMap();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
+        String errorAlComprarApunteDesdeElHome = (String) model.getAttribute("error");
+
         if (usuario != null) {
             List<Apunte> mejoresApuntes = servicioUsuarioApunteResena.obtenerMejoresApuntes(usuario.getId());
             List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
@@ -118,6 +120,9 @@ public class ControladorLogin {
             model.put("apuntes", mejoresApuntes);
             model.put("novedades", apuntesNovedades);
             model.put("title", "Apuntes Destacados");
+            if (errorAlComprarApunteDesdeElHome != null) {
+                model.addAttribute("error", errorAlComprarApunteDesdeElHome);
+            }
             return new ModelAndView("home", model);
         } else {
             return new ModelAndView("redirect:/login");

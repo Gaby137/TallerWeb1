@@ -7,7 +7,6 @@ import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,13 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class ControladorApunte {
@@ -29,15 +27,13 @@ public class ControladorApunte {
     private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
-    private ControladorLogin controladorLogin;
 
     @Autowired
-    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuario servicioUsuario, ControladorLogin controladorLogin){
+    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuario servicioUsuario){
         this.servicioApunte = servicioApunte;
         this.servicioUsuario = servicioUsuario;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
-        this.controladorLogin = controladorLogin;
     }
 
     @RequestMapping(path = "/formulario-alta-apunte", method = RequestMethod.GET)
@@ -74,16 +70,14 @@ public class ControladorApunte {
     public ModelAndView editar(@PathVariable("id") Long id) {
         ModelMap modelo = new ModelMap();
 
-        // Implementar la lógica para obtener el apunte que deseas editar
         Apunte apunteAEditar = servicioApunte.obtenerPorId(id);
 
-        // Verificar si el apunte existe
         if (apunteAEditar != null) {
             modelo.put("apunte", apunteAEditar);
             return new ModelAndView("editarApunte", modelo);
         } else {
             modelo.put("mensaje", "El apunte no se encontró");
-            return new ModelAndView("error", modelo);
+            return new ModelAndView("editarApunte", modelo);
         }
     }
 
@@ -141,7 +135,6 @@ public class ControladorApunte {
             model.put("tipoDeAcceso", false);
         }
 
-
         boolean hayResena = servicioUsuarioApunteResena.existeResena(usuario.getId(), id);
         model.put("hayResena", hayResena);
         return new ModelAndView("apunte-detalle", model);
@@ -176,7 +169,7 @@ public class ControladorApunte {
 
 
     @RequestMapping(path = "/comprarApunte/{id}", method = RequestMethod.GET)
-    public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpSession session) {
+    public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
         ModelMap model = new ModelMap();
 
         Usuario comprador = (Usuario) session.getAttribute("usuario");
@@ -188,12 +181,7 @@ public class ControladorApunte {
         boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
 
         if (compraExitosa) {
-            model.put("mensaje", "Compra exitosa");
-
-            List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(comprador.getId());
-            model.put("apuntes", apuntesDeOtrosUsuarios);
-
-            return new ModelAndView("apuntesEnVenta", model);
+            return getDetalleApunteConListadoDeSusResenas(id, request, session);
         } else {
             model.put("error", "Error al realizar la compra");
             return new ModelAndView("apuntesEnVenta", model);
@@ -201,7 +189,7 @@ public class ControladorApunte {
     }
 
     @RequestMapping(path = "/comprarApuntePorPerfil/{id}", method = RequestMethod.GET)
-    public ModelAndView comprarApuntePorPerfil(@PathVariable("id") Long id, HttpSession session) {
+    public ModelAndView comprarApuntePorPerfil(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
         ModelMap model = new ModelMap();
 
         Usuario comprador = (Usuario) session.getAttribute("usuario");
@@ -213,13 +201,14 @@ public class ControladorApunte {
         boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
 
         if (compraExitosa) {
-            return verPerfilUsuario(vendedor.getId(), session);
+            return getDetalleApunteConListadoDeSusResenas(id, request, session);
         } else {
-            return verPerfilUsuario(vendedor.getId(), session);
+            model.put("error", "Error al realizar la compra");
+            return new ModelAndView("perfilUsuario", model);
         }
     }
     @RequestMapping(path = "/comprarApunteEnElHome/{id}", method = RequestMethod.GET)
-    public ModelAndView comprarApunteEnElHome(@PathVariable("id") Long id, HttpSession session) {
+    public ModelAndView comprarApunteEnElHome(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
         ModelMap model = new ModelMap();
 
         Usuario comprador = (Usuario) session.getAttribute("usuario");
@@ -231,9 +220,10 @@ public class ControladorApunte {
         boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
 
         if (compraExitosa) {
-            return controladorLogin.home(session);
+            return getDetalleApunteConListadoDeSusResenas(id, request, session);
         } else {
-            return controladorLogin.home(session);
+            redirectAttributes.addFlashAttribute("error", "No fue posible comprar el apunte");
+            return new ModelAndView("redirect:/home");
         }
     }
 
