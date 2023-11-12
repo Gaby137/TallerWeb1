@@ -15,7 +15,8 @@ public class Materia {
     private Date updated_at;
 
     @OneToMany(mappedBy = "materia")
-    private List<Apunte> apuntes = new ArrayList<>();
+    private List<MateriaCarrera> relacionesMateriaCarrera = new ArrayList<>();
+
 
     public Materia(String descripcion, Date created_at, Date updated_at) {
         this.descripcion = descripcion;
