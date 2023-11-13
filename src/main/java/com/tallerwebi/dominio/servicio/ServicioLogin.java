@@ -11,6 +11,5 @@ public interface ServicioLogin {
 
     Usuario consultarUsuario(String email, String password);
     void registrar(DatosRegistro usuario) throws UsuarioExistente, IOException;
-
-
+    String generarCodigoCreador();
 }

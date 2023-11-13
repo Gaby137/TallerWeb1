@@ -76,8 +76,29 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         return query.getResultList();
     }
 
+    @Override
+    public boolean existeCodigoCreadorEnLaBaseDeDatos(String codigoCreador) {
+        Session session = sessionFactory.getCurrentSession();
 
+        String jpql = "SELECT u FROM Usuario u " +
+                "WHERE u.codigoDeCreador = :codigoCreador";
 
+        Query<Usuario> query = session.createQuery(jpql, Usuario.class);
+        query.setParameter("codigoCreador", codigoCreador);
 
+        return query.setMaxResults(1).uniqueResult() != null;
+    }
 
+    @Override
+    public Usuario buscarUsuarioPorCodigoCreador(String codigoCreador) {
+        Session session = sessionFactory.getCurrentSession();
+
+        String jpql = "SELECT u FROM Usuario u " +
+                "WHERE u.codigoDeCreador = :codigoCreador";
+
+        Query<Usuario> query = session.createQuery(jpql, Usuario.class);
+        query.setParameter("codigoCreador", codigoCreador);
+
+        return query.setMaxResults(1).uniqueResult();
+    }
 }

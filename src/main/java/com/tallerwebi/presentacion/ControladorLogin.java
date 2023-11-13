@@ -77,8 +77,13 @@ public class ControladorLogin {
         } else {
             ModelAndView successModelAndView = new ModelAndView("redirect:/login");
             try {
-                    servicioLogin.registrar(usuario);
-            } catch (UsuarioExistente e) {
+                servicioLogin.registrar(usuario);
+            }catch (RuntimeException e) {
+                ModelAndView model = nuevoUsuario();
+                model.addObject("usuario", usuario);
+                model.addObject("error", "El código de creador no corresponde a ningún usuario");
+                return model;
+            }catch (UsuarioExistente e) {
                 // En caso de un usuario existente, puedes agregar un mensaje de error al modelo y redirigir nuevamente al formulario
                 ModelAndView model = nuevoUsuario(); // Reutiliza el método nuevoUsuario()
                 model.addObject("usuario", usuario);
