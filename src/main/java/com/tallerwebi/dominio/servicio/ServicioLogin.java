@@ -3,7 +3,6 @@ package com.tallerwebi.dominio.servicio;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import com.tallerwebi.presentacion.DatosRegistro;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
