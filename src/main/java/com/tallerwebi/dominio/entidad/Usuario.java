@@ -27,10 +27,12 @@ public class Usuario {
     private String fotoPerfil;
     private Double latitud;
     private Double longitud;
+    private String codigoDeCreador;
     @ElementCollection
     private Set<String> flagsDeParticipacionContinua;
     private Date created_at;
     private Date updated_at;
+
 
 
     @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
@@ -41,7 +43,7 @@ public class Usuario {
 
     public Usuario(){}
 
-    public Usuario(String nombre, String apellido, int puntos, String email, String password, Rol rol, Boolean activo, String fotoPerfil, Double latitud, Double longitud, Date created_at, Date updated_at) {
+    public Usuario(String nombre, String apellido, int puntos, String email, String password, Rol rol, Boolean activo, String fotoPerfil, Double latitud, Double longitud, String codigoDeCreador, Date created_at, Date updated_at) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.puntos = puntos;
@@ -53,6 +55,7 @@ public class Usuario {
         this.latitud = latitud;
         this.longitud = longitud;
         this.flagsDeParticipacionContinua = new HashSet<>();
+        this.codigoDeCreador = codigoDeCreador;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -187,5 +190,13 @@ public class Usuario {
 
     public void setFlagsDeParticipacionContinua(Set<String> flagsDeParticipacionContinua) {
         this.flagsDeParticipacionContinua = flagsDeParticipacionContinua;
+    }
+
+    public String getCodigoDeCreador() {
+        return codigoDeCreador;
+    }
+
+    public void setCodigoDeCreador(String codigoDeCreador) {
+        this.codigoDeCreador = codigoDeCreador;
     }
 }

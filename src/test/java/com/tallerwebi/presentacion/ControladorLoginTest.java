@@ -121,13 +121,15 @@ public class ControladorLoginTest {
 	@Test
 	public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente, IOException {
 		// preparacion
-		doThrow(RuntimeException.class).when(servicioLoginMock).registrar(registroMock);
+		doThrow(IOException.class).when(servicioLoginMock).registrar(registroMock);
 
 		// ejecucion
 		ModelAndView modelAndView = controladorLogin.registrarme(registroMock, resultMock);
 
 		// validacion
 		assertThat(modelAndView.getViewName(), equalToIgnoringCase("nuevo-usuario"));
+
+		// Ajusta el mensaje de error esperado
 		assertThat(modelAndView.getModel().get("error").toString(), equalToIgnoringCase("Error al registrar el nuevo usuario"));
 	}
 }
