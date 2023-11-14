@@ -78,6 +78,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
                 usuarioApunte.setApunte(apunte);
                 usuarioApunte.setUsuario(usuario);
                 usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+                apunte.setActivo(true);
                 repositorioApunte.registrarApunte(apunte);
                 repositorioUsuarioApunte.registrar(usuarioApunte);
 

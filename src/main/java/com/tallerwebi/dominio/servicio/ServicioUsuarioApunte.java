@@ -12,5 +12,8 @@ public interface ServicioUsuarioApunte {
     List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id);
     Usuario obtenerVendedorPorApunte(Long id);
     boolean comprarApunte(Usuario comprador, Usuario vendedor, Apunte apunte);
+
+    void eliminarApunte(Long id);
+
     TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte);
 }

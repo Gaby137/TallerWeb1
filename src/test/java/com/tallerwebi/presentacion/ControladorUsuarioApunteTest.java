@@ -1,4 +1,4 @@
-/*package com.tallerwebi.presentacion;
+package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.servicio.ServicioApunte;
@@ -108,4 +108,4 @@ public class ControladorUsuarioApunteTest {
         assertEquals("apuntesEnVenta", modelAndView.getViewName());
     }
 
-    }*/
+    }

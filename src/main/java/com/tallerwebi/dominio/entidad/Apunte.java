@@ -18,6 +18,7 @@ public class Apunte {
     private Date updated_at;
     private boolean cienPuntosPorBuenPromedioDeResenas;
     private boolean sePuedeComprar;
+    private boolean activo;
 
     @OneToMany(mappedBy = "apunte")
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
@@ -138,5 +139,13 @@ public class Apunte {
 
     public void setSePuedeComprar(boolean sePuedeComprar) {
         this.sePuedeComprar = sePuedeComprar;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

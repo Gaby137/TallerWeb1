@@ -97,7 +97,7 @@ public class ControladorApunte {
     public ModelAndView eliminar(@PathVariable("id") Long id) {
         ModelMap modelo = new ModelMap();
 
-        servicioApunte.eliminar(id);
+        servicioUsuarioApunte.eliminarApunte(id);
 
         return new ModelAndView("apunteEliminado", modelo);
     }

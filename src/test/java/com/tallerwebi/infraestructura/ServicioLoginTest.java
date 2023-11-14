@@ -66,7 +66,7 @@ public class ServicioLoginTest {
     }
 
 
-    /*@Test
+   /* @Test
     public void queAlRegistrarseUnUsuarioSeLeAsigneUnCodigoDeCreador() throws IOException, UsuarioExistente {
         File uploadDirectoryMock = mock(File.class);
 

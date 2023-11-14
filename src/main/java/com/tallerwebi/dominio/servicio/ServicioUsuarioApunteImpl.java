@@ -15,11 +15,13 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
 
     private RepositorioUsuarioApunte repositorioUsuarioApunte;
     private ServicioUsuario servicioUsuario;
+    private ServicioApunte servicioApunte;
 
     @Autowired
-    public ServicioUsuarioApunteImpl(RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuario servicioUsuario) {
+    public ServicioUsuarioApunteImpl(RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
         this.repositorioUsuarioApunte = repositorioUsuarioApunte;
         this.servicioUsuario = servicioUsuario;
+        this.servicioApunte = servicioApunte;
     }
 
     @Override
@@ -67,6 +69,7 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
             vendedor.setPuntos(vendedor.getPuntos() + apunte.getPrecio());
             servicioUsuario.actualizar(comprador);
             servicioUsuario.actualizar(vendedor);
+            apunte.setActivo(true);
 
             UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
             usuarioApunte.setUsuario(comprador);
@@ -80,6 +83,31 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
 
         return false;
     }
+
+    @Override
+    public void eliminarApunte(Long id) {
+        List<UsuarioApunte> relacionesUsuarioApunte = repositorioUsuarioApunte.obtenerRelacionesUsuarioApuntePorIdDeApunte(id);
+        boolean existeRelacionLeer = false;
+
+        for (UsuarioApunte relacion : relacionesUsuarioApunte) {
+            if (relacion.getTipoDeAcceso() == TipoDeAcceso.LEER) {
+                existeRelacionLeer = true;
+                break;
+            }
+        }
+
+        Apunte apunte = servicioApunte.obtenerPorId(id);
+
+        if (existeRelacionLeer) {
+            apunte.setActivo(false);
+            servicioApunte.actualizar(apunte);
+        } else {
+            for (UsuarioApunte relacion : relacionesUsuarioApunte) {
+                repositorioUsuarioApunte.eliminarRelacionUsuarioApuntePorId(relacion.getId());
+            }
+        }
+    }
+
     @Override
     public TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte) {
         return repositorioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(idUsuario, idApunte);
