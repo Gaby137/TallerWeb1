@@ -39,6 +39,7 @@ public class DatosRegistro {
         this.fotoPerfil = fotoPerfil;
     }
 
+
     public String getNombre() {
         return nombre;
     }

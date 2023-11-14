@@ -24,6 +24,7 @@ public class ServicioLoginImpl implements ServicioLogin {
     @Value("${uploadDir}")
     private String uploadDir;
 
+
     @Autowired
     public ServicioLoginImpl(RepositorioUsuario servicioLoginDao, ServicioUsuario servicioUsuario) {
         this.servicioLoginDao = servicioLoginDao;

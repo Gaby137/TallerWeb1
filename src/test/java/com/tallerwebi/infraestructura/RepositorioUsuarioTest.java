@@ -69,5 +69,20 @@ public class RepositorioUsuarioTest {
         assertTrue(existeCodigoCreadorEnLaBaseDeDatos);
     }
 
+    @Transactional
+    @Rollback
+    @Test
+    public void buscarUsuarioPorCodigoDeCreador() {
+        Usuario usuario = new Usuario();
+        usuario.setNombre("Tomas");
+        usuario.setCodigoDeCreador("asdasd");
+
+        repositorioUsuario.guardar(usuario);
+
+        Usuario usuarioBuscado = repositorioUsuario.buscarUsuarioPorCodigoCreador("asdasd");
+
+        assertEquals(usuario.getNombre(), usuarioBuscado.getNombre());
+    }
+
 
 }
