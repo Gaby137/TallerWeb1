@@ -4,7 +4,7 @@
 <body>
         <div class="row">
             <h2>Apuntes creados por <span th:text="${usuario.nombre}"></span></h2>
-            <div th:each="apunte : ${apuntesCreados}" class="card my-2" style="width: 18rem;">
+            <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.apunte.activo}" class="card my-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 th:text="${apunte.apunte.nombre}" class="card-title"></h5>
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>

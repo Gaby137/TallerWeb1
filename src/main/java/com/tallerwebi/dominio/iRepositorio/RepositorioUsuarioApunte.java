@@ -16,5 +16,11 @@ public interface RepositorioUsuarioApunte {
 
     List<UsuarioApunte> obtenerUsuarioPorIdDeApunte(Long id);
     TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte);
+
+    void eliminarRelacionUsuarioApuntePorId(Long id);
+
+    List<UsuarioApunte> obtenerRelacionesUsuarioApuntePorIdDeApunte(Long id);
+
+    boolean existeRelacionUsuarioApunteLeerAsociadaAIdDeApunte(Long id);
 }
 

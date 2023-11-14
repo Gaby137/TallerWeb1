@@ -7,7 +7,7 @@
         <h1 class="text-center">Apuntes Destacados</h1>
         <div class="container">
             <div class="row">
-                <div th:each="apunte : ${apuntes}" class="col-12 col-sm-6 col-md-4 col-xl-3">
+                <div th:each="apunte : ${apuntes}" th:if="${apunte.activo}" class="col-12 col-sm-6 col-md-4 col-xl-3">
                     <div class="card card-home my-2">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
