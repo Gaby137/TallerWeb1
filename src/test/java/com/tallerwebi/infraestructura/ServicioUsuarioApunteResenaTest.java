@@ -222,8 +222,10 @@ public class ServicioUsuarioApunteResenaTest {
         Long usuarioId = 1L;
         Apunte apunte1 = new Apunte();
         apunte1.setId(1L);
+        apunte1.setActivo(true);
         Apunte apunte2 = new Apunte();
         apunte2.setId(2L);
+        apunte2.setActivo(true);
 
         UsuarioApunte usuarioApunte1 = new UsuarioApunte();
         usuarioApunte1.setApunte(apunte1);
@@ -779,15 +781,25 @@ public class ServicioUsuarioApunteResenaTest {
 
     private static ListaDe10Apuntes getListaDe10Apuntes() {
         Apunte apunte1 = new Apunte();
+        apunte1.setActivo(true);
         Apunte apunte2 = new Apunte();
+        apunte2.setActivo(true);
         Apunte apunte3 = new Apunte();
+        apunte3.setActivo(true);
         Apunte apunte4 = new Apunte();
+        apunte4.setActivo(true);
         Apunte apunte5 = new Apunte();
+        apunte5.setActivo(true);
         Apunte apunte6 = new Apunte();
+        apunte6.setActivo(true);
         Apunte apunte7 = new Apunte();
+        apunte7.setActivo(true);
         Apunte apunte8 = new Apunte();
+        apunte8.setActivo(true);
         Apunte apunte9 = new Apunte();
+        apunte9.setActivo(true);
         Apunte apunte10 = new Apunte();
+        apunte10.setActivo(true);
         ListaDe10Apuntes listaDe10Apuntes = new ListaDe10Apuntes(apunte1, apunte2, apunte3, apunte4, apunte5, apunte6, apunte7, apunte8, apunte9, apunte10);
         return listaDe10Apuntes;
     }
@@ -911,25 +923,45 @@ public class ServicioUsuarioApunteResenaTest {
 
     private static ListaDe20Apuntes getListaDe20Apuntes() {
         Apunte apunte1 = new Apunte();
+        apunte1.setActivo(true);
         Apunte apunte2 = new Apunte();
+        apunte2.setActivo(true);
         Apunte apunte3 = new Apunte();
+        apunte3.setActivo(true);
         Apunte apunte4 = new Apunte();
+        apunte4.setActivo(true);
         Apunte apunte5 = new Apunte();
+        apunte5.setActivo(true);
         Apunte apunte6 = new Apunte();
+        apunte6.setActivo(true);
         Apunte apunte7 = new Apunte();
+        apunte7.setActivo(true);
         Apunte apunte8 = new Apunte();
+        apunte8.setActivo(true);
         Apunte apunte9 = new Apunte();
+        apunte9.setActivo(true);
         Apunte apunte10 = new Apunte();
+        apunte10.setActivo(true);
         Apunte apunte11 = new Apunte();
+        apunte11.setActivo(true);
         Apunte apunte12 = new Apunte();
+        apunte12.setActivo(true);
         Apunte apunte13 = new Apunte();
+        apunte13.setActivo(true);
         Apunte apunte14 = new Apunte();
+        apunte14.setActivo(true);
         Apunte apunte15 = new Apunte();
+        apunte15.setActivo(true);
         Apunte apunte16 = new Apunte();
+        apunte16.setActivo(true);
         Apunte apunte17 = new Apunte();
+        apunte17.setActivo(true);
         Apunte apunte18 = new Apunte();
+        apunte18.setActivo(true);
         Apunte apunte19 = new Apunte();
+        apunte19.setActivo(true);
         Apunte apunte20 = new Apunte();
+        apunte20.setActivo(true);
         ListaDe20Apuntes listaDe20Apuntes = new ListaDe20Apuntes(apunte1, apunte2, apunte3, apunte4, apunte5, apunte6, apunte7, apunte8, apunte9, apunte10, apunte11, apunte12, apunte13, apunte14, apunte15, apunte16, apunte17, apunte18, apunte19, apunte20);
         return listaDe20Apuntes;
     }
@@ -1119,18 +1151,25 @@ public class ServicioUsuarioApunteResenaTest {
     private static ListaDe7Apuntes getListaDe7Apuntes() {
         Apunte apunte1 = new Apunte();
         apunte1.setId(1L);
+        apunte1.setActivo(true);
         Apunte apunte2 = new Apunte();
         apunte2.setId(2L);
+        apunte2.setActivo(true);
         Apunte apunte3 = new Apunte();
         apunte3.setId(3L);
+        apunte3.setActivo(true);
         Apunte apunte4 = new Apunte();
         apunte4.setId(4L);
+        apunte4.setActivo(true);
         Apunte apunte5 = new Apunte();
         apunte5.setId(5L);
+        apunte5.setActivo(true);
         Apunte apunte6 = new Apunte();
         apunte6.setId(6L);
+        apunte6.setActivo(true);
         Apunte apunte7 = new Apunte();
         apunte7.setId(7L);
+        apunte7.setActivo(true);
         ListaDe7Apuntes listaDe7Apuntes = new ListaDe7Apuntes(apunte1, apunte2, apunte3, apunte4, apunte5, apunte6, apunte7);
         return listaDe7Apuntes;
     }
