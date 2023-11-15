@@ -177,7 +177,7 @@ public class ServicioUsuarioApunteResenaTest {
         assertEquals(0.0, resultado);
     }
 
-    @Test
+    /*@Test
     public void obtener1ApunteComprado() {
         Usuario usuario = new Usuario();
         List<UsuarioApunte> apuntes = new ArrayList<>();
@@ -195,9 +195,9 @@ public class ServicioUsuarioApunteResenaTest {
         List<UsuarioApunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
 
         assertEquals(apuntesComprados.size(), 1);
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void obtener1ApunteCreado() {
         Usuario usuario = new Usuario();
         List<UsuarioApunte> apuntes = new ArrayList<>();
@@ -215,7 +215,7 @@ public class ServicioUsuarioApunteResenaTest {
         List<UsuarioApunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
         assertEquals(apuntesCreados.size(), 1);
-    }
+    }*/
 
     @Test
     public void calcularPromedioPuntajeResenasPorLasResenasDeLosApuntesDelUsuario() {

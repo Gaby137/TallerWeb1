@@ -120,11 +120,13 @@ public class ControladorLogin {
 
         if (usuario != null) {
             List<Apunte> mejoresApuntes = servicioUsuarioApunteResena.obtenerMejoresApuntes(usuario.getId());
+            List<Apunte> apuntesCompradosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
             List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
             List<Apunte> apuntesNovedades = servicioApunte.obtenerApuntesNovedades();
 
 
             model.put("usuariosDestacados", usuariosDestacados);
+            model.put("apuntesComprados", apuntesCompradosPorElUsuario);
             model.put("apuntes", mejoresApuntes);
             model.put("novedades", apuntesNovedades);
             model.put("title", "Apuntes Destacados");

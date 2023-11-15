@@ -18,11 +18,16 @@
                                 <span>
                                     <h5 th:text="${apunte.precio}" class="card-text"></h5>
                                 </span>
+                                <span>
+                                <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
+                                </span>
                             </div>
                             <div class="apunte-descrip mb-2">
                                 <p th:text="${apunte.descripcion}" class="mb-2"></p>
                             </div>
-                            <a class="btn btn-success boton-apunte" th:href="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}">Comprar</a>
+                            <span th:if="${!apuntesComprados.contains(apunte)}">
+                                <a class="btn btn-success boton-apunte" th:href="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}">Comprar</a>
+                            </span>
                         </div>
                     </div>
                 </div>

@@ -86,7 +86,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         }
 
 
-        List<UsuarioApunte> apuntesCreados = obtenerApuntesCreados(usuario);
+        List<Apunte> apuntesCreados = obtenerApuntesCreados(usuario);
         if (apuntesCreados.size() % 5 == 0) {
             darPuntosAlUsuarioPorParticipacionContinua(usuario);
         }
@@ -119,7 +119,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     @Override
     public void darPuntosAlUsuarioPorParticipacionContinua(Usuario usuario) {
         List<Resena> resenas = obtenerResenasPorIdDeUsuario(usuario.getId());
-        List<UsuarioApunte> apuntes = obtenerApuntesCreados(usuario);
+        List<Apunte> apuntes = obtenerApuntesCreados(usuario);
 
         boolean flag10Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_10_RESENAS");
         boolean flag20Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_20_RESENAS");
@@ -225,7 +225,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
     @Override
     public List<Apunte> obtenerMejoresApuntes(Long usuarioId) {
-        List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuarioId);
+        List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerTodosLosApuntes(usuarioId);
         List<Apunte> mejoresApuntes = new ArrayList<>();
 
         Comparator<Apunte> porPromedioPuntaje = (apunte1, apunte2) -> {
@@ -300,13 +300,13 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     }
 
     @Override
-    public List<UsuarioApunte> obtenerApuntesComprados(Usuario usuario) {
+    public List<Apunte> obtenerApuntesComprados(Usuario usuario) {
         List<UsuarioApunte> apuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
-        List<UsuarioApunte> apuntesComprados = new ArrayList<>();
+        List<Apunte> apuntesComprados = new ArrayList<>();
 
         for (UsuarioApunte apunte : apuntes) {
             if (apunte.getTipoDeAcceso() == TipoDeAcceso.LEER) {
-                apuntesComprados.add(apunte);
+                apuntesComprados.add(apunte.getApunte());
             }
         }
 
@@ -314,13 +314,13 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     }
 
     @Override
-    public List<UsuarioApunte> obtenerApuntesCreados(Usuario usuario) {
+    public List<Apunte> obtenerApuntesCreados(Usuario usuario) {
         List<UsuarioApunte> apuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
-        List<UsuarioApunte> apuntesCreados = new ArrayList<>();
+        List<Apunte> apuntesCreados = new ArrayList<>();
 
         for (UsuarioApunte apunte : apuntes) {
             if (apunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR) {
-                apuntesCreados.add(apunte);
+                apuntesCreados.add(apunte.getApunte());
             }
         }
 
@@ -328,26 +328,25 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     }
 
     @Override
-    public List<UsuarioApunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual) {
-        List<UsuarioApunte> apuntesCreados = obtenerApuntesCreados(usuario);
+    public List<Apunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual) {
+        List<Apunte> apuntesCreados = obtenerApuntesCreados(usuario);
 
-        List<UsuarioApunte> apuntesComprados = obtenerApuntesComprados(usuarioActual);
+        List<Apunte> apuntesComprados = obtenerApuntesComprados(usuarioActual);
 
         List<Long> idsApuntesComprados = new ArrayList<>();
-        for (UsuarioApunte apunte : apuntesComprados) {
-            idsApuntesComprados.add(apunte.getApunte().getId());
+        for (Apunte apunte : apuntesComprados) {
+            idsApuntesComprados.add(apunte.getId());
         }
 
-        for (UsuarioApunte apunte : apuntesCreados) {
-            Long apunteId = apunte.getApunte().getId();
-            apunte.getApunte().setSePuedeComprar(!idsApuntesComprados.contains(apunteId));
+        for (Apunte apunte : apuntesCreados) {
+            Long apunteId = apunte.getId();
+            apunte.setSePuedeComprar(!idsApuntesComprados.contains(apunteId));
         }
 
         return apuntesCreados;
     }
     @Override
     public boolean existeResena(Long idUsuario, Long idApunte) {
-
         return repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(idUsuario, idApunte).size()>0;
     }
 
