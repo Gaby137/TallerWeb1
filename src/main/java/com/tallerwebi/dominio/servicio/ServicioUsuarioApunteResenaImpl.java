@@ -237,9 +237,11 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         todosLosApuntes.sort(porPromedioPuntaje);
 
         for (Apunte apunte : todosLosApuntes) {
-            double promedioPuntaje = calcularPromedioPuntajeResenas(apunte.getId());
-            if (promedioPuntaje >= 4.0) {
-                mejoresApuntes.add(apunte);
+            if (apunte.isActivo()) {
+                double promedioPuntaje = calcularPromedioPuntajeResenas(apunte.getId());
+                if (promedioPuntaje >= 4.0) {
+                    mejoresApuntes.add(apunte);
+                }
             }
         }
 
@@ -262,7 +264,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         for (UsuarioApunte usuarioApunte : usuarioApuntes) {
             if (usuarioApunte.getTipoDeAcceso()==TipoDeAcceso.EDITAR) {
                 Apunte apunte = usuarioApunte.getApunte();
-                if (apunte != null) {
+                if (apunte != null && apunte.isActivo()) {
                     totalPromedioPuntajeApuntes += calcularPromedioPuntajeResenas(apunte.getId());
                     totalApuntes++;
                 }
