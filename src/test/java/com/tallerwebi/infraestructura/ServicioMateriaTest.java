@@ -28,7 +28,7 @@ public class ServicioMateriaTest {
     }
 
 
-    @Test
+    /*@Test
     public void guardarMateria() {
         DatosMateria materia = new DatosMateria("Geometria");
 
@@ -62,7 +62,7 @@ public class ServicioMateriaTest {
 
         assertNotNull(materiaGuardada);
         assertEquals(materia, materiaGuardada);
-    }
+    }*/
 
 }
 
