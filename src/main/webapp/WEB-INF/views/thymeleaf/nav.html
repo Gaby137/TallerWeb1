@@ -45,7 +45,9 @@
                     <p>Puntos disponibles <span class="fs-4" th:text="${session.usuario.puntos}"></span></p>
                     <div>
                         <p style="display: inline-block;">Codigo de creador <span class="fs-4 codigo-de-creador" th:text="${session.usuario.codigoDeCreador}" ></span></p>
-                        <button onclick="copiarAlPortapapeles()" style="display: inline-block;">Copiar Código</button>
+                        <button onclick="copiarAlPortapapeles()" style="display: inline-block;">
+                            <i class="fa-regular fa-copy" style="color: black;"></i>
+                        </button>
                     </div>
                 </li>
                 <li class="nav-item dropdown">

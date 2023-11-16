@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.iRepositorio;
 
 import com.tallerwebi.dominio.entidad.TipoDeAcceso;
+import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunte;
 
 import java.util.List;
@@ -22,5 +23,7 @@ public interface RepositorioUsuarioApunte {
     List<UsuarioApunte> obtenerRelacionesUsuarioApuntePorIdDeApunte(Long id);
 
     boolean existeRelacionUsuarioApunteLeerAsociadaAIdDeApunte(Long id);
+
+    boolean existeRelacionUsuarioApunteEditar(Long idUsuario, Long idApunte);
 }
 

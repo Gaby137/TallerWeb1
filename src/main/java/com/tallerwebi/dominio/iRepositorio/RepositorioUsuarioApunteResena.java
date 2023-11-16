@@ -11,5 +11,7 @@ public interface RepositorioUsuarioApunteResena {
     List<UsuarioApunteResena> existeResenaConApunteYUsuario(Long idUsuario,Long idApunte);
 
     List<Resena> obtenerResenasPorIdUsuario(Long idUsuario);
+
+    Resena obtenerResenaPorIdUsuarioYApunte(Long idUsuario, Long idApunte);
 }
 

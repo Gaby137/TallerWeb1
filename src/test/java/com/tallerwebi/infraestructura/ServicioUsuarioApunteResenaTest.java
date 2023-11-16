@@ -9,11 +9,8 @@ import com.tallerwebi.presentacion.DatosApunte;
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.mock.web.MockMultipartFile;
 
-import javax.validation.constraints.AssertFalse;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,9 +61,9 @@ public class ServicioUsuarioApunteResenaTest {
         Resena resenaMock2 = mock(Resena.class);
         listaResenasMock.add(resenaMock2);
 
-        when(servicioUsuarioApunteResena.obtenerLista(idApunte)).thenReturn(listaResenasMock);
+        when(servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(idApunte)).thenReturn(listaResenasMock);
 
-        List<Resena> result = servicioUsuarioApunteResena.obtenerLista(idApunte);
+        List<Resena> result = servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(idApunte);
 
         assertEquals(listaResenasMock, result);
 

@@ -19,4 +19,6 @@ public interface ServicioUsuarioApunte {
     void eliminarApunte(Long id);
 
     TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte);
+
+    boolean existeRelacionUsuarioApunteEditar(Long idUsuario, Long idApunte);
 }

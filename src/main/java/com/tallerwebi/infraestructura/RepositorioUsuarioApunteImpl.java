@@ -126,5 +126,22 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
         return query.getSingleResult();
     }
 
+    @Override
+    public boolean existeRelacionUsuarioApunteEditar(Long idUsuario, Long idApunte) {
+        Session session = sessionFactory.getCurrentSession();
+
+        String jpql = "SELECT COUNT(ua) > 0 FROM UsuarioApunte ua " +
+                "WHERE ua.usuario.id = :usuarioId " +
+                "AND ua.apunte.id = :apunteId " +
+                "AND ua.tipoDeAcceso = :tipoAcceso";
+
+        Query<Boolean> query = session.createQuery(jpql, Boolean.class);
+        query.setParameter("usuarioId", idUsuario);
+        query.setParameter("apunteId", idApunte);
+        query.setParameter("tipoAcceso", TipoDeAcceso.EDITAR);
+
+        return query.getSingleResult();
+    }
+
 
 }

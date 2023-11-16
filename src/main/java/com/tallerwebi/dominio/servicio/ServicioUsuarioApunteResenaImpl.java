@@ -199,7 +199,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
 
     @Override
-    public List<Resena> obtenerLista(Long idApunte) {
+    public List<Resena> obtenerListaDeResenasPorIdApunte(Long idApunte) {
         return repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(idApunte);
     }
     @Override
@@ -327,6 +327,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         return apuntesCreados;
     }
 
+    //SIN USO
     @Override
     public List<Apunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual) {
         List<Apunte> apuntesCreados = obtenerApuntesCreados(usuario);
@@ -348,6 +349,11 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     @Override
     public boolean existeResena(Long idUsuario, Long idApunte) {
         return repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(idUsuario, idApunte).size()>0;
+    }
+
+    @Override
+    public Resena obtenerResenasPorIdDeUsuarioYApunte(Long idUsuario, Long idApunte){
+        return repositorioUsuarioApunteResena.obtenerResenaPorIdUsuarioYApunte(idUsuario, idApunte);
     }
 
 }
