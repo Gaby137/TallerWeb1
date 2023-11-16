@@ -157,8 +157,13 @@ public class ControladorApunte {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerTodosLosApuntes(usuario.getId());
+        List<Apunte> apuntesCreadosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+        List<Apunte> apuntesCompradosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
+
 
         model.put("apuntes", todosLosApuntes);
+        model.put("apuntesCreados", apuntesCreadosPorElUsuario);
+        model.put("apuntesComprados", apuntesCompradosPorElUsuario);
         model.put("title", "Apuntes");
         return new ModelAndView("apuntesEnVenta", model);
     }
@@ -170,9 +175,11 @@ public class ControladorApunte {
 
         Usuario usuario = servicioUsuario.obtenerPorId(id);
 
-        List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreadosYVerSiPuedeComprar(usuario, usuarioActual);
+        List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+        List<Apunte> apuntesCompradosPorUsuarioActual = servicioUsuarioApunteResena.obtenerApuntesComprados(usuarioActual);
 
         model.put("apuntesCreados", apuntesCreados);
+        model.put("apuntesCompradosPorUsuarioActual", apuntesCompradosPorUsuarioActual);
         model.put("usuarioActual", usuarioActual);
         model.put("usuario", usuario);
         return new ModelAndView("perfilUsuario", model);

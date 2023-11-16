@@ -10,13 +10,10 @@
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
                     <p th:text="${apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
                     <p th:text="${apunte.precio}" class="card-text" style="height: 6rem;"></p>
-                    <div th:if="${apunte.isSePuedeComprar()}">
-                        <a class="btn btn-success" th:href="@{/comprarApuntePorPerfil/{id}(id=${apunte.id})}">Comprar</a>
-                        <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
-                    </div>
-                    <div th:unless="${apunte.isSePuedeComprar()}">
-                        <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
-                    </div>
+                    <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
+                    <span th:unless="${#lists.contains(apuntesCompradosPorUsuarioActual, apunte)}">
+                        <a class="btn btn-success boton-apunte" th:href="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}">Comprar</a>
+                    </span>
                 </div>
             </div>
             <p th:if="${error}" style="color: red;" th:text="${error}"></p>
