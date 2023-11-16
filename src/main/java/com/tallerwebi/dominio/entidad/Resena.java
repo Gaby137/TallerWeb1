@@ -5,6 +5,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Resena {
@@ -21,6 +22,14 @@ public class Resena {
 
     @OneToOne(mappedBy = "resena", cascade = CascadeType.ALL)
     private UsuarioApunteResena usuarioResenaApunte;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Resena resena = (Resena) obj;
+        return Objects.equals(id, resena.id);
+    }
 
     public Resena(int cantidadDeEstrellas) {
         this.cantidadDeEstrellas=cantidadDeEstrellas;

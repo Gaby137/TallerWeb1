@@ -180,8 +180,36 @@ public class ServicioUsuarioApunteTest {
 
         verify(repositorioUsuarioApunteMock, times(0)).eliminarRelacionUsuarioApuntePorId(usuarioApunte.getId());
         assertFalse(apunte.isActivo());;
-
     }
+
+    @Test
+    public void queAparezcanTodosLosApuntesCreadosPorElUsuarioActualYPorLosDemasUsuarios(){
+        Usuario usuario1 = new Usuario(1L);
+        Usuario usuario2 = new Usuario(2L);
+        Apunte apunte1 = new Apunte(1L);
+        Apunte apunte2 = new Apunte(2L);
+        Apunte apunte3 = new Apunte(3L);
+        Apunte apunte4 = new Apunte(4L);
+
+        UsuarioApunte usuarioApunte1 = new UsuarioApunte(usuario1, apunte1);
+        usuarioApunte1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte2 = new UsuarioApunte(usuario1, apunte2);
+        usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte3 = new UsuarioApunte(usuario2, apunte3);
+        usuarioApunte3.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte4 = new UsuarioApunte(usuario2, apunte4);
+        usuarioApunte4.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        UsuarioApunte usuarioApunte5 = new UsuarioApunte(usuario2, apunte1);
+        usuarioApunte5.setTipoDeAcceso(TipoDeAcceso.LEER);
+
+        when(repositorioUsuarioApunteMock.obtenerApuntesPorIdUsuario(1L)).thenReturn(List.of(usuarioApunte1, usuarioApunte2));
+        when(repositorioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(1L)).thenReturn(List.of(usuarioApunte3, usuarioApunte4, usuarioApunte5));
+
+        List<Apunte> apuntesEsperados = servicioUsuarioApunte.obtenerTodosLosApuntes(1L);
+
+        assertEquals(4, apuntesEsperados.size());
+}
+
 }
 
 

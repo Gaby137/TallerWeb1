@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,6 +34,7 @@ public class ControladorResenaTest {
     private ControladorResena controladorResena;
     private HttpSession sessionMock;
     private BindingResult resultMock;
+    private RedirectAttributes redirectAttributesMock;
 
     @BeforeEach
     public void init() {
@@ -45,6 +47,7 @@ public class ControladorResenaTest {
         controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena);
         sessionMock = mock(HttpSession.class);
         resultMock = mock(BindingResult.class);
+        redirectAttributesMock = mock(RedirectAttributes.class);
 
     }
 
@@ -59,19 +62,24 @@ public class ControladorResenaTest {
     }
 
     @Test
-    void borrarResenaDeberiaLlamarMetodoBorrarDelServicio() {
+    void borrarResenaDeberiaLlamarMetodoBorrarDelServicioYRedireccionarAVistaApunteDetalle() {
         // Preparación
-        Long idResenaABorrar = 1L;
+        Usuario usuario = new Usuario(1L);
+        Apunte apunte = new Apunte(1L);
+        Resena resena = new Resena();
+        resena.setId(1L);
 
         // Configuración del servicioResena para evitar excepciones
-        doNothing().when(servicioResena).borrar(idResenaABorrar);
+        doNothing().when(servicioResena).borrar(1L);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
         when(sessionMock.getAttribute("idApunte")).thenReturn(1L);
+        when(servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(usuario.getId(), 1L)).thenReturn(resena);
 
         // Ejecución
-        ModelAndView modelAndView = controladorResena.borrar(idResenaABorrar, sessionMock);
+        ModelAndView modelAndView = controladorResena.borrar(1L, sessionMock, redirectAttributesMock);
 
         // Verificación de que el servicioResena.borrar se llamó una vez con el idResenaABorrar
-        verify(servicioResena, times(1)).borrar(idResenaABorrar);
+        verify(servicioResena, times(1)).borrar(eq(1L));
 
         // Verificación de la vista y modelo
         assertEquals("redirect:/detalleApunte/1", modelAndView.getViewName());
@@ -110,18 +118,7 @@ public class ControladorResenaTest {
         assertEquals("redirect:/detalleApunte/1", modelAndView.getViewName());
 
     }
-    @Test
-    public void queSiBorroReseñaSeRedireccioneAVistaDetalle(){
-        Long idResena = 1L;
-        final Long idApunte = 4L;
-        when(sessionMock.getAttribute("idApunte")).thenReturn(idApunte);
-        doNothing().when(servicioResena).borrar(idResena);
 
-        ModelAndView modelAndView = controladorResena.borrar(4L,sessionMock);
-
-        assertEquals("success",modelAndView.getModel().get("status"));
-        Assertions.assertEquals("redirect:/detalleApunte/"+idApunte, modelAndView.getViewName());
-    }
 }
 
 

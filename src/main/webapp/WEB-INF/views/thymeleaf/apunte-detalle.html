@@ -35,7 +35,9 @@
                     <td th:text="${resena.descripcion}"></td>
                     <td th:text="${resena.cantidadDeEstrellas}"></td>
                     <td>
+                        <span th:if="${resenasDelUsuarioActual.contains(resena)}">
                         <a th:href="@{'/borrarResena/'+${resena.id}}" class="btn btn-danger m-1">Borrar</a>
+                        </span>
                     </td>
                 </tr>
             </tbody>

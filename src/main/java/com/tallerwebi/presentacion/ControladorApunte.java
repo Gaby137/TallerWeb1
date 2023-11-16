@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 public class ControladorApunte {
@@ -95,12 +94,17 @@ public class ControladorApunte {
     }
 
     @RequestMapping(path = "/eliminarApunte/{id}", method = RequestMethod.GET)
-    public ModelAndView eliminar(@PathVariable("id") Long id) {
+    public ModelAndView eliminar(@PathVariable("id") Long id, HttpSession session) {
         ModelMap modelo = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (servicioUsuarioApunte.existeRelacionUsuarioApunteEditar(usuario.getId(), id)) {
+            servicioUsuarioApunte.eliminarApunte(id);
+            return new ModelAndView("apunteEliminado", modelo);
+        }else{
+            modelo.put("error", "El usuario esta intentando borrar un apunte que no le pertenece.");
+        }
+        return new ModelAndView("redirect:/detalleApunte/" + id, modelo);
 
-        servicioUsuarioApunte.eliminarApunte(id);
-
-        return new ModelAndView("apunteEliminado", modelo);
     }
     @RequestMapping(path = "/misApuntes", method = RequestMethod.GET)
     public ModelAndView misApuntes(HttpSession session) {
@@ -129,8 +133,11 @@ public class ControladorApunte {
         model.put("apunte", apunte);
         model.put("usuarioVendedor", usuarioVendedor);
 
-        List<Resena> resenas = servicioUsuarioApunteResena.obtenerLista(id);
+        List<Resena> resenas = servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(id);
         model.put("resenas", resenas);
+
+        List<Resena> resenasDelUsuarioActual = servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
+        model.put("resenasDelUsuarioActual", resenasDelUsuarioActual);
 
         TipoDeAcceso tipoDeAcceso = servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
 

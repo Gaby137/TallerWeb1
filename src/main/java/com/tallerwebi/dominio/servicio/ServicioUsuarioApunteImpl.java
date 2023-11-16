@@ -134,5 +134,10 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
         return repositorioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(idUsuario, idApunte);
     }
 
+    @Override
+    public boolean existeRelacionUsuarioApunteEditar(Long idUsuario, Long idApunte) {
+        return repositorioUsuarioApunte.existeRelacionUsuarioApunteEditar(idUsuario, idApunte);
+    }
+
 
 }
