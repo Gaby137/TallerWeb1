@@ -59,4 +59,12 @@ public class Materia {
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
+
+    public List<MateriaCarrera> getRelacionesMateriaCarrera() {
+        return relacionesMateriaCarrera;
+    }
+
+    public void setRelacionesMateriaCarrera(List<MateriaCarrera> relacionesMateriaCarrera) {
+        this.relacionesMateriaCarrera = relacionesMateriaCarrera;
+    }
 }
