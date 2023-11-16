@@ -117,6 +117,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         return false;
     }
     @Override
+    @Transactional
     public void darPuntosAlUsuarioPorParticipacionContinua(Usuario usuario) {
         List<Resena> resenas = obtenerResenasPorIdDeUsuario(usuario.getId());
         List<Apunte> apuntes = obtenerApuntesCreados(usuario);
