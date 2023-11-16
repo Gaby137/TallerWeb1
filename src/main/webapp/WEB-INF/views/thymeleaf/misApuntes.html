@@ -17,24 +17,24 @@
         <div class="tab-pane fade d-flex flex-wrap show active" id="apuntes-comprados" role="tabpanel" aria-labelledby="apuntes-comprados-tab">
             <div th:each="apunte : ${apuntesComprados}" class="card m-2" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 th:text="${apunte.apunte.nombre}" class="card-title"></h5>
+                    <h5 th:text="${apunte.nombre}" class="card-title"></h5>
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
-                    <p th:text="${apunte.apunte.descripcion}" class="card-text"></p>
-                    <h3 th:text="${apunte.apunte.precio}" class="card-text"></h3>
-                    <a th:href="@{/detalleApunte/{id}(id=${apunte.apunte.id})}" class="btn btn-primary">Detalles</a>
+                    <p th:text="${apunte.descripcion}" class="card-text"></p>
+                    <h3 th:text="${apunte.precio}" class="card-text"></h3>
+                    <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
                 </div>
             </div>
         </div>
         <div class="tab-pane fade d-flex flex-wrap" id="mis-apuntes" role="tabpanel" aria-labelledby="mis-apuntes-tab">
-            <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.apunte.activo}" class="card m-2" style="width: 18rem;">
+            <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.activo}" class="card m-2" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 th:text="${apunte.apunte.nombre}" class="card-title"></h5>
+                    <h5 th:text="${apunte.nombre}" class="card-title"></h5>
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
-                    <p th:text="${apunte.apunte.descripcion}" class="card-text"></p>
-                    <h3 th:text="${apunte.apunte.precio}" class="card-text"></h3>
-                    <a th:href="@{/detalleApunte/{id}(id=${apunte.apunte.id})}" class="btn btn-primary">Detalles</a>
-                    <a th:href="@{/editarApunte/{id}(id=${apunte.apunte.id})}" class="btn btn-primary">Editar</a>
-                    <a th:href="@{/eliminarApunte/{id}(id=${apunte.apunte.id})}" class="btn btn-danger">Eliminar</a>
+                    <p th:text="${apunte.descripcion}" class="card-text"></p>
+                    <h3 th:text="${apunte.precio}" class="card-text"></h3>
+                    <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
+                    <a th:href="@{/editarApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Editar</a>
+                    <a th:href="@{/eliminarApunte/{id}(id=${apunte.id})}" class="btn btn-danger">Eliminar</a>
                 </div>
             </div>
         </div>

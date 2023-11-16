@@ -44,8 +44,7 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
         Session session = sessionFactory.getCurrentSession();
 
         String jpql = "SELECT ua FROM UsuarioApunte ua " +
-                "WHERE ua.usuario.id != :userId " +
-                "AND ua.apunte.id NOT IN (SELECT ua2.apunte.id FROM UsuarioApunte ua2 WHERE ua2.usuario.id = :userId)";
+                "WHERE ua.usuario.id != :userId";
 
         Query<UsuarioApunte> query = session.createQuery(jpql, UsuarioApunte.class);
         query.setParameter("userId", userId);

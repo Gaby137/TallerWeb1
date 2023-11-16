@@ -43,6 +43,27 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
         return apuntesDeOtrosUsuariosList;
     }
 
+    @Override
+    public List<Apunte> obtenerTodosLosApuntes(Long id){
+        List<UsuarioApunte> apuntesDeOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(id);
+        List<UsuarioApunte> apuntesDelUsuario = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
+
+        List<Apunte> apuntesDeTodosLosUsuarios = new ArrayList<>();
+
+        for (UsuarioApunte usuarioApunte : apuntesDeOtrosUsuarios) {
+            if (usuarioApunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR)
+                apuntesDeTodosLosUsuarios.add(usuarioApunte.getApunte());
+        }
+
+        for (UsuarioApunte usuarioApunte : apuntesDelUsuario) {
+            if (usuarioApunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR)
+                apuntesDeTodosLosUsuarios.add(usuarioApunte.getApunte());
+        }
+
+        return apuntesDeTodosLosUsuarios;
+    }
+
+
 
     @Override
     public Usuario obtenerVendedorPorApunte(Long id) {
@@ -112,4 +133,6 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
     public TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte) {
         return repositorioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(idUsuario, idApunte);
     }
+
+
 }

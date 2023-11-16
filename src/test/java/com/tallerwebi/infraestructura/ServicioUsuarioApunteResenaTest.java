@@ -192,7 +192,7 @@ public class ServicioUsuarioApunteResenaTest {
 
         when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId())).thenReturn(apuntes);
 
-        List<UsuarioApunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
+        List<Apunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
 
         assertEquals(apuntesComprados.size(), 1);
     }
@@ -212,7 +212,7 @@ public class ServicioUsuarioApunteResenaTest {
 
         when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId())).thenReturn(apuntes);
 
-        List<UsuarioApunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+        List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
         assertEquals(apuntesCreados.size(), 1);
     }
@@ -250,7 +250,7 @@ public class ServicioUsuarioApunteResenaTest {
     public void obtenerApuntesDestacadosYQueSoloTraiga6Apuntes() {
         ListaDe7Apuntes listaDe7Apuntes = getListaDe7Apuntes();
 
-        when(servicioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(anyLong())).thenReturn(Arrays.asList(
+        when(servicioUsuarioApunteMock.obtenerTodosLosApuntes(anyLong())).thenReturn(Arrays.asList(
                 listaDe7Apuntes.apunte1,
                 listaDe7Apuntes.apunte2,
                 listaDe7Apuntes.apunte3,
@@ -277,7 +277,7 @@ public class ServicioUsuarioApunteResenaTest {
     public void obtenerApuntesDestacadosEnOrden() {
         ListaDe7Apuntes listaDe7Apuntes = getListaDe7Apuntes();
 
-        when(servicioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(anyLong())).thenReturn(Arrays.asList(
+        when(servicioUsuarioApunteMock.obtenerTodosLosApuntes(anyLong())).thenReturn(Arrays.asList(
                 listaDe7Apuntes.apunte1,
                 listaDe7Apuntes.apunte2,
                 listaDe7Apuntes.apunte3,
@@ -303,7 +303,7 @@ public class ServicioUsuarioApunteResenaTest {
     public void queNoTraigaApuntesDestacadosSiNoTienenCuatroOMasDePromedio() {
         ListaDe7Apuntes listaDe7Apuntes = getListaDe7Apuntes();
 
-        when(servicioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(anyLong())).thenReturn(Arrays.asList(
+        when(servicioUsuarioApunteMock.obtenerTodosLosApuntes(anyLong())).thenReturn(Arrays.asList(
                 listaDe7Apuntes.apunte1,
                 listaDe7Apuntes.apunte2,
                 listaDe7Apuntes.apunte3,
