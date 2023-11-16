@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<div th:insert="~{nav}"></div>
+<body>
+<main role="main" class="container">
+    <div class="container">
+        <h1>Formulario de Registro de Carrera</h1>
+        <form th:action="@{/subirMateria}" method="post" th:object="${datosMateria}" class="needs-validation" novalidate enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="descripcion">Nombre de la Materia:</label>
+                <input type="text" id="descripcion" th:field="*{descripcion}" class="form-control" required="required" />
+            </div>
+            <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger">
+                <p th:errors="*{descripcion}"></p>
+            </div>
+
+            <div class="form-group">
+                <label for="idCarrera">Selecciona la Carrera:</label>
+                <select id="idCarrera" th:field="*{idCarrera}" class="form-control" required="required">
+                    <option th:each="carrera : ${listaCarreras}" th:value="${carrera.id}" th:text="${carrera.descripcion}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrar Carrera</button>
+        </form>
+    </div>
+</main>
+</body>
