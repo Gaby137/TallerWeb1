@@ -1,3 +1,9 @@
 .pdf-no-comprado {
     filter: blur(5px);
 }
+
+.boton-apunte {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}

@@ -8,6 +8,9 @@
                 <iframe th:src="@{'/pdf/' + ${apunte.pathArchivo}}"
                         frameborder="0" height="500px" width="100%"
                         th:classappend="${pdfComprado} ? '' : 'pdf-no-comprado'"></iframe>
+                <a th:unless="${#lists.contains(apuntesCompradosPorUsuarioActual, apunte)}"
+                   class="btn btn-success boton-apunte"
+                   th:href="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}">Comprar</a>
             </div>
             <div class="col-12 col-sm-3">
                 <h2 th:text="${apunte.nombre}"></h2>
@@ -22,6 +25,7 @@
         </div>
         <hr>
         <h3>Reseñas</h3>
+        <h4>Promedio de reseñas: <span th:text="${promedioDeResenas}"></span></h4>
         <table class="w-100">
             <thead>
                 <tr>

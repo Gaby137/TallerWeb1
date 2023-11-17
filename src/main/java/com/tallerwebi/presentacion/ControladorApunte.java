@@ -140,6 +140,12 @@ public class ControladorApunte {
         List<Resena> resenasDelUsuarioActual = servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
         model.put("resenasDelUsuarioActual", resenasDelUsuarioActual);
 
+        List<Apunte> apuntesCompradosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
+        model.put("apuntesCompradosPorUsuarioActual", apuntesCompradosPorElUsuario);
+
+        double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(id);
+        model.put("promedioDeResenas", promedioPuntajeResenas);
+
         TipoDeAcceso tipoDeAcceso = servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
 
         if (TipoDeAcceso.LEER.equals(tipoDeAcceso)) {
@@ -211,6 +217,26 @@ public class ControladorApunte {
         } else {
             model.put("error", "Error al realizar la compra");
             return new ModelAndView("apuntesEnVenta", model);
+        }
+    }
+
+    @RequestMapping(path = "/comprarApunteEnDetalleApunte/{id}", method = RequestMethod.GET)
+    public ModelAndView comprarApunteEnDetalleApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
+        ModelMap model = new ModelMap();
+
+        Usuario comprador = (Usuario) session.getAttribute("usuario");
+
+        Apunte apunte = servicioApunte.obtenerPorId(id);
+
+        Usuario vendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(apunte.getId());
+
+        boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
+
+        if (compraExitosa) {
+            return getDetalleApunteConListadoDeSusResenas(id, request, session);
+        } else {
+            model.put("error", "Error al realizar la compra");
+            return new ModelAndView("apunte-detalle", model);
         }
     }
 

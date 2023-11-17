@@ -110,5 +110,25 @@ public class RepositorioUsuarioApunteResenaTest {
         assertTrue(resenas.contains(resena1));
         assertTrue(resenas.contains(resena2));
     }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void obtenerResenaPorIdUsuarioYApunte() {
+        Usuario usuario = new Usuario();
+        Apunte apunte = new Apunte();
+        Resena resena = new Resena();
+
+        entityManager.persist(usuario);
+        entityManager.persist(apunte);
+        entityManager.persist(resena);
+
+        UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena(usuario, resena, apunte);
+        repositorioUsuarioApunteResena.guardar(usuarioApunteResena);
+
+        Resena resenaObtenida = repositorioUsuarioApunteResena.obtenerResenaPorIdUsuarioYApunte(usuario.getId(), apunte.getId());
+
+        assertEquals(resena, resenaObtenida);
+    }
 }
 

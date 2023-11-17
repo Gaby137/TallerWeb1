@@ -253,6 +253,69 @@ public class ControladorApunteTest {
     }
 
     @Test
+    public void queAlComprarUnApunteDesdeElApunteDetalleLleveALaVistaDetalleDelApunte(){
+        Usuario comprador = new Usuario();
+        Usuario vendedor = new Usuario();
+        Apunte apunte = new Apunte();
+        Resena resena = new Resena();
+        apunte.setId(1L);
+        comprador.setId(1L);
+        vendedor.setId(2L);
+        UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
+
+        when(servicioApunteMock.obtenerPorId(apunte.getId())).thenReturn(apunte);
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
+
+        when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
+
+        when(servicioUsuarioApunteResenaMock.existeResena(comprador.getId(), apunte.getId())).thenReturn(true);
+
+        when(servicioUsuarioApunteMock.obtenerVendedorPorApunte(apunte.getId())).thenReturn(vendedor);
+
+        controladorApunte.getDetalleApunteConListadoDeSusResenas(apunte.getId(), requestMock, sessionMock);
+
+        when(servicioUsuarioApunteMock.comprarApunte(comprador, vendedor, apunte)).thenReturn(true);
+
+        ModelAndView modelAndView = controladorApunte.comprarApunteEnDetalleApunte(apunte.getId(), requestMock, sessionMock);
+
+        verify(sessionMock, atLeastOnce()).getAttribute("usuario");
+
+        verify(servicioApunteMock, atLeastOnce()).obtenerPorId(apunte.getId());
+
+        verify(servicioUsuarioApunteMock, atLeastOnce()).comprarApunte(comprador, vendedor, apunte);
+
+        assertEquals("apunte-detalle", modelAndView.getViewName());
+    }
+
+    @Test
+    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaDetalleApunte() {
+        Usuario comprador = new Usuario();
+        Usuario vendedor = new Usuario();
+        Apunte apunte = new Apunte();
+        Long apunteId = 1L;
+
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
+
+        when(servicioApunteMock.obtenerPorId(apunteId)).thenReturn(apunte);
+
+        when(servicioUsuarioApunteMock.comprarApunte(comprador, vendedor, apunte)).thenReturn(false);
+
+        ModelAndView modelAndView = controladorApunte.comprarApunteEnDetalleApunte(apunteId, requestMock, sessionMock);
+
+        ModelMap modelMap = modelAndView.getModelMap();
+
+        assertEquals("Error al realizar la compra", modelMap.get("error"));
+
+        assertEquals("apunte-detalle", modelAndView.getViewName());
+    }
+
+    @Test
     public void queAlTenerUnaResenaHechaElBooleanDeTrue(){
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
@@ -457,6 +520,38 @@ public class ControladorApunteTest {
 
         assertFalse(pdfComprado);
 
+    }
+
+    @Test
+    public void queNoDejeEliminarApunteSiNoEsTuyo(){
+        Usuario usuario = new Usuario();
+        Apunte apunte = new Apunte();
+        apunte.setId(1L);
+        usuario.setId(1L);
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(servicioUsuarioApunteMock.existeRelacionUsuarioApunteEditar(1L, 1L)).thenReturn(false);
+        doNothing().when(servicioUsuarioApunteMock).eliminarApunte(1L);
+
+        controladorApunte.eliminar(1L, sessionMock);
+
+        verify(servicioUsuarioApunteMock, never()).eliminarApunte(1L);
+    }
+
+    @Test
+    public void queDejeEliminarApunteSiEsTuyo(){
+        Usuario usuario = new Usuario();
+        Apunte apunte = new Apunte();
+        apunte.setId(2L);
+        usuario.setId(1L);
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(servicioUsuarioApunteMock.existeRelacionUsuarioApunteEditar(1L, 2L)).thenReturn(true);
+        doNothing().when(servicioUsuarioApunteMock).eliminarApunte(2L);
+
+        controladorApunte.eliminar(2L, sessionMock);
+
+        verify(servicioUsuarioApunteMock, times(1)).eliminarApunte(2L);
     }
 
 
