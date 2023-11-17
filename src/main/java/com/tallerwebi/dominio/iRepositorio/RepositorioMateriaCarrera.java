@@ -9,6 +9,7 @@ import java.util.List;
 public interface RepositorioMateriaCarrera {
 
     void registrar(MateriaCarrera materiaCarrera);
+    List<MateriaCarrera> obtenerTodasLasMaterias();
 
 }
 

@@ -31,6 +31,7 @@ public class ServicioUsuarioApunteResenaTest {
     private ServicioUsuario servicioUsuarioMock;
     private ServicioApunte servicioApunteMock;
     private MockMultipartFile pdf;
+    private ServicioAdministrador servicioAdministradorMock;
 
     @BeforeEach
     public void init() {
@@ -41,6 +42,7 @@ public class ServicioUsuarioApunteResenaTest {
         servicioUsuarioApunteMock = mock(ServicioUsuarioApunte.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioApunteMock = mock(ServicioApunte.class);
+        servicioAdministradorMock = mock(ServicioAdministrador.class);
 
         servicioUsuarioApunteResena = new ServicioUsuarioApunteResenaImpl(
                 repositorioUsuarioApunteResenaMock,
@@ -48,7 +50,8 @@ public class ServicioUsuarioApunteResenaTest {
                 repositorioUsuarioApunteMock,
                 servicioUsuarioApunteMock,
                 servicioUsuarioMock,
-                servicioApunteMock
+                servicioApunteMock,
+                servicioAdministradorMock
         );
     }
 

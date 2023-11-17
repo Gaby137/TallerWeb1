@@ -1,10 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.*;
-import com.tallerwebi.dominio.servicio.ServicioApunte;
-import com.tallerwebi.dominio.servicio.ServicioUsuario;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
+import com.tallerwebi.dominio.servicio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ModelMap;
@@ -30,6 +27,7 @@ public class ControladorUsuarioApunteTest {
     private HttpSession sessionMock;
     private ControladorApunte controladorApunte;
     private BindingResult resultMock;
+    private ServicioAdministrador servicioAdministrador;
 
     @BeforeEach
     public void init() {
@@ -39,8 +37,10 @@ public class ControladorUsuarioApunteTest {
     servicioUsuario = mock(ServicioUsuario.class);
     servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
     servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
+    servicioAdministrador = mock(ServicioAdministrador.class);
 
-    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, servicioUsuario);
+
+    controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, servicioUsuario, servicioAdministrador);
         resultMock = mock(BindingResult.class);
     }
 

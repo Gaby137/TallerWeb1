@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,9 +15,11 @@ public class Materia {
     private String descripcion;
     private Date created_at;
     private Date updated_at;
-
-    @OneToMany(mappedBy = "materia")
+    @JsonIgnore
+    @OneToMany(mappedBy = "materia", fetch = FetchType.EAGER)
     private List<MateriaCarrera> relacionesMateriaCarrera = new ArrayList<>();
+    @OneToMany(mappedBy = "materia")
+    private List<Apunte> apuntes = new ArrayList<>();
 
 
     public Materia(String descripcion, Date created_at, Date updated_at) {

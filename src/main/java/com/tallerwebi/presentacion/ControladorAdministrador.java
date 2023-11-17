@@ -7,9 +7,12 @@ import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.servicio.ServicioAdministrador;
 import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -79,7 +82,7 @@ public class ControladorAdministrador {
 
         if (usuario != null) {
             if (usuario.getRol().equals(Rol.ADMIN)){
-                List<Carrera> listado = servicioAdministrador.listado();
+                List<Carrera> listado = servicioAdministrador.listadoCarreras();
                 modelo.put("listaCarreras", listado);
                 modelo.put("datosMateria", new DatosMateria());
                 return new ModelAndView("altaMateria", modelo);
@@ -112,6 +115,12 @@ public class ControladorAdministrador {
             }
         }
 
+    }
+    @RequestMapping(path = "/materiasPorCarrera/{idCarrera}", method = RequestMethod.GET)
+    public ResponseEntity<List<Materia>> obtenerMateriasPorCarrera(@PathVariable("idCarrera") Long idCarrera) {
+        // Lógica para obtener las materias asociadas a la carrera con idCarrera
+        List<Materia> materias = servicioAdministrador.obtenerMateriasPorCarrera(idCarrera);
+        return ResponseEntity.ok(materias);
     }
 
 
