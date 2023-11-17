@@ -15,7 +15,7 @@ public interface ServicioUsuarioApunteResena {
 
     void darPuntosAlUsuarioPorParticipacionContinua(Usuario usuario);
 
-    List<Resena> obtenerLista(Long idApunte);
+    List<Resena> obtenerListaDeResenasPorIdApunte(Long idApunte);
 
     List<Resena> obtenerResenasPorIdDeUsuario(Long idUsuario);
 
@@ -23,8 +23,10 @@ public interface ServicioUsuarioApunteResena {
     double calcularPromedioPuntajeResenasPorUsuario(Long usuarioId);
     List<Apunte> obtenerMejoresApuntes(Long usuarioId);
     List<Usuario> obtenerUsuariosDestacados(Long usuarioId);
-    List<UsuarioApunte> obtenerApuntesComprados(Usuario usuario);
-    List<UsuarioApunte> obtenerApuntesCreados(Usuario usuario);
-    List<UsuarioApunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual);
+    List<Apunte> obtenerApuntesComprados(Usuario usuario);
+    List<Apunte> obtenerApuntesCreados(Usuario usuario);
+    List<Apunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual);
     boolean existeResena(Long idUsuario, Long idApunte);
+
+    Resena obtenerResenasPorIdDeUsuarioYApunte(Long idUsuario, Long idApunte);
 }

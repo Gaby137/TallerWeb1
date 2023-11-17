@@ -44,8 +44,7 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
         Session session = sessionFactory.getCurrentSession();
 
         String jpql = "SELECT ua FROM UsuarioApunte ua " +
-                "WHERE ua.usuario.id != :userId " +
-                "AND ua.apunte.id NOT IN (SELECT ua2.apunte.id FROM UsuarioApunte ua2 WHERE ua2.usuario.id = :userId)";
+                "WHERE ua.usuario.id != :userId";
 
         Query<UsuarioApunte> query = session.createQuery(jpql, UsuarioApunte.class);
         query.setParameter("userId", userId);
@@ -123,6 +122,23 @@ public class RepositorioUsuarioApunteImpl implements RepositorioUsuarioApunte {
         Query<Boolean> query = session.createQuery(jpql, Boolean.class);
         query.setParameter("apunteId", id);
         query.setParameter("tipoAcceso", TipoDeAcceso.LEER);
+
+        return query.getSingleResult();
+    }
+
+    @Override
+    public boolean existeRelacionUsuarioApunteEditar(Long idUsuario, Long idApunte) {
+        Session session = sessionFactory.getCurrentSession();
+
+        String jpql = "SELECT COUNT(ua) > 0 FROM UsuarioApunte ua " +
+                "WHERE ua.usuario.id = :usuarioId " +
+                "AND ua.apunte.id = :apunteId " +
+                "AND ua.tipoDeAcceso = :tipoAcceso";
+
+        Query<Boolean> query = session.createQuery(jpql, Boolean.class);
+        query.setParameter("usuarioId", idUsuario);
+        query.setParameter("apunteId", idApunte);
+        query.setParameter("tipoAcceso", TipoDeAcceso.EDITAR);
 
         return query.getSingleResult();
     }

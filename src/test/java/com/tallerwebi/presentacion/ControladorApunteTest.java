@@ -17,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ControladorApunteTest {
@@ -88,7 +86,7 @@ public class ControladorApunteTest {
 
         when(requestMock.getSession()).thenReturn(sessionMock);
 
-        when(servicioUsuarioApunteResenaMock.obtenerLista(apunte.getId())).thenReturn(List.of(resena));
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
 
         when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
 
@@ -149,7 +147,7 @@ public class ControladorApunteTest {
 
         when(requestMock.getSession()).thenReturn(sessionMock);
 
-        when(servicioUsuarioApunteResenaMock.obtenerLista(apunte.getId())).thenReturn(List.of(resena));
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
 
         when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
 
@@ -212,7 +210,7 @@ public class ControladorApunteTest {
 
         when(requestMock.getSession()).thenReturn(sessionMock);
 
-        when(servicioUsuarioApunteResenaMock.obtenerLista(apunte.getId())).thenReturn(List.of(resena));
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
 
         when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
 
@@ -270,7 +268,7 @@ public class ControladorApunteTest {
 
         when(requestMock.getSession()).thenReturn(sessionMock);
 
-        when(servicioUsuarioApunteResenaMock.obtenerLista(apunte.getId())).thenReturn(List.of(resena));
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
 
         when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
 
@@ -299,7 +297,7 @@ public class ControladorApunteTest {
 
         when(requestMock.getSession()).thenReturn(sessionMock);
 
-        when(servicioUsuarioApunteResenaMock.obtenerLista(apunte.getId())).thenReturn(List.of(resena));
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
 
         when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
 
@@ -328,7 +326,7 @@ public class ControladorApunteTest {
 
         when(requestMock.getSession()).thenReturn(sessionMock);
 
-        when(servicioUsuarioApunteResenaMock.obtenerLista(apunte.getId())).thenReturn(List.of(resena));
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
 
         when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.EDITAR);
 
@@ -358,7 +356,7 @@ public class ControladorApunteTest {
 
         when(requestMock.getSession()).thenReturn(sessionMock);
 
-        when(servicioUsuarioApunteResenaMock.obtenerLista(apunte.getId())).thenReturn(List.of(resena));
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
 
         when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
 
@@ -369,6 +367,95 @@ public class ControladorApunteTest {
         Boolean tipoDeAcceso = (Boolean) modelAndView.getModelMap().get("tipoDeAcceso");
 
         assertTrue(tipoDeAcceso);
+
+    }
+    @Test
+    public void queElPdfCompradoDeTrueSiElTipoDeAccesoEsLeer(){
+        Usuario comprador = new Usuario();
+        Usuario vendedor = new Usuario();
+        Apunte apunte = new Apunte();
+        Resena resena = new Resena();
+        apunte.setId(1L);
+        comprador.setId(1L);
+        vendedor.setId(2L);
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
+
+        when(servicioApunteMock.obtenerPorId(apunte.getId())).thenReturn(apunte);
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
+
+        when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
+
+        when(servicioUsuarioApunteResenaMock.existeResena(comprador.getId(), apunte.getId())).thenReturn(false);
+
+        ModelAndView modelAndView = controladorApunte.getDetalleApunteConListadoDeSusResenas(apunte.getId(), requestMock, sessionMock);
+
+        Boolean pdfComprado = (Boolean) modelAndView.getModelMap().get("pdfComprado");
+
+        assertTrue(pdfComprado);
+
+    }
+
+    @Test
+    public void queElPdfCompradoDeTrueSiElTipoDeAccesoEsEditar(){
+        Usuario comprador = new Usuario();
+        Usuario vendedor = new Usuario();
+        Apunte apunte = new Apunte();
+        Resena resena = new Resena();
+        apunte.setId(1L);
+        comprador.setId(1L);
+        vendedor.setId(2L);
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
+
+        when(servicioApunteMock.obtenerPorId(apunte.getId())).thenReturn(apunte);
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
+
+        when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.EDITAR);
+
+        when(servicioUsuarioApunteResenaMock.existeResena(comprador.getId(), apunte.getId())).thenReturn(false);
+
+        ModelAndView modelAndView = controladorApunte.getDetalleApunteConListadoDeSusResenas(apunte.getId(), requestMock, sessionMock);
+
+        Boolean pdfComprado = (Boolean) modelAndView.getModelMap().get("pdfComprado");
+
+        assertTrue(pdfComprado);
+
+    }
+
+    @Test
+    public void queElPdfCompradoDeFalseSiElTipoDeAccesoEsNull(){
+        Usuario comprador = new Usuario();
+        Usuario vendedor = new Usuario();
+        Apunte apunte = new Apunte();
+        Resena resena = new Resena();
+        apunte.setId(1L);
+        comprador.setId(1L);
+        vendedor.setId(2L);
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
+
+        when(servicioApunteMock.obtenerPorId(apunte.getId())).thenReturn(apunte);
+
+        when(requestMock.getSession()).thenReturn(sessionMock);
+
+        when(servicioUsuarioApunteResenaMock.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
+
+        when(servicioUsuarioApunteMock.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(null);
+
+        when(servicioUsuarioApunteResenaMock.existeResena(comprador.getId(), apunte.getId())).thenReturn(false);
+
+        ModelAndView modelAndView = controladorApunte.getDetalleApunteConListadoDeSusResenas(apunte.getId(), requestMock, sessionMock);
+
+        Boolean pdfComprado = (Boolean) modelAndView.getModelMap().get("pdfComprado");
+
+        assertFalse(pdfComprado);
 
     }
 

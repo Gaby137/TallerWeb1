@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class ControladorResena {
@@ -76,18 +78,24 @@ public class ControladorResena {
     }
 
     @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.GET)
-    public ModelAndView borrar(@PathVariable("id") Long id, HttpSession session) {
+    public ModelAndView borrar(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes) {
         ModelMap modelo = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         Long idApunte = (Long) session.getAttribute("idApunte");
-        try {
-            servicioResena.borrar(id);
-            modelo.put("status", "success");
 
-        } catch (Exception e) {
-            modelo.put("status", "error");
-            modelo.put("error", e);
-        }
-        return new ModelAndView("redirect:/detalleApunte/"+idApunte, modelo);
+
+            Resena resenaExistente = servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(usuario.getId(), idApunte);
+
+            if (resenaExistente != null && resenaExistente.getId().equals(id)) {
+                servicioResena.borrar(id);
+                modelo.put("status", "success");
+            } else {
+                modelo.put("status", "error");
+                modelo.put("error", "El usuario no tiene una resena para este apunte o esta intentando borrar una resena que no le pertenece.");
+                redirectAttributes.addFlashAttribute("modelo", modelo);
+            }
+
+        return new ModelAndView("redirect:/detalleApunte/" + idApunte, modelo);
     }
 
 }
