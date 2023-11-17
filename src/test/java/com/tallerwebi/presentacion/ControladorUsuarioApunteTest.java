@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,6 +30,7 @@ public class ControladorUsuarioApunteTest {
 
     @BeforeEach
     public void init() {
+
     requestMock = mock(HttpServletRequest.class);
     sessionMock = mock(HttpSession.class);
     servicioApunte = mock(ServicioApunte.class);
@@ -41,13 +41,13 @@ public class ControladorUsuarioApunteTest {
 
 
     controladorApunte = new ControladorApunte(servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, servicioUsuario, servicioAdministrador);
+
         resultMock = mock(BindingResult.class);
     }
 
 
-
     @Test
-    public void queAlComprarUnApunteDesdeLaVistaDeApuntesEnVentaLleveALaVistaDetalleDelApunte(){
+    public void queAlComprarUnApunteDesdeLaVistaDeApuntesEnVentaLleveALaVistaDetalleDelApunte() {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
@@ -63,7 +63,7 @@ public class ControladorUsuarioApunteTest {
 
         when(requestMock.getSession()).thenReturn(sessionMock);
 
-        when(servicioUsuarioApunteResena.obtenerLista(apunte.getId())).thenReturn(List.of(resena));
+        when(servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(apunte.getId())).thenReturn(List.of(resena));
 
         when(servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(comprador.getId(), apunte.getId())).thenReturn(TipoDeAcceso.LEER);
 
@@ -85,6 +85,7 @@ public class ControladorUsuarioApunteTest {
 
         assertEquals("apunte-detalle", modelAndView.getViewName());
     }
+
     @Test
     public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDeApuntesEnVenta() {
         Usuario comprador = new Usuario();
@@ -108,4 +109,4 @@ public class ControladorUsuarioApunteTest {
         assertEquals("apuntesEnVenta", modelAndView.getViewName());
     }
 
-    }
+}

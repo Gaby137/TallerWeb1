@@ -60,4 +60,17 @@ public class RepositorioUsuarioApunteResenaImpl implements RepositorioUsuarioApu
         return resenas;
     }
 
+    @Override
+    public Resena obtenerResenaPorIdUsuarioYApunte(Long idUsuario, Long idApunte) {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "SELECT uar.resena FROM UsuarioApunteResena uar " +
+                "WHERE uar.usuario.id = :usuarioId AND uar.apunte.id = :apunteId";
+        TypedQuery<Resena> query = session.createQuery(hql, Resena.class);
+        query.setParameter("usuarioId", idUsuario);
+        query.setParameter("apunteId", idApunte);
+        List<Resena> resenas = query.getResultList();
+
+        return resenas.isEmpty() ? null : resenas.get(0);
+    }
+
 }

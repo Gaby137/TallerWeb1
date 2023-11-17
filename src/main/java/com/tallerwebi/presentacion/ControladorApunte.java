@@ -95,20 +95,25 @@ public class ControladorApunte {
     }
 
     @RequestMapping(path = "/eliminarApunte/{id}", method = RequestMethod.GET)
-    public ModelAndView eliminar(@PathVariable("id") Long id) {
+    public ModelAndView eliminar(@PathVariable("id") Long id, HttpSession session) {
         ModelMap modelo = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (servicioUsuarioApunte.existeRelacionUsuarioApunteEditar(usuario.getId(), id)) {
+            servicioUsuarioApunte.eliminarApunte(id);
+            return new ModelAndView("apunteEliminado", modelo);
+        }else{
+            modelo.put("error", "El usuario esta intentando borrar un apunte que no le pertenece.");
+        }
+        return new ModelAndView("redirect:/detalleApunte/" + id, modelo);
 
-        servicioUsuarioApunte.eliminarApunte(id);
-
-        return new ModelAndView("apunteEliminado", modelo);
     }
     @RequestMapping(path = "/misApuntes", method = RequestMethod.GET)
     public ModelAndView misApuntes(HttpSession session) {
         ModelMap model = new ModelMap();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        List<UsuarioApunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
-        List<UsuarioApunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+        List<Apunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
+        List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
 
         model.put("apuntesComprados", apuntesComprados);
@@ -124,16 +129,29 @@ public class ControladorApunte {
 
         Apunte apunte = servicioApunte.obtenerPorId(id);
         request.getSession().setAttribute("idApunte", apunte.getId());
+        Usuario usuarioVendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(id);
 
         model.put("apunte", apunte);
+        model.put("usuarioVendedor", usuarioVendedor);
 
-        List<Resena> resenas = servicioUsuarioApunteResena.obtenerLista(id);
+        List<Resena> resenas = servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(id);
         model.put("resenas", resenas);
 
-        if(servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId()).equals(TipoDeAcceso.LEER)){
+        List<Resena> resenasDelUsuarioActual = servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
+        model.put("resenasDelUsuarioActual", resenasDelUsuarioActual);
+
+        TipoDeAcceso tipoDeAcceso = servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
+
+        if (TipoDeAcceso.LEER.equals(tipoDeAcceso)) {
             model.put("tipoDeAcceso", true);
-        }else{
+        } else {
             model.put("tipoDeAcceso", false);
+        }
+
+        if (TipoDeAcceso.LEER.equals(tipoDeAcceso) || TipoDeAcceso.EDITAR.equals(tipoDeAcceso)){
+            model.put("pdfComprado", true);
+        } else {
+            model.put("pdfComprado", false);
         }
 
         boolean hayResena = servicioUsuarioApunteResena.existeResena(usuario.getId(), id);
@@ -146,9 +164,14 @@ public class ControladorApunte {
         ModelMap model = new ModelMap();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
-        List<Apunte> apuntesDeOtrosUsuarios = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuario.getId());
+        List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerTodosLosApuntes(usuario.getId());
+        List<Apunte> apuntesCreadosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+        List<Apunte> apuntesCompradosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
 
-        model.put("apuntes", apuntesDeOtrosUsuarios);
+
+        model.put("apuntes", todosLosApuntes);
+        model.put("apuntesCreados", apuntesCreadosPorElUsuario);
+        model.put("apuntesComprados", apuntesCompradosPorElUsuario);
         model.put("title", "Apuntes");
         return new ModelAndView("apuntesEnVenta", model);
     }
@@ -160,9 +183,11 @@ public class ControladorApunte {
 
         Usuario usuario = servicioUsuario.obtenerPorId(id);
 
-        List<UsuarioApunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreadosYVerSiPuedeComprar(usuario, usuarioActual);
+        List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+        List<Apunte> apuntesCompradosPorUsuarioActual = servicioUsuarioApunteResena.obtenerApuntesComprados(usuarioActual);
 
         model.put("apuntesCreados", apuntesCreados);
+        model.put("apuntesCompradosPorUsuarioActual", apuntesCompradosPorUsuarioActual);
         model.put("usuarioActual", usuarioActual);
         model.put("usuario", usuario);
         return new ModelAndView("perfilUsuario", model);

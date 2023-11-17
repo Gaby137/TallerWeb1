@@ -9,11 +9,8 @@ import com.tallerwebi.presentacion.DatosApunte;
 import junit.framework.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.mock.web.MockMultipartFile;
 
-import javax.validation.constraints.AssertFalse;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,9 +64,9 @@ public class ServicioUsuarioApunteResenaTest {
         Resena resenaMock2 = mock(Resena.class);
         listaResenasMock.add(resenaMock2);
 
-        when(servicioUsuarioApunteResena.obtenerLista(idApunte)).thenReturn(listaResenasMock);
+        when(servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(idApunte)).thenReturn(listaResenasMock);
 
-        List<Resena> result = servicioUsuarioApunteResena.obtenerLista(idApunte);
+        List<Resena> result = servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(idApunte);
 
         assertEquals(listaResenasMock, result);
 
@@ -195,7 +192,7 @@ public class ServicioUsuarioApunteResenaTest {
 
         when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId())).thenReturn(apuntes);
 
-        List<UsuarioApunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
+        List<Apunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
 
         assertEquals(apuntesComprados.size(), 1);
     }
@@ -215,7 +212,7 @@ public class ServicioUsuarioApunteResenaTest {
 
         when(servicioUsuarioApunteMock.obtenerApuntesPorUsuario(usuario.getId())).thenReturn(apuntes);
 
-        List<UsuarioApunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+        List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
         assertEquals(apuntesCreados.size(), 1);
     }
@@ -253,7 +250,7 @@ public class ServicioUsuarioApunteResenaTest {
     public void obtenerApuntesDestacadosYQueSoloTraiga6Apuntes() {
         ListaDe7Apuntes listaDe7Apuntes = getListaDe7Apuntes();
 
-        when(servicioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(anyLong())).thenReturn(Arrays.asList(
+        when(servicioUsuarioApunteMock.obtenerTodosLosApuntes(anyLong())).thenReturn(Arrays.asList(
                 listaDe7Apuntes.apunte1,
                 listaDe7Apuntes.apunte2,
                 listaDe7Apuntes.apunte3,
@@ -280,7 +277,7 @@ public class ServicioUsuarioApunteResenaTest {
     public void obtenerApuntesDestacadosEnOrden() {
         ListaDe7Apuntes listaDe7Apuntes = getListaDe7Apuntes();
 
-        when(servicioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(anyLong())).thenReturn(Arrays.asList(
+        when(servicioUsuarioApunteMock.obtenerTodosLosApuntes(anyLong())).thenReturn(Arrays.asList(
                 listaDe7Apuntes.apunte1,
                 listaDe7Apuntes.apunte2,
                 listaDe7Apuntes.apunte3,
@@ -306,7 +303,7 @@ public class ServicioUsuarioApunteResenaTest {
     public void queNoTraigaApuntesDestacadosSiNoTienenCuatroOMasDePromedio() {
         ListaDe7Apuntes listaDe7Apuntes = getListaDe7Apuntes();
 
-        when(servicioUsuarioApunteMock.obtenerApuntesDeOtrosUsuarios(anyLong())).thenReturn(Arrays.asList(
+        when(servicioUsuarioApunteMock.obtenerTodosLosApuntes(anyLong())).thenReturn(Arrays.asList(
                 listaDe7Apuntes.apunte1,
                 listaDe7Apuntes.apunte2,
                 listaDe7Apuntes.apunte3,
