@@ -1,11 +1,8 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.*;
-import com.tallerwebi.dominio.servicio.ServicioApunte;
+import com.tallerwebi.dominio.servicio.*;
 
-import com.tallerwebi.dominio.servicio.ServicioUsuario;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ModelMap;
@@ -32,6 +29,7 @@ public class ControladorApunteTest {
     private ControladorApunte controladorApunte;
     private BindingResult resultMock;
     private RedirectAttributes redirectAttributesMock;
+    private ServicioAdministrador servicioAdministrador;
 
     @BeforeEach
     public void init() {
@@ -41,8 +39,9 @@ public class ControladorApunteTest {
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioUsuarioApunteMock = mock(ServicioUsuarioApunte.class);
         servicioUsuarioApunteResenaMock = mock(ServicioUsuarioApunteResena.class);
+        servicioAdministrador = mock(ServicioAdministrador.class);
 
-        controladorApunte = new ControladorApunte(servicioApunteMock, servicioUsuarioApunteMock, servicioUsuarioApunteResenaMock, servicioUsuarioMock);
+        controladorApunte = new ControladorApunte(servicioApunteMock, servicioUsuarioApunteMock, servicioUsuarioApunteResenaMock, servicioUsuarioMock, servicioAdministrador);
         resultMock = mock(BindingResult.class);
         redirectAttributesMock = mock(RedirectAttributes.class);
     }

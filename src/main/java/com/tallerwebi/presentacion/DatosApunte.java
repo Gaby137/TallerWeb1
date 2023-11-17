@@ -13,6 +13,7 @@ public class DatosApunte {
     private String descripcion;
     @Min(value = 0, message = "El precio no puede ser menor que 0.")
     private int precio;
+    private Long idMateria;
     public DatosApunte(MultipartFile pathArchivo, String nombre, String descripcion, int precio) {
         this.pathArchivo = pathArchivo;
         this.nombre = nombre;
@@ -53,5 +54,13 @@ public class DatosApunte {
 
     public void setPrecio(int precio) {
         this.precio = precio;
+    }
+
+    public Long getIdMateria() {
+        return idMateria;
+    }
+
+    public void setIdMateria(Long idMateria) {
+        this.idMateria = idMateria;
     }
 }
