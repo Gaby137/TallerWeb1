@@ -119,6 +119,40 @@ public class ControladorResenaTest {
 
     }
 
+    @Test
+    public void queNoDejeEliminarResenaSiNoEsTuya(){
+        Usuario usuario = new Usuario(1L);
+        Apunte apunte = new Apunte(1L);
+        Resena resena = new Resena();
+        resena.setId(1L);
+
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(sessionMock.getAttribute("idApunte")).thenReturn(1L);
+        when(servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(1L, 1L)).thenReturn(null);
+
+        controladorResena.borrar(1L, sessionMock, redirectAttributesMock);
+
+        verify(servicioResena, never()).borrar(1L);
+    }
+
+    @Test
+    public void queDejeEliminarResenaSiEsTuya(){
+        Usuario usuario = new Usuario(1L);
+        Apunte apunte = new Apunte(1L);
+        Resena resena = new Resena();
+        resena.setId(1L);
+
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(sessionMock.getAttribute("idApunte")).thenReturn(1L);
+        when(servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(1L, 1L)).thenReturn(resena);
+
+        controladorResena.borrar(1L, sessionMock, redirectAttributesMock);
+
+        verify(servicioResena, times(1)).borrar(1L);
+    }
+
 }
 
 
