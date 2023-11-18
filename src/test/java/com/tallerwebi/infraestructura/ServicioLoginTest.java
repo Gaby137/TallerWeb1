@@ -33,13 +33,14 @@ public class ServicioLoginTest {
     private ServicioLoginImpl servicioLogin;
     private RepositorioUsuario repositorioUsuarioMock;
     private ServicioUsuario servicioUsuarioMock;
-    private String uploadDir="src/main/webapp/resources/core/img/";
+    private String uploadDir;
 
     @BeforeEach
     public void init() throws IOException {
         repositorioUsuarioMock = mock(RepositorioUsuario.class);
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioLogin = new ServicioLoginImpl(repositorioUsuarioMock, servicioUsuarioMock);
+        uploadDir = "src/main/webapp/resources/core/img/";
     }
 
     @Test
@@ -68,11 +69,6 @@ public class ServicioLoginTest {
 
    /* @Test
     public void queAlRegistrarseUnUsuarioSeLeAsigneUnCodigoDeCreador() throws IOException, UsuarioExistente {
-        File uploadDirectoryMock = mock(File.class);
-
-        when(uploadDirectoryMock.exists()).thenReturn(true);
-
-        when(new File(eq(uploadDir))).thenReturn(uploadDirectoryMock);
 
         MockMultipartFile archivoSimulado = mock(MockMultipartFile.class);
 
