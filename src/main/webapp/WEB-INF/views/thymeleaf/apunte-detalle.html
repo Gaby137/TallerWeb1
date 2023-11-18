@@ -8,7 +8,7 @@
                 <iframe th:src="@{'/pdf/' + ${apunte.pathArchivo}}"
                         frameborder="0" height="500px" width="100%"
                         th:classappend="${pdfComprado} ? '' : 'pdf-no-comprado'"></iframe>
-                <a th:unless="${#lists.contains(apuntesCompradosPorUsuarioActual, apunte)}"
+                <a th:unless="${#lists.contains(apuntesCompradosPorUsuarioActual, apunte) or #lists.contains(apuntesCreadosPorUsuarioActual, apunte)}"
                    class="btn btn-success boton-apunte"
                    th:href="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}">Comprar</a>
             </div>

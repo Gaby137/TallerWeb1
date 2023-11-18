@@ -143,6 +143,9 @@ public class ControladorApunte {
         List<Apunte> apuntesCompradosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
         model.put("apuntesCompradosPorUsuarioActual", apuntesCompradosPorElUsuario);
 
+        List<Apunte> apuntesCreadosPorUsuarioActual = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
+        model.put("apuntesCreadosPorUsuarioActual", apuntesCreadosPorUsuarioActual);
+
         double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(id);
         model.put("promedioDeResenas", promedioPuntajeResenas);
 

@@ -242,9 +242,12 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
         for (Apunte apunte : todosLosApuntes) {
             if (apunte.isActivo()) {
-                double promedioPuntaje = calcularPromedioPuntajeResenas(apunte.getId());
-                if (promedioPuntaje >= 4.0) {
-                    mejoresApuntes.add(apunte);
+                List<Resena> resenas = repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(apunte.getId());
+                if (resenas.size() >= 5) {
+                    double promedioPuntaje = calcularPromedioPuntajeResenas(apunte.getId());
+                    if (promedioPuntaje >= 4.0) {
+                        mejoresApuntes.add(apunte);
+                    }
                 }
             }
         }
@@ -289,9 +292,12 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         Map<Usuario, Double> usuariosConPromedios = new LinkedHashMap<>();
 
         for (Usuario otroUsuario : otrosUsuarios) {
-            double promedioPuntaje = calcularPromedioPuntajeResenasPorUsuario(otroUsuario.getId());
-            if (promedioPuntaje >= 4.0) {
-                usuariosConPromedios.put(otroUsuario, promedioPuntaje);
+            List<Apunte> apuntes = obtenerApuntesCreados(otroUsuario);
+            if (apuntes.size() >= 5) {
+                double promedioPuntaje = calcularPromedioPuntajeResenasPorUsuario(otroUsuario.getId());
+                if (promedioPuntaje >= 4.0) {
+                    usuariosConPromedios.put(otroUsuario, promedioPuntaje);
+                }
             }
         }
 
