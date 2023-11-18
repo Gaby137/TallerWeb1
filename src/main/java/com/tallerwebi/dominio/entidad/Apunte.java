@@ -24,8 +24,8 @@ public class Apunte {
     @OneToMany(mappedBy = "apunte")
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "materia_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name="materia_id",nullable = true)
     private Materia materia;
 
 

@@ -30,13 +30,15 @@ public class Usuario {
     private Double latitud;
     private Double longitud;
     private String codigoDeCreador;
+  
+    @JsonIgnore
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> flagsDeParticipacionContinua;
     private Date created_at;
     private Date updated_at;
 
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 

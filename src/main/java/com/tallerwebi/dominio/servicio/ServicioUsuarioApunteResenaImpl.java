@@ -24,15 +24,17 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     private ServicioApunte servicioApunte;
     private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
+    private ServicioAdministrador servicioAdministrador;
 
     @Autowired
-    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, RepositorioApunte repositorioApunte, RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
+    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, RepositorioApunte repositorioApunte, RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte, ServicioAdministrador servicioAdministrador) {
         this.repositorioUsuarioApunteResena = repositorioUsuarioApunteResena;
         this.repositorioApunte = repositorioApunte;
         this.repositorioUsuarioApunte = repositorioUsuarioApunte;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuario = servicioUsuario;
         this.servicioApunte = servicioApunte;
+        this.servicioAdministrador = servicioAdministrador;
 
     }
 
@@ -73,7 +75,8 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
                 }
 
                 Apunte apunte = new Apunte(datosApunte.getPathArchivo().getOriginalFilename(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
-
+                Materia materia = servicioAdministrador.obtenerMateria(datosApunte.getIdMateria());
+                apunte.setMateria(materia);
                 UsuarioApunte usuarioApunte = new UsuarioApunte();
                 usuarioApunte.setApunte(apunte);
                 usuarioApunte.setUsuario(usuario);

@@ -11,6 +11,10 @@ import java.util.List;
 public interface ServicioAdministrador {
     void registrarCarrera(DatosCarrera datosCarrera);
     void registrarMateria(DatosMateria datosMateria);
-    List<Carrera> listado();
+    List<Carrera> listadoCarreras();
+    List<Materia> listadoMaterias();
+
+    List<Materia> obtenerMateriasPorCarrera(Long idCarrera);
+    Materia obtenerMateria(Long idMateria);
 
 }

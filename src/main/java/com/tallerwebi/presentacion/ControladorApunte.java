@@ -1,10 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.*;
-import com.tallerwebi.dominio.servicio.ServicioApunte;
-import com.tallerwebi.dominio.servicio.ServicioUsuario;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
+import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,18 +24,22 @@ public class ControladorApunte {
     private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
+    private ServicioAdministrador servicioAdministrador;
 
     @Autowired
-    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuario servicioUsuario){
+    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuario servicioUsuario, ServicioAdministrador servicioAdministrador){
         this.servicioApunte = servicioApunte;
         this.servicioUsuario = servicioUsuario;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
+        this.servicioAdministrador = servicioAdministrador;
     }
 
     @RequestMapping(path = "/formulario-alta-apunte", method = RequestMethod.GET)
     public ModelAndView apunte() {
         ModelMap model = new ModelMap();
+        List<Carrera> listadoCarrera = servicioAdministrador.listadoCarreras();
+        model.put("listaCarreras", listadoCarrera);
         model.put("datosApunte", new DatosApunte());
         model.put("title", "Nuevo Apunte");
         return new ModelAndView("altaApunte", model);

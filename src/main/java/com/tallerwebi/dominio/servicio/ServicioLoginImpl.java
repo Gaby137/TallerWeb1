@@ -21,9 +21,6 @@ public class ServicioLoginImpl implements ServicioLogin {
     private RepositorioUsuario servicioLoginDao;
     private ServicioUsuario servicioUsuario;
 
-    @Value("${uploadDir}")
-    private String uploadDir;
-
 
     @Autowired
     public ServicioLoginImpl(RepositorioUsuario servicioLoginDao, ServicioUsuario servicioUsuario) {
@@ -43,7 +40,7 @@ public class ServicioLoginImpl implements ServicioLogin {
             throw new UsuarioExistente();
         }
 
-        File uploadDirectory = new File(uploadDir);
+        File uploadDirectory = new File("src/main/webapp/resources/core/img/");
         if (uploadDirectory.exists()) {
 
             File imageFile = new File(uploadDirectory, usuario.getFotoPerfil().getOriginalFilename());

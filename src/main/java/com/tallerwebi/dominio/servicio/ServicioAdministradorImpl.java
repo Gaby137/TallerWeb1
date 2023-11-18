@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.entidad.Materia;
 import com.tallerwebi.dominio.entidad.MateriaCarrera;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.iRepositorio.RepositorioCarrera;
+import com.tallerwebi.dominio.iRepositorio.RepositorioMateria;
 import com.tallerwebi.dominio.iRepositorio.RepositorioMateriaCarrera;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuario;
 import com.tallerwebi.presentacion.DatosCarrera;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,11 +22,13 @@ import java.util.List;
 @Transactional
 public class ServicioAdministradorImpl implements ServicioAdministrador {
     private RepositorioCarrera repositorioCarrera;
+    private RepositorioMateria repositorioMateria;
     private RepositorioMateriaCarrera repositorioMateriaCarrera;
 
     @Autowired
-    public ServicioAdministradorImpl(RepositorioCarrera repositorioCarrera, RepositorioMateriaCarrera repositorioMateriaCarrera) {
+    public ServicioAdministradorImpl(RepositorioCarrera repositorioCarrera, RepositorioMateria repositorioMateria, RepositorioMateriaCarrera repositorioMateriaCarrera) {
         this.repositorioCarrera = repositorioCarrera;
+        this.repositorioMateria = repositorioMateria;
         this.repositorioMateriaCarrera = repositorioMateriaCarrera;
     }
 
@@ -48,11 +52,42 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     }
 
     @Override
-    public List<Carrera> listado() {
+    public List<Carrera> listadoCarreras() {
         if (repositorioCarrera.obtenerLista().size() > 0){
             return repositorioCarrera.obtenerLista();
         }
         return null;
+    }
+    @Override
+    public List<Materia> listadoMaterias() {
+        if (repositorioMateria.obtenerLista().size() > 0){
+            return repositorioMateria.obtenerLista();
+        }
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public List<Materia> obtenerMateriasPorCarrera(Long idCarrera) {
+        List<MateriaCarrera> registrosMateriaCarrera = repositorioMateriaCarrera.obtenerTodasLasMaterias();
+
+        // Lista para almacenar las materias que corresponden al idCarrera
+        List<Materia> materiasPorCarrera = new ArrayList<>();
+
+        // Iterar sobre los registros y filtrar por idCarrera
+        for (MateriaCarrera relacion : registrosMateriaCarrera) {
+            if (relacion.getCarrera().getId().equals(idCarrera)) {
+                // Agregar la materia a la lista
+                materiasPorCarrera.add(relacion.getMateria());
+            }
+        }
+
+        return materiasPorCarrera;
+    }
+
+    @Override
+    public Materia obtenerMateria(Long idMateria) {
+        return repositorioMateria.obtenerMateria(idMateria);
     }
 }
 
