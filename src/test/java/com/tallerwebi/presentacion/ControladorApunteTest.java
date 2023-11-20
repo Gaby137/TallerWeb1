@@ -33,6 +33,7 @@ public class ControladorApunteTest {
     private HttpSession sessionMock;
     private ControladorApunte controladorApunte;
     private BindingResult resultMock;
+    private Apunte apunteMock;
     private RedirectAttributes redirectAttributesMock;
     private ServicioAdministrador servicioAdministrador;
     private MockMultipartFile pdf;
