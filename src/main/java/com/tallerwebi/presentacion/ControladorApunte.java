@@ -1,6 +1,11 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
+import com.tallerwebi.dominio.servicio.ServicioApunte;
+import com.tallerwebi.dominio.servicio.ServicioUsuario;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
+import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,9 +60,16 @@ public class ControladorApunte {
             return new ModelAndView("altaApunte", model);
         } else {
             try {
+                if(datosApunte.getPathArchivo().isEmpty()){
+                    ModelMap model = new ModelMap();
+                    model.put("usuario", datosApunte);
+                    model.put("error", "El documento no puede estar vacio");
+                    return new ModelAndView("altaApunte", model);
+                }
+                
                 servicioUsuarioApunteResena.registrarApunte(datosApunte, usuario);
                 return new ModelAndView("redirect:/misApuntes");
-            } catch (Exception e) {
+            } catch (ArchivoInexistenteException e) {
                 ModelMap model = new ModelMap();
                 model.put("usuario", datosApunte);
                 model.put("error", e.getMessage());
