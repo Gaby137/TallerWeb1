@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.servicio;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunteResena;
@@ -61,29 +62,29 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     }
 
     @Override
-    public void registrarApunte(DatosApunte datosApunte, Usuario usuario) {
-        File uploadDirectory = new File("src/main/webapp/resources/core/pdf/");
-        if (uploadDirectory.exists()) {
-            if (datosApunte.getPathArchivo() != null){
-                File pdfFile = new File(uploadDirectory, datosApunte.getPathArchivo().getOriginalFilename());
-                try {
+    public void registrarApunte(DatosApunte datosApunte, Usuario usuario) throws ArchivoInexistenteException {
+        try {
+            File uploadDirectory = new File("src/main/webapp/resources/core/pdf/");
+            if (uploadDirectory.exists()) {
+                if (datosApunte.getPathArchivo() != null){
+                    File pdfFile = new File(uploadDirectory, datosApunte.getPathArchivo().getOriginalFilename());
                     datosApunte.getPathArchivo().transferTo(pdfFile);
-                } catch (Exception e) {
-                    // TODO: handle exception
+                } else {
+                    throw new ArchivoInexistenteException("Error al manipular el documento");
                 }
-
-                Apunte apunte = new Apunte(datosApunte.getPathArchivo().getOriginalFilename(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
-
-                UsuarioApunte usuarioApunte = new UsuarioApunte();
-                usuarioApunte.setApunte(apunte);
-                usuarioApunte.setUsuario(usuario);
-                usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-                repositorioApunte.registrarApunte(apunte);
-                repositorioUsuarioApunte.registrar(usuarioApunte);
-
             }
+        } catch (Exception e) {
+            throw new ArchivoInexistenteException("Error al manipular el documento");
         }
 
+        Apunte apunte = new Apunte(datosApunte.getPathArchivo().getOriginalFilename(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
+
+        UsuarioApunte usuarioApunte = new UsuarioApunte();
+        usuarioApunte.setApunte(apunte);
+        usuarioApunte.setUsuario(usuario);
+        usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        repositorioApunte.registrarApunte(apunte);
+        repositorioUsuarioApunte.registrar(usuarioApunte);
 
         List<UsuarioApunte> apuntesCreados = obtenerApuntesCreados(usuario);
         if (apuntesCreados.size() % 5 == 0) {
