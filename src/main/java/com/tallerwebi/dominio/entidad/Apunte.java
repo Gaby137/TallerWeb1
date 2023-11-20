@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Apunte {
@@ -18,12 +19,13 @@ public class Apunte {
     private Date updated_at;
     private boolean cienPuntosPorBuenPromedioDeResenas;
     private boolean sePuedeComprar;
+    private boolean activo;
 
     @OneToMany(mappedBy = "apunte")
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "materia_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name="materia_id",nullable = true)
     private Materia materia;
 
 
@@ -47,6 +49,19 @@ public class Apunte {
     public Apunte(String apunte, Long id) {
         this.nombre = apunte;
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Apunte apunte = (Apunte) obj;
+        return Objects.equals(id, apunte.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     public Apunte(long id) {
@@ -138,5 +153,13 @@ public class Apunte {
 
     public void setSePuedeComprar(boolean sePuedeComprar) {
         this.sePuedeComprar = sePuedeComprar;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }

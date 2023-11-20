@@ -1,34 +1,31 @@
 package com.tallerwebi.dominio.entidad;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Materia {
+public class Carrera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String descripcion;
     private Date created_at;
     private Date updated_at;
-    @JsonIgnore
-    @OneToMany(mappedBy = "materia", fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "carrera")
     private List<MateriaCarrera> relacionesMateriaCarrera = new ArrayList<>();
 
 
+    public Carrera() {
 
-    public Materia(String descripcion, Date created_at, Date updated_at) {
+    }
+
+    public Carrera(String descripcion, Date created_at, Date updated_at) {
         this.descripcion = descripcion;
         this.created_at = created_at;
         this.updated_at = updated_at;
-    }
-
-    public Materia() {
-
     }
 
     public Long getId() {
@@ -63,5 +60,11 @@ public class Materia {
         this.updated_at = updated_at;
     }
 
+    public List<MateriaCarrera> getRelacionesMateriaCarrera() {
+        return relacionesMateriaCarrera;
+    }
 
+    public void setRelacionesMateriaCarrera(List<MateriaCarrera> relacionesMateriaCarrera) {
+        this.relacionesMateriaCarrera = relacionesMateriaCarrera;
+    }
 }

@@ -26,6 +26,7 @@ public class DatosRegistro {
     private Double latitud;
     @NotNull(message = "La dirección no puede ser estar en blanco.")
     private Double longitud;
+    private String codigoDeCreador;
 
     public DatosRegistro(){
 
@@ -37,6 +38,7 @@ public class DatosRegistro {
         this.password = password;
         this.fotoPerfil = fotoPerfil;
     }
+
 
     public String getNombre() {
         return nombre;
@@ -93,5 +95,14 @@ public class DatosRegistro {
     public void setLatitud(Double latitud) {
         this.latitud = latitud;
     }
+
+    public String getCodigoDeCreador() {
+        return codigoDeCreador;
+    }
+
+    public void setCodigoDeCreador(String codigoDeCreador) {
+        this.codigoDeCreador = codigoDeCreador;
+    }
+
 
 }

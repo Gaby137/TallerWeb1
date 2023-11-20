@@ -4,20 +4,19 @@
 <body>
         <div class="row">
             <h2>Apuntes creados por <span th:text="${usuario.nombre}"></span></h2>
-            <div th:each="apunte : ${apuntesCreados}" class="card my-2" style="width: 18rem;">
+            <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.activo}" class="card my-2" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 th:text="${apunte.apunte.nombre}" class="card-title"></h5>
+                    <h5 th:text="${apunte.nombre}" class="card-title"></h5>
                     <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
-                    <p th:text="${apunte.apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
-                    <p th:text="${apunte.apunte.precio}" class="card-text" style="height: 6rem;"></p>
-                    <div th:if="${apunte.apunte.isSePuedeComprar()}">
-                        <a class="btn btn-success" th:href="@{/comprarApuntePorPerfil/{id}(id=${apunte.apunte.id})}">Comprar</a>
-                    </div>
-                    <div th:unless="${apunte.apunte.isSePuedeComprar()}">
-                        Ya comprado
-                    </div>
+                    <p th:text="${apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
+                    <p th:text="${apunte.precio}" class="card-text" style="height: 6rem;"></p>
+                    <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
+                    <span th:unless="${#lists.contains(apuntesCompradosPorUsuarioActual, apunte)}">
+                        <a class="btn btn-success boton-apunte" th:href="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}">Comprar</a>
+                    </span>
                 </div>
             </div>
+            <p th:if="${error}" style="color: red;" th:text="${error}"></p>
         </div>
 
 </body>

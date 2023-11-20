@@ -10,7 +10,15 @@ public interface ServicioUsuarioApunte {
 
     List<UsuarioApunte> obtenerApuntesPorUsuario(Long id);
     List<Apunte> obtenerApuntesDeOtrosUsuarios(Long id);
+
+    List<Apunte> obtenerTodosLosApuntes(Long id);
+
     Usuario obtenerVendedorPorApunte(Long id);
     boolean comprarApunte(Usuario comprador, Usuario vendedor, Apunte apunte);
+
+    void eliminarApunte(Long id);
+
     TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte);
+
+    boolean existeRelacionUsuarioApunteEditar(Long idUsuario, Long idApunte);
 }

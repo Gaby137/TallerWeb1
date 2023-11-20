@@ -25,22 +25,24 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     private ServicioApunte servicioApunte;
     private ServicioUsuario servicioUsuario;
     private ServicioUsuarioApunte servicioUsuarioApunte;
+    private ServicioAdministrador servicioAdministrador;
 
     @Autowired
-    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, RepositorioApunte repositorioApunte, RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
+    public ServicioUsuarioApunteResenaImpl(RepositorioUsuarioApunteResena repositorioUsuarioApunteResena, RepositorioApunte repositorioApunte, RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte, ServicioAdministrador servicioAdministrador) {
         this.repositorioUsuarioApunteResena = repositorioUsuarioApunteResena;
         this.repositorioApunte = repositorioApunte;
         this.repositorioUsuarioApunte = repositorioUsuarioApunte;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuario = servicioUsuario;
         this.servicioApunte = servicioApunte;
+        this.servicioAdministrador = servicioAdministrador;
 
     }
 
     @Override
     public boolean registrarResena(Usuario usuario, Apunte apunte, Resena resena) {
 
-        if (repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(usuario.getId(), apunte.getId())) {
+        if (this.existeResena(usuario.getId(), apunte.getId())) {
             return false;
         } else {
 
@@ -78,15 +80,17 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         }
 
         Apunte apunte = new Apunte(datosApunte.getPathArchivo().getOriginalFilename(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
-
+        Materia materia = servicioAdministrador.obtenerMateria(datosApunte.getIdMateria());
+        apunte.setMateria(materia);
         UsuarioApunte usuarioApunte = new UsuarioApunte();
         usuarioApunte.setApunte(apunte);
         usuarioApunte.setUsuario(usuario);
         usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+        apunte.setActivo(true);
         repositorioApunte.registrarApunte(apunte);
         repositorioUsuarioApunte.registrar(usuarioApunte);
 
-        List<UsuarioApunte> apuntesCreados = obtenerApuntesCreados(usuario);
+        List<Apunte> apuntesCreados = obtenerApuntesCreados(usuario);
         if (apuntesCreados.size() % 5 == 0) {
             darPuntosAlUsuarioPorParticipacionContinua(usuario);
         }
@@ -116,28 +120,91 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         }
         return false;
     }
-
+    @Override
+    @Transactional
     public void darPuntosAlUsuarioPorParticipacionContinua(Usuario usuario) {
         List<Resena> resenas = obtenerResenasPorIdDeUsuario(usuario.getId());
-        List<UsuarioApunte> apuntes = obtenerApuntesCreados(usuario);
+        List<Apunte> apuntes = obtenerApuntesCreados(usuario);
 
-        int puntosApuntes = apuntes.size() / 5 * 25;
+        boolean flag10Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_10_RESENAS");
+        boolean flag20Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_20_RESENAS");
+        boolean flag30Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_30_RESENAS");
+        boolean flag40Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_40_RESENAS");
+        boolean flag50Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_50_RESENAS");
+        boolean flag100Resenas = usuario.getFlagsDeParticipacionContinua().contains("FLAG_100_RESENAS");
 
-        int puntosResenas = resenas.size() / 5 * 25;
-
-        int puntosTotales=puntosResenas+puntosApuntes;
-
-        if (puntosTotales > 25) {
-            puntosTotales = 25;
+        if (resenas.size() == 10 && !flag10Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_10_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 25);
         }
 
-        usuario.setPuntos(usuario.getPuntos() + puntosTotales);
+        if (resenas.size() == 20 && !flag20Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_20_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 30);
+        }
+
+        if (resenas.size() == 30 && !flag30Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_30_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 35);
+        }
+
+        if (resenas.size() == 40 && !flag40Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_40_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 40);
+        }
+
+        if (resenas.size() == 50 && !flag50Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_50_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 50);
+        }
+        if (resenas.size() == 100 && !flag100Resenas) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_100_RESENAS");
+            usuario.setPuntos(usuario.getPuntos() + 100);
+        }
+
+        boolean flag10Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_10_APUNTES");
+        boolean flag20Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_20_APUNTES");
+        boolean flag30Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_30_APUNTES");
+        boolean flag40Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_40_APUNTES");
+        boolean flag50Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_50_APUNTES");
+        boolean flag100Apuntes = usuario.getFlagsDeParticipacionContinua().contains("FLAG_100_APUNTES");
+
+        if (apuntes.size() == 10 && !flag10Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_10_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 35);
+        }
+
+        if (apuntes.size() == 20 && !flag20Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_20_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 45);
+        }
+
+        if (apuntes.size() == 30 && !flag30Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_30_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 55);
+        }
+
+        if (apuntes.size() == 40 && !flag40Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_40_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 70);
+        }
+
+        if (apuntes.size() == 50 && !flag50Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_50_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 100);
+        }
+
+        if (apuntes.size() == 100 && !flag100Apuntes) {
+            usuario.getFlagsDeParticipacionContinua().add("FLAG_100_APUNTES");
+            usuario.setPuntos(usuario.getPuntos() + 200);
+        }
 
         servicioUsuario.actualizar(usuario);
     }
 
+
     @Override
-    public List<Resena> obtenerLista(Long idApunte) {
+    public List<Resena> obtenerListaDeResenasPorIdApunte(Long idApunte) {
         return repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(idApunte);
     }
     @Override
@@ -163,7 +230,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
     @Override
     public List<Apunte> obtenerMejoresApuntes(Long usuarioId) {
-        List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(usuarioId);
+        List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerTodosLosApuntes(usuarioId);
         List<Apunte> mejoresApuntes = new ArrayList<>();
 
         Comparator<Apunte> porPromedioPuntaje = (apunte1, apunte2) -> {
@@ -175,9 +242,14 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         todosLosApuntes.sort(porPromedioPuntaje);
 
         for (Apunte apunte : todosLosApuntes) {
-            double promedioPuntaje = calcularPromedioPuntajeResenas(apunte.getId());
-            if (promedioPuntaje >= 4.0) {
-                mejoresApuntes.add(apunte);
+            if (apunte.isActivo()) {
+                List<Resena> resenas = repositorioUsuarioApunteResena.obtenerResenasPorIdApunte(apunte.getId());
+                if (resenas.size() >= 5) {
+                    double promedioPuntaje = calcularPromedioPuntajeResenas(apunte.getId());
+                    if (promedioPuntaje >= 4.0) {
+                        mejoresApuntes.add(apunte);
+                    }
+                }
             }
         }
 
@@ -200,7 +272,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         for (UsuarioApunte usuarioApunte : usuarioApuntes) {
             if (usuarioApunte.getTipoDeAcceso()==TipoDeAcceso.EDITAR) {
                 Apunte apunte = usuarioApunte.getApunte();
-                if (apunte != null) {
+                if (apunte != null && apunte.isActivo()) {
                     totalPromedioPuntajeApuntes += calcularPromedioPuntajeResenas(apunte.getId());
                     totalApuntes++;
                 }
@@ -221,9 +293,12 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         Map<Usuario, Double> usuariosConPromedios = new LinkedHashMap<>();
 
         for (Usuario otroUsuario : otrosUsuarios) {
-            double promedioPuntaje = calcularPromedioPuntajeResenasPorUsuario(otroUsuario.getId());
-            if (promedioPuntaje >= 4.0) {
-                usuariosConPromedios.put(otroUsuario, promedioPuntaje);
+            List<Apunte> apuntes = obtenerApuntesCreados(otroUsuario);
+            if (apuntes.size() >= 5) {
+                double promedioPuntaje = calcularPromedioPuntajeResenasPorUsuario(otroUsuario.getId());
+                if (promedioPuntaje >= 4.0) {
+                    usuariosConPromedios.put(otroUsuario, promedioPuntaje);
+                }
             }
         }
 
@@ -236,13 +311,13 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     }
 
     @Override
-    public List<UsuarioApunte> obtenerApuntesComprados(Usuario usuario) {
+    public List<Apunte> obtenerApuntesComprados(Usuario usuario) {
         List<UsuarioApunte> apuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
-        List<UsuarioApunte> apuntesComprados = new ArrayList<>();
+        List<Apunte> apuntesComprados = new ArrayList<>();
 
         for (UsuarioApunte apunte : apuntes) {
             if (apunte.getTipoDeAcceso() == TipoDeAcceso.LEER) {
-                apuntesComprados.add(apunte);
+                apuntesComprados.add(apunte.getApunte());
             }
         }
 
@@ -250,40 +325,46 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     }
 
     @Override
-    public List<UsuarioApunte> obtenerApuntesCreados(Usuario usuario) {
+    public List<Apunte> obtenerApuntesCreados(Usuario usuario) {
         List<UsuarioApunte> apuntes = servicioUsuarioApunte.obtenerApuntesPorUsuario(usuario.getId());
-        List<UsuarioApunte> apuntesCreados = new ArrayList<>();
+        List<Apunte> apuntesCreados = new ArrayList<>();
 
         for (UsuarioApunte apunte : apuntes) {
             if (apunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR) {
-                apuntesCreados.add(apunte);
+                apuntesCreados.add(apunte.getApunte());
             }
         }
 
         return apuntesCreados;
     }
 
+    //SIN USO
     @Override
-    public List<UsuarioApunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual) {
-        List<UsuarioApunte> apuntesCreados = obtenerApuntesCreados(usuario);
+    public List<Apunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual) {
+        List<Apunte> apuntesCreados = obtenerApuntesCreados(usuario);
 
-        List<UsuarioApunte> apuntesComprados = obtenerApuntesComprados(usuarioActual);
+        List<Apunte> apuntesComprados = obtenerApuntesComprados(usuarioActual);
 
         List<Long> idsApuntesComprados = new ArrayList<>();
-        for (UsuarioApunte apunte : apuntesComprados) {
-            idsApuntesComprados.add(apunte.getApunte().getId());
+        for (Apunte apunte : apuntesComprados) {
+            idsApuntesComprados.add(apunte.getId());
         }
 
-        for (UsuarioApunte apunte : apuntesCreados) {
-            Long apunteId = apunte.getApunte().getId();
-            apunte.getApunte().setSePuedeComprar(!idsApuntesComprados.contains(apunteId));
+        for (Apunte apunte : apuntesCreados) {
+            Long apunteId = apunte.getId();
+            apunte.setSePuedeComprar(!idsApuntesComprados.contains(apunteId));
         }
 
         return apuntesCreados;
     }
     @Override
     public boolean existeResena(Long idUsuario, Long idApunte) {
-        return repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(idUsuario, idApunte);
+        return repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(idUsuario, idApunte).size()>0;
+    }
+
+    @Override
+    public Resena obtenerResenasPorIdDeUsuarioYApunte(Long idUsuario, Long idApunte){
+        return repositorioUsuarioApunteResena.obtenerResenaPorIdUsuarioYApunte(idUsuario, idApunte);
     }
 
 }

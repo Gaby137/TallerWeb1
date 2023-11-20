@@ -1,10 +1,13 @@
 package com.tallerwebi.dominio.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,8 +29,16 @@ public class Usuario {
     private String fotoPerfil;
     private Double latitud;
     private Double longitud;
+    private String codigoDeCreador;
+  
+    @JsonIgnore
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> flagsDeParticipacionContinua;
     private Date created_at;
     private Date updated_at;
+
+
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
@@ -36,7 +47,7 @@ public class Usuario {
 
     public Usuario(){}
 
-    public Usuario(String nombre, String apellido, int puntos, String email, String password, Rol rol, Boolean activo, String fotoPerfil, Double latitud, Double longitud, Date created_at, Date updated_at) {
+    public Usuario(String nombre, String apellido, int puntos, String email, String password, Rol rol, Boolean activo, String fotoPerfil, Double latitud, Double longitud, String codigoDeCreador, Date created_at, Date updated_at) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.puntos = puntos;
@@ -47,6 +58,8 @@ public class Usuario {
         this.fotoPerfil = fotoPerfil;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.flagsDeParticipacionContinua = new HashSet<>();
+        this.codigoDeCreador = codigoDeCreador;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -175,4 +188,19 @@ public class Usuario {
         this.longitud = longitud;
     }
 
+    public Set<String> getFlagsDeParticipacionContinua() {
+        return flagsDeParticipacionContinua;
+    }
+
+    public void setFlagsDeParticipacionContinua(Set<String> flagsDeParticipacionContinua) {
+        this.flagsDeParticipacionContinua = flagsDeParticipacionContinua;
+    }
+
+    public String getCodigoDeCreador() {
+        return codigoDeCreador;
+    }
+
+    public void setCodigoDeCreador(String codigoDeCreador) {
+        this.codigoDeCreador = codigoDeCreador;
+    }
 }

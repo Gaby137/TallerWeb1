@@ -14,11 +14,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension .class)
 @WebAppConfiguration
@@ -27,6 +28,9 @@ public class RepositorioUsuarioApunteResenaTest {
 
         @Autowired
         private RepositorioUsuarioApunteResenaImpl repositorioUsuarioApunteResena;
+
+        @PersistenceContext
+        private EntityManager entityManager;
 
 
     @Transactional
@@ -37,6 +41,12 @@ public class RepositorioUsuarioApunteResenaTest {
         Apunte apunte = new Apunte();
         Resena resena1 = new Resena();
         Resena resena2 = new Resena();
+
+        entityManager.persist(usuario);
+        entityManager.persist(apunte);
+        entityManager.persist(resena1);
+        entityManager.persist(resena1);
+
 
         UsuarioApunteResena usuarioApunteResena1 = new UsuarioApunteResena(usuario, resena1, apunte);
         UsuarioApunteResena usuarioApunteResena2 = new UsuarioApunteResena(usuario, resena2, apunte);
@@ -59,11 +69,15 @@ public class RepositorioUsuarioApunteResenaTest {
         Apunte apunte = new Apunte();
         Resena resena = new Resena();
 
+        entityManager.persist(usuario);
+        entityManager.persist(apunte);
+        entityManager.persist(resena);
+
         UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena(usuario, resena, apunte);
 
         repositorioUsuarioApunteResena.guardar(usuarioApunteResena);
 
-        boolean existeResena = repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(usuario.getId(), apunte.getId());
+        boolean existeResena = repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(usuario.getId(), apunte.getId()).size() > 0;
 
         assertTrue(existeResena);
     }
@@ -78,6 +92,12 @@ public class RepositorioUsuarioApunteResenaTest {
         Resena resena1 = new Resena();
         Resena resena2 = new Resena();
 
+        entityManager.persist(usuario);
+        entityManager.persist(apunte1);
+        entityManager.persist(apunte2);
+        entityManager.persist(resena1);
+        entityManager.persist(resena2);
+
         UsuarioApunteResena usuarioApunteResena1 = new UsuarioApunteResena(usuario, resena1, apunte1);
         UsuarioApunteResena usuarioApunteResena2 = new UsuarioApunteResena(usuario, resena2, apunte2);
 
@@ -89,6 +109,26 @@ public class RepositorioUsuarioApunteResenaTest {
         assertEquals(2, resenas.size());
         assertTrue(resenas.contains(resena1));
         assertTrue(resenas.contains(resena2));
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void obtenerResenaPorIdUsuarioYApunte() {
+        Usuario usuario = new Usuario();
+        Apunte apunte = new Apunte();
+        Resena resena = new Resena();
+
+        entityManager.persist(usuario);
+        entityManager.persist(apunte);
+        entityManager.persist(resena);
+
+        UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena(usuario, resena, apunte);
+        repositorioUsuarioApunteResena.guardar(usuarioApunteResena);
+
+        Resena resenaObtenida = repositorioUsuarioApunteResena.obtenerResenaPorIdUsuarioYApunte(usuario.getId(), apunte.getId());
+
+        assertEquals(resena, resenaObtenida);
     }
 }
 

@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio.entidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 
