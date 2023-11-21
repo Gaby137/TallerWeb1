@@ -21,4 +21,6 @@ public interface ServicioUsuarioApunte {
     TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte);
 
     boolean existeRelacionUsuarioApunteEditar(Long idUsuario, Long idApunte);
+
+    List<Apunte> obtenerApuntesPorIdDeUsuario(Long id);
 }

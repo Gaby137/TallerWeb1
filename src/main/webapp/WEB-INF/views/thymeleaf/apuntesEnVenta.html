@@ -15,7 +15,7 @@
 
                     <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
 
-                    <form th:action="@{/comprarApunte/{id}(id=${apunte.id})}" method="post">
+                    <form th:action="@{/comprarApunte/{id}(id=${apunte.id})}" method="POST" style="margin-top: 10px;">
 
                         <button id="botonComprar" th:unless="${#lists.contains(apuntesComprados, apunte) or #lists.contains(apuntesCreados, apunte)}"
                                 type="submit" class="btn btn-success boton-apunte">Comprar</button>

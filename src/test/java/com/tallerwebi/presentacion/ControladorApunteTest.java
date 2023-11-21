@@ -36,7 +36,9 @@ public class ControladorApunteTest {
     private Apunte apunteMock;
     private RedirectAttributes redirectAttributesMock;
     private ServicioAdministrador servicioAdministrador;
+    private ControladorLogin controladorLogin;
     private MockMultipartFile pdf;
+
 
     @BeforeEach
     public void init() {
@@ -51,8 +53,9 @@ public class ControladorApunteTest {
         servicioUsuarioApunteMock = mock(ServicioUsuarioApunte.class);
         servicioUsuarioApunteResenaMock = mock(ServicioUsuarioApunteResena.class);
         servicioAdministrador = mock(ServicioAdministrador.class);
+        controladorLogin = mock(ControladorLogin.class);
 
-        controladorApunte = new ControladorApunte(servicioApunteMock, servicioUsuarioApunteMock, servicioUsuarioApunteResenaMock, servicioUsuarioMock, servicioAdministrador);
+        controladorApunte = new ControladorApunte(servicioApunteMock, servicioUsuarioApunteMock, servicioUsuarioApunteResenaMock, servicioUsuarioMock, servicioAdministrador, controladorLogin);
         resultMock = mock(BindingResult.class);
         redirectAttributesMock = mock(RedirectAttributes.class);
     }
@@ -191,18 +194,22 @@ public class ControladorApunteTest {
     @Test
     public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDelPerfilDelVendedor() {
         Usuario comprador = new Usuario();
-        Usuario vendedor = new Usuario();
-        Apunte apunte = new Apunte();
-        Long apunteId = 1L;
+        Usuario vendedor = new Usuario(1L);
+        Apunte apunte = new Apunte(1L);
 
+        when(servicioUsuarioMock.obtenerPorId(1L)).thenReturn(vendedor);
 
         when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
 
-        when(servicioApunteMock.obtenerPorId(apunteId)).thenReturn(apunte);
+        when(servicioApunteMock.obtenerPorId(1L)).thenReturn(apunte);
+
+        when(servicioUsuarioApunteMock.obtenerVendedorPorApunte(1L)).thenReturn(vendedor);
 
         when(servicioUsuarioApunteMock.comprarApunte(comprador, vendedor, apunte)).thenReturn(false);
 
-        ModelAndView modelAndView = controladorApunte.comprarApuntePorPerfil(apunteId, requestMock, sessionMock);
+        controladorApunte.verPerfilUsuario(1L, sessionMock);
+
+        ModelAndView modelAndView = controladorApunte.comprarApuntePorPerfil(1L, requestMock, sessionMock);
 
         ModelMap modelMap = modelAndView.getModelMap();
 
@@ -255,19 +262,24 @@ public class ControladorApunteTest {
     public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDelHome() {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
-        Apunte apunte = new Apunte();
-        Long apunteId = 1L;
+        Apunte apunte = new Apunte(1L);
 
 
         when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
 
-        when(servicioApunteMock.obtenerPorId(apunteId)).thenReturn(apunte);
+        when(servicioApunteMock.obtenerPorId(1L)).thenReturn(apunte);
 
         when(servicioUsuarioApunteMock.comprarApunte(comprador, vendedor, apunte)).thenReturn(false);
 
-        ModelAndView modelAndView = controladorApunte.comprarApunteEnElHome(apunteId, requestMock, sessionMock, redirectAttributesMock);
+        when(controladorLogin.home(sessionMock)).thenReturn(new ModelAndView("home"));
 
-        assertEquals("redirect:/home", modelAndView.getViewName());
+        ModelAndView modelAndView = controladorApunte.comprarApunteEnElHome(1L, requestMock, sessionMock, redirectAttributesMock);
+
+        ModelMap modelMap = modelAndView.getModelMap();
+
+        assertEquals("Error al realizar la compra", modelMap.get("error"));
+
+        assertEquals("home", modelAndView.getViewName());
     }
 
     @Test
@@ -313,17 +325,19 @@ public class ControladorApunteTest {
     public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaDetalleApunte() {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
-        Apunte apunte = new Apunte();
-        Long apunteId = 1L;
-
+        Apunte apunte = new Apunte(1L);
 
         when(sessionMock.getAttribute("usuario")).thenReturn(comprador);
 
-        when(servicioApunteMock.obtenerPorId(apunteId)).thenReturn(apunte);
+        when(requestMock.getSession()).thenReturn(sessionMock);
+
+        when(servicioApunteMock.obtenerPorId(1L)).thenReturn(apunte);
 
         when(servicioUsuarioApunteMock.comprarApunte(comprador, vendedor, apunte)).thenReturn(false);
 
-        ModelAndView modelAndView = controladorApunte.comprarApunteEnDetalleApunte(apunteId, requestMock, sessionMock);
+        controladorApunte.getDetalleApunteConListadoDeSusResenas(1L, requestMock, sessionMock);
+
+        ModelAndView modelAndView = controladorApunte.comprarApunteEnDetalleApunte(1L, requestMock, sessionMock);
 
         ModelMap modelMap = modelAndView.getModelMap();
 
