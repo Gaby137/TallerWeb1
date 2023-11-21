@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<link rel="stylesheet" th:href="@{/css/apunte-detalle.cssss}"/>
-<script th:src="@{/js/apunte-detalle.js}"></script>
+<link rel="stylesheet" th:href="@{/css/apunte-detalle.css}"/>
+<script src="apunte-detalle.js" defer></script>
 <div th:insert="~{nav}"></div>
 <body>
     <main class="container mt-5">
@@ -42,7 +42,7 @@
                     <td th:text="${resena.descripcion}"></td>
                     <td th:text="${resena.cantidadDeEstrellas}"></td>
                     <td>
-                        <span th:if="${resenasDelUsuarioActual.contains(resena)}">
+                         <span th:if="${resenasDelUsuarioActual.contains(resena)}">
                             <form th:action="@{'/borrarResena/'+${resena.id}}" method="post">
                                 <input type="hidden" name="_method" value="DELETE" />
                                 <button type="submit" class="btn btn-danger m-1">Borrar</button>
@@ -56,5 +56,4 @@
         <p th:if="${mensaje}" style="color: green;" th:text="${mensaje}"></p>
         <p th:if="${error}" style="color: red;" th:text="${error}"></p>
     </main>
-
 </body>

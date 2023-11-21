@@ -84,26 +84,24 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
         if (comprador == null || vendedor == null || apunte == null) {
             return false;
         }
+        comprador = servicioUsuario.obtenerPorId(comprador.getId());
 
+            if (comprador.getPuntos() >= apunte.getPrecio() && !obtenerApuntesPorIdDeUsuario(comprador.getId()).contains(apunte)) {
+                comprador.setPuntos(comprador.getPuntos() - apunte.getPrecio());
+                vendedor.setPuntos(vendedor.getPuntos() + apunte.getPrecio());
+                servicioUsuario.actualizar(comprador);
+                servicioUsuario.actualizar(vendedor);
+                apunte.setActivo(true);
 
+                UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
+                usuarioApunte.setUsuario(comprador);
+                usuarioApunte.setApunte(apunte);
+                usuarioApunte.setTipoDeAcceso(TipoDeAcceso.LEER);
 
-        if (comprador.getPuntos() >= apunte.getPrecio()) {
-            comprador.setPuntos(comprador.getPuntos() - apunte.getPrecio());
-            vendedor.setPuntos(vendedor.getPuntos() + apunte.getPrecio());
-            servicioUsuario.actualizar(comprador);
-            servicioUsuario.actualizar(vendedor);
-            apunte.setActivo(true);
+                repositorioUsuarioApunte.registrar(usuarioApunte);
 
-            UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
-            usuarioApunte.setUsuario(comprador);
-            usuarioApunte.setApunte(apunte);
-            usuarioApunte.setTipoDeAcceso(TipoDeAcceso.LEER);
-
-            repositorioUsuarioApunte.registrar(usuarioApunte);
-
-            return true;
-        }
-
+                return true;
+            }
         return false;
     }
 
@@ -139,6 +137,19 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
     @Override
     public boolean existeRelacionUsuarioApunteEditar(Long idUsuario, Long idApunte) {
         return repositorioUsuarioApunte.existeRelacionUsuarioApunteEditar(idUsuario, idApunte);
+    }
+
+    @Override
+    public List<Apunte> obtenerApuntesPorIdDeUsuario(Long id){
+        List<UsuarioApunte> listaDeUsuariosApuntes = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
+        List<Apunte> listaDeApuntes = new ArrayList<>();
+
+        for (UsuarioApunte usuarioApunte: listaDeUsuariosApuntes){
+            Apunte apunte = usuarioApunte.getApunte();
+            listaDeApuntes.add(apunte);
+        }
+
+        return listaDeApuntes;
     }
 
 

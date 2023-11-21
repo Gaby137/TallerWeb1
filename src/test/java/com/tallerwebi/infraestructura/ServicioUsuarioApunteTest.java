@@ -103,7 +103,7 @@ public class ServicioUsuarioApunteTest {
 
     @Test
     public void queElUsuarioPuedaComprarUnApunteYSeLeRestenLosPuntosQueCuestaYAlVendedorSeLeSumen() {
-        Usuario comprador = new Usuario();
+        Usuario comprador = new Usuario(1L);
         comprador.setPuntos(100);
 
         Usuario vendedor = new Usuario();
@@ -112,6 +112,7 @@ public class ServicioUsuarioApunteTest {
         Apunte apunte = new Apunte();
         apunte.setPrecio(50);
 
+        when(servicioUsuarioMock.obtenerPorId(1L)).thenReturn(comprador);
         boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
 
         assertTrue(compraExitosa);
@@ -123,12 +124,13 @@ public class ServicioUsuarioApunteTest {
 
     @Test
     public void queElUsuarioNoPuedaComprarApunteSiNoTieneLosPuntosNecesarios() {
-        Usuario comprador = new Usuario();
+        Usuario comprador = new Usuario(1L);
         Apunte apunte = new Apunte();
         Usuario vendedor = new Usuario();
         comprador.setPuntos(30);
         apunte.setPrecio(50);
 
+        when(servicioUsuarioMock.obtenerPorId(1L)).thenReturn(comprador);
         boolean resultadoCompra = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
 
         assertFalse(resultadoCompra);

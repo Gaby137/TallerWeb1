@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,14 +29,16 @@ public class ControladorApunte {
     private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
     private ServicioAdministrador servicioAdministrador;
+    private ControladorLogin controladorLogin;
 
     @Autowired
-    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuario servicioUsuario, ServicioAdministrador servicioAdministrador){
+    public ControladorApunte(ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, ServicioUsuario servicioUsuario, ServicioAdministrador servicioAdministrador, ControladorLogin controladorLogin){
         this.servicioApunte = servicioApunte;
         this.servicioUsuario = servicioUsuario;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
         this.servicioAdministrador = servicioAdministrador;
+        this.controladorLogin = controladorLogin;
     }
 
     @RequestMapping(path = "/formulario-alta-apunte", method = RequestMethod.GET)
@@ -223,8 +226,9 @@ public class ControladorApunte {
         if (compraExitosa) {
             return getDetalleApunteConListadoDeSusResenas(id, request, session);
         } else {
-            model.put("error", "Error al realizar la compra");
-            return new ModelAndView("apuntesEnVenta", model);
+            ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
+            apuntesEnVenta.getModelMap().put("error", "Error al realizar la compra");
+            return apuntesEnVenta;
         }
     }
 
@@ -243,8 +247,9 @@ public class ControladorApunte {
         if (compraExitosa) {
             return getDetalleApunteConListadoDeSusResenas(id, request, session);
         } else {
-            model.put("error", "Error al realizar la compra");
-            return new ModelAndView("apunte-detalle", model);
+            ModelAndView detalleApunte = getDetalleApunteConListadoDeSusResenas(apunte.getId(), request, session);
+            detalleApunte.getModelMap().put("error", "Error al realizar la compra");
+            return detalleApunte;
         }
     }
 
@@ -263,8 +268,9 @@ public class ControladorApunte {
         if (compraExitosa) {
             return getDetalleApunteConListadoDeSusResenas(id, request, session);
         } else {
-            model.put("error", "Error al realizar la compra");
-            return new ModelAndView("perfilUsuario", model);
+            ModelAndView perfilUsuarioView = verPerfilUsuario(vendedor.getId(), session);
+            perfilUsuarioView.getModelMap().put("error", "Error al realizar la compra");
+            return perfilUsuarioView;
         }
     }
     @RequestMapping(path = "/comprarApunteEnElHome/{id}", method = RequestMethod.POST)
@@ -282,8 +288,9 @@ public class ControladorApunte {
         if (compraExitosa) {
             return getDetalleApunteConListadoDeSusResenas(id, request, session);
         } else {
-            redirectAttributes.addFlashAttribute("error", "No fue posible comprar el apunte");
-            return new ModelAndView("redirect:/home");
+            ModelAndView homeView = controladorLogin.home(session);
+            homeView.getModelMap().put("error", "Error al realizar la compra");
+            return homeView;
         }
     }
 
