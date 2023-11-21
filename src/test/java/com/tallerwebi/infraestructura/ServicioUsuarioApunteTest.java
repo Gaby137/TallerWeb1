@@ -33,11 +33,13 @@ public class ServicioUsuarioApunteTest {
     private HttpSession sessionMock;
     private ServicioUsuario servicioUsuarioMock;
     private ServicioApunte servicioApunteMock;
+    private ServicioUsuarioApunteResena servicioUsuarioApunteResenaMock;
 
     @BeforeEach
     public void init() {
         servicioUsuarioMock = mock(ServicioUsuario.class);
         servicioApunteMock = mock(ServicioApunte.class);
+        servicioUsuarioApunteResenaMock = mock(ServicioUsuarioApunteResena.class);
         repositorioUsuarioApunteMock = mock(RepositorioUsuarioApunte.class);
         requestMock = mock(HttpServletRequest.class);
         sessionMock = mock(HttpSession.class);

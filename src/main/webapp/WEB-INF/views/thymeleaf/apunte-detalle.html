@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<link rel="stylesheet" th:href="@{/css/apunte-detalle.css}"/>
+<link rel="stylesheet" th:href="@{/css/apunte-detalle.cssss}"/>
+<script th:src="@{/js/apunte-detalle.js}"></script>
 <div th:insert="~{nav}"></div>
 <body>
     <main class="container mt-5">
@@ -8,9 +9,11 @@
                 <iframe th:src="@{'/pdf/' + ${apunte.pathArchivo}}"
                         frameborder="0" height="500px" width="100%"
                         th:classappend="${pdfComprado} ? '' : 'pdf-no-comprado'"></iframe>
-                <a th:unless="${#lists.contains(apuntesCompradosPorUsuarioActual, apunte) or #lists.contains(apuntesCreadosPorUsuarioActual, apunte)}"
-                   class="btn btn-success boton-apunte"
-                   th:href="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}">Comprar</a>
+                <form th:action="@{/comprarApunteEnDetalleApunte/{id}(id=${apunte.id})}" method="post">
+
+                    <button id="botonComprar" th:unless="${#lists.contains(apuntesCompradosPorUsuarioActual, apunte) or #lists.contains(apuntesCreadosPorUsuarioActual, apunte)}"
+                            type="submit" class="btn btn-success boton-apunte">Comprar</button>
+                </form>
             </div>
             <div class="col-12 col-sm-3">
                 <h2 th:text="${apunte.nombre}"></h2>
@@ -40,7 +43,10 @@
                     <td th:text="${resena.cantidadDeEstrellas}"></td>
                     <td>
                         <span th:if="${resenasDelUsuarioActual.contains(resena)}">
-                        <a th:href="@{'/borrarResena/'+${resena.id}}" class="btn btn-danger m-1">Borrar</a>
+                            <form th:action="@{'/borrarResena/'+${resena.id}}" method="post">
+                                <input type="hidden" name="_method" value="DELETE" />
+                                <button type="submit" class="btn btn-danger m-1">Borrar</button>
+                            </form>
                         </span>
                     </td>
                 </tr>
@@ -50,4 +56,5 @@
         <p th:if="${mensaje}" style="color: green;" th:text="${mensaje}"></p>
         <p th:if="${error}" style="color: red;" th:text="${error}"></p>
     </main>
+
 </body>

@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -94,7 +97,7 @@ public class ControladorApunte {
         }
     }
 
-    @RequestMapping(path = "/eliminarApunte/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/eliminarApunte/{id}", method = RequestMethod.POST)
     public ModelAndView eliminar(@PathVariable("id") Long id, HttpSession session) {
         ModelMap modelo = new ModelMap();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
@@ -194,16 +197,18 @@ public class ControladorApunte {
 
         List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
         List<Apunte> apuntesCompradosPorUsuarioActual = servicioUsuarioApunteResena.obtenerApuntesComprados(usuarioActual);
+        List<Apunte> apuntesCreadosPorUsuarioActual = servicioUsuarioApunteResena.obtenerApuntesCreados(usuarioActual);
 
         model.put("apuntesCreados", apuntesCreados);
         model.put("apuntesCompradosPorUsuarioActual", apuntesCompradosPorUsuarioActual);
+        model.put("apuntesCreadosPorUsuarioActual", apuntesCreadosPorUsuarioActual);
         model.put("usuarioActual", usuarioActual);
         model.put("usuario", usuario);
         return new ModelAndView("perfilUsuario", model);
     }
 
 
-    @RequestMapping(path = "/comprarApunte/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/comprarApunte/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
         ModelMap model = new ModelMap();
 
@@ -223,7 +228,7 @@ public class ControladorApunte {
         }
     }
 
-    @RequestMapping(path = "/comprarApunteEnDetalleApunte/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/comprarApunteEnDetalleApunte/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApunteEnDetalleApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
         ModelMap model = new ModelMap();
 
@@ -243,7 +248,7 @@ public class ControladorApunte {
         }
     }
 
-    @RequestMapping(path = "/comprarApuntePorPerfil/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/comprarApuntePorPerfil/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApuntePorPerfil(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
         ModelMap model = new ModelMap();
 
@@ -262,7 +267,7 @@ public class ControladorApunte {
             return new ModelAndView("perfilUsuario", model);
         }
     }
-    @RequestMapping(path = "/comprarApunteEnElHome/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/comprarApunteEnElHome/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApunteEnElHome(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
         ModelMap model = new ModelMap();
 

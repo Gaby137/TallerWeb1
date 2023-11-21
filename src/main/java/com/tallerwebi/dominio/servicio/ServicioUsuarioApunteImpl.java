@@ -85,6 +85,8 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
             return false;
         }
 
+
+
         if (comprador.getPuntos() >= apunte.getPrecio()) {
             comprador.setPuntos(comprador.getPuntos() - apunte.getPrecio());
             vendedor.setPuntos(vendedor.getPuntos() + apunte.getPrecio());

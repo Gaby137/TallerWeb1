@@ -291,7 +291,6 @@ public class ControladorApunteTest {
 
         assertEquals("apunte-detalle", modelAndView.getViewName());
     }
-
     @Test
     public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaDetalleApunte() {
         Usuario comprador = new Usuario();

@@ -77,7 +77,7 @@ public class ControladorResena {
         return new ModelAndView("redirect:/detalleApunte");
     }
 
-    @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.POST)
     public ModelAndView borrar(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes) {
         ModelMap modelo = new ModelMap();
         Usuario usuario = (Usuario) session.getAttribute("usuario");
