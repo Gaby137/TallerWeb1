@@ -25,9 +25,11 @@
                             <div class="apunte-descrip mb-2">
                                 <p th:text="${apunte.descripcion}" class="mb-2"></p>
                             </div>
-                            <span th:unless="${#lists.contains(apuntesComprados, apunte) || #lists.contains(apuntesCreados, apunte)}">
-                                <a class="btn btn-success boton-apunte" th:href="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}">Comprar</a>
-                            </span>
+                            <form th:action="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}" method="post">
+
+                                <button id="botonComprar" th:unless="${#lists.contains(apuntesComprados, apunte) or #lists.contains(apuntesCreados, apunte)}"
+                                        type="submit" class="btn btn-success boton-apunte">Comprar</button>
+                            </form>
 
                         </div>
                     </div>
