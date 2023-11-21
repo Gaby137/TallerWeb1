@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.servicio;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
 import com.tallerwebi.presentacion.DatosApunte;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public interface ServicioUsuarioApunteResena {
 
     boolean registrarResena(Usuario usuario, Apunte apunte, Resena resena);
 
-    void registrarApunte(DatosApunte datosApunte, Usuario usuario);
+    void registrarApunte(DatosApunte datosApunte, Usuario usuario) throws ArchivoInexistenteException;
 
     boolean dar100PuntosAlUsuarioPorBuenasResenas(Long idApunte);
 

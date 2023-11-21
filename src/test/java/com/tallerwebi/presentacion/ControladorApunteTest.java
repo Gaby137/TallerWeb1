@@ -1,11 +1,16 @@
 package com.tallerwebi.presentacion;
 
+
+import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
+
 import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.servicio.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.ui.ModelMap;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -28,12 +33,19 @@ public class ControladorApunteTest {
     private HttpSession sessionMock;
     private ControladorApunte controladorApunte;
     private BindingResult resultMock;
+    private Apunte apunteMock;
     private RedirectAttributes redirectAttributesMock;
     private ServicioAdministrador servicioAdministrador;
     private ControladorLogin controladorLogin;
+    private MockMultipartFile pdf;
+
 
     @BeforeEach
     public void init() {
+        apunteMock = mock(Apunte.class);
+        when(apunteMock.getId()).thenReturn(1L);
+        when(apunteMock.getNombre()).thenReturn("Apunte 1");
+        pdf = mock(MockMultipartFile.class);
         requestMock = mock(HttpServletRequest.class);
         sessionMock = mock(HttpSession.class);
         servicioApunteMock = mock(ServicioApunte.class);
@@ -49,9 +61,11 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void testPublicarExitoso() {
+    public void testPublicarExitoso() throws ArchivoInexistenteException {
+
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
+        when(datosApunteMock.getPathArchivo()).thenReturn(pdf);
         doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
 
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock, resultMock, sessionMock);
@@ -60,15 +74,19 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void testPublicarFallo() {
+    public void testPublicarFallo() throws ArchivoInexistenteException {
+        // Configuración de objetos simulados
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
 
-        when(resultMock.hasErrors()).thenReturn(true);
+        when(datosApunteMock.getPathArchivo()).thenReturn(pdf);
+        when(pdf.isEmpty()).thenReturn(true);
+
         doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
-
+        
+        // Ejecución de la prueba
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock, resultMock, sessionMock);
-
+        
         assertEquals("altaApunte", modelAndView.getViewName());
     }
     @Test
@@ -109,6 +127,7 @@ public class ControladorApunteTest {
         verify(servicioUsuarioApunteMock, atLeastOnce()).comprarApunte(comprador, vendedor, apunte);
 
         assertEquals("apunte-detalle", modelAndView.getViewName());
+
     }
 
     @Test
