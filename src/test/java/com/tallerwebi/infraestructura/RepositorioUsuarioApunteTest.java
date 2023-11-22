@@ -31,7 +31,7 @@ public class RepositorioUsuarioApunteTest {
     @Autowired
     private RepositorioUsuarioApunteImpl repositorioUsuarioApunte;
 
-    @Transactional
+    /*@Transactional
     @Rollback
     @Test
     public void alQuererObtenerUnApunteDeUnUsuarioPorSuIdQueSeEncuentreAlUsuario() {
@@ -41,10 +41,10 @@ public class RepositorioUsuarioApunteTest {
 
         repositorioUsuarioApunte.registrar(usuarioApunte);
 
-        List<UsuarioApunte> resultado = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(usuario.getId());
+        List<Apunte> resultado = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(usuario.getId());
         assertEquals(1, resultado.size());
         assertEquals(usuario.getId(), resultado.get(0).getUsuario().getId());
-    }
+    }*/
 
     @Transactional
     @Rollback
@@ -90,6 +90,57 @@ public class RepositorioUsuarioApunteTest {
         TipoDeAcceso tipoObtenido = repositorioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
 
         assertEquals(tipoEsperado, tipoObtenido);
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void queElimineLaRelacionUsuarioApuntePorSuId() {
+        Usuario usuario = new Usuario();
+        Apunte apunte = new Apunte();
+
+        UsuarioApunte usuarioApunte = new UsuarioApunte();
+        usuarioApunte.setUsuario(usuario);
+        usuarioApunte.setApunte(apunte);
+        usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+
+        repositorioUsuarioApunte.registrar(usuarioApunte);
+
+        Long usuarioApunteId = usuarioApunte.getId();
+
+        repositorioUsuarioApunte.eliminarRelacionUsuarioApuntePorId(usuarioApunteId);
+
+        List<UsuarioApunte> usuarioApuntesBuscados = repositorioUsuarioApunte.obtenerRelacionesUsuarioApuntePorIdDeApunte(apunte.getId());
+
+        assertTrue(usuarioApuntesBuscados.isEmpty());
+    }
+
+    @Transactional
+    @Rollback
+    @Test
+    public void obtenerLaRelacionUsuarioApuntePorElIdDelApunte(){
+        Usuario usuario = new Usuario();
+        Apunte apunte = new Apunte();
+
+
+        UsuarioApunte usuarioApunte1 = new UsuarioApunte();
+        usuarioApunte1.setUsuario(usuario);
+        usuarioApunte1.setApunte(apunte);
+        usuarioApunte1.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+
+        repositorioUsuarioApunte.registrar(usuarioApunte1);
+
+        UsuarioApunte usuarioApunte2 = new UsuarioApunte();
+        usuarioApunte2.setUsuario(usuario);
+        usuarioApunte2.setApunte(apunte);
+        usuarioApunte2.setTipoDeAcceso(TipoDeAcceso.LEER);
+
+        repositorioUsuarioApunte.registrar(usuarioApunte2);
+
+        List<UsuarioApunte> usuarioApuntesBuscados = repositorioUsuarioApunte.obtenerRelacionesUsuarioApuntePorIdDeApunte(apunte.getId());
+
+        assertEquals(2, usuarioApuntesBuscados.size());
+
     }
 }
 

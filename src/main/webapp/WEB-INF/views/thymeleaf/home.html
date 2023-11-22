@@ -7,7 +7,7 @@
         <h1 class="text-center">Apuntes Destacados</h1>
         <div class="container">
             <div class="row">
-                <div th:each="apunte : ${apuntes}" class="col-12 col-sm-6 col-md-4 col-xl-3">
+                <div th:each="apunte : ${apuntes}" th:if="${apunte.activo}" class="col-12 col-sm-6 col-md-4 col-xl-3">
                     <div class="card card-home my-2">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -18,14 +18,23 @@
                                 <span>
                                     <h5 th:text="${apunte.precio}" class="card-text"></h5>
                                 </span>
+                                <span>
+                                <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
+                                </span>
                             </div>
                             <div class="apunte-descrip mb-2">
                                 <p th:text="${apunte.descripcion}" class="mb-2"></p>
                             </div>
-                            <a class="btn btn-success boton-apunte" th:href="@{/comprarApunte/{id}(id=${apunte.id})}">Comprar</a>
+                            <form th:action="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}" method="post">
+
+                                <button id="botonComprar" th:unless="${#lists.contains(apuntesComprados, apunte) or #lists.contains(apuntesCreados, apunte)}"
+                                        type="submit" class="btn btn-success boton-apunte">Comprar</button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
+                <p th:if="${error}" style="color: red;" th:text="${error}"></p>
                 <div  th:if="${#lists.isEmpty(apuntes)}" class="col-12">
                     <div class="card card-home my-2">
                         <div class="card-body d-flex justify-content-center align-items-center">

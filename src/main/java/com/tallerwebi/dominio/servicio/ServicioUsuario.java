@@ -8,4 +8,8 @@ public interface ServicioUsuario {
     Usuario obtenerPorId(Long id);
     boolean actualizar(Usuario usuario);
     List<Usuario> buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(Long id);
+
+    boolean existeCodigoCreadorEnLaBaseDeDatos(String codigoCreador);
+
+    Usuario buscarUsuarioPorCodigoDeCreador(String codigoDeCreador);
 }

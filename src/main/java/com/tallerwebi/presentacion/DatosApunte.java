@@ -1,21 +1,20 @@
 package com.tallerwebi.presentacion;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class DatosApunte {
-    @NotEmpty(message = "El path no puede estar en blanco.")
-    private String pathArchivo;
+    private MultipartFile pathArchivo;
     @NotEmpty(message = "El nombre no puede estar en blanco.")
     private String nombre;
     @NotEmpty(message = "La descripcion no puede estar en blanco.")
     private String descripcion;
     @Min(value = 0, message = "El precio no puede ser menor que 0.")
     private int precio;
-    public DatosApunte(String pathArchivo, String nombre, String descripcion,  int precio) {
+    private Long idMateria;
+    public DatosApunte(MultipartFile pathArchivo, String nombre, String descripcion, int precio) {
         this.pathArchivo = pathArchivo;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -25,11 +24,11 @@ public class DatosApunte {
     public DatosApunte(){
 
     }
-    public String getPathArchivo() {
+    public MultipartFile getPathArchivo() {
         return pathArchivo;
     }
 
-    public void setPathArchivo(String pathArchivo) {
+    public void setPathArchivo(MultipartFile pathArchivo) {
         this.pathArchivo = pathArchivo;
     }
 
@@ -55,5 +54,13 @@ public class DatosApunte {
 
     public void setPrecio(int precio) {
         this.precio = precio;
+    }
+
+    public Long getIdMateria() {
+        return idMateria;
+    }
+
+    public void setIdMateria(Long idMateria) {
+        this.idMateria = idMateria;
     }
 }

@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class ControladorResena {
@@ -62,7 +64,7 @@ public class ControladorResena {
             modelo.put("id", id);
         if (resena != null) {
             if(servicioUsuarioApunteResena.registrarResena(usuario ,apunte, resena)){
-                return new ModelAndView("redirect:/misApuntes");
+                return new ModelAndView("redirect:/detalleApunte/"+id);
             }else {
                 modelo.put("error", "No puede dar mas de una reseña");
                 return new ModelAndView("formulario-alta-resena", modelo);
@@ -75,19 +77,25 @@ public class ControladorResena {
         return new ModelAndView("redirect:/detalleApunte");
     }
 
-    @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.GET)
-    public ModelAndView borrar(@PathVariable("id") Long id, HttpSession session) {
+    @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.POST)
+    public ModelAndView borrar(@PathVariable("id") Long id, HttpSession session, RedirectAttributes redirectAttributes) {
         ModelMap modelo = new ModelMap();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
         Long idApunte = (Long) session.getAttribute("idApunte");
-        modelo.put("id", idApunte);
-        try {
-            servicioResena.borrar(id);
-            modelo.put("mensaje", "Reseña borrada exitosamente");
 
-        } catch (Exception e) {
-            modelo.put("error", "Error al intentar borrar la reseña");
-        }
-        return new ModelAndView("redirect:/detalleApunte/{id}", modelo);
+
+            Resena resenaExistente = servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(usuario.getId(), idApunte);
+
+            if (resenaExistente != null && resenaExistente.getId().equals(id)) {
+                servicioResena.borrar(id);
+                modelo.put("status", "success");
+            } else {
+                modelo.put("status", "error");
+                modelo.put("error", "El usuario no tiene una resena para este apunte o esta intentando borrar una resena que no le pertenece.");
+                redirectAttributes.addFlashAttribute("modelo", modelo);
+            }
+
+        return new ModelAndView("redirect:/detalleApunte/" + idApunte, modelo);
     }
 
 }

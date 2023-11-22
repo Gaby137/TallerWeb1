@@ -15,11 +15,13 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
 
     private RepositorioUsuarioApunte repositorioUsuarioApunte;
     private ServicioUsuario servicioUsuario;
+    private ServicioApunte servicioApunte;
 
     @Autowired
-    public ServicioUsuarioApunteImpl(RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuario servicioUsuario) {
+    public ServicioUsuarioApunteImpl(RepositorioUsuarioApunte repositorioUsuarioApunte, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte) {
         this.repositorioUsuarioApunte = repositorioUsuarioApunte;
         this.servicioUsuario = servicioUsuario;
+        this.servicioApunte = servicioApunte;
     }
 
     @Override
@@ -41,6 +43,27 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
         return apuntesDeOtrosUsuariosList;
     }
 
+    @Override
+    public List<Apunte> obtenerTodosLosApuntes(Long id){
+        List<UsuarioApunte> apuntesDeOtrosUsuarios = repositorioUsuarioApunte.obtenerApuntesDeOtrosUsuarios(id);
+        List<UsuarioApunte> apuntesDelUsuario = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
+
+        List<Apunte> apuntesDeTodosLosUsuarios = new ArrayList<>();
+
+        for (UsuarioApunte usuarioApunte : apuntesDeOtrosUsuarios) {
+            if (usuarioApunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR)
+                apuntesDeTodosLosUsuarios.add(usuarioApunte.getApunte());
+        }
+
+        for (UsuarioApunte usuarioApunte : apuntesDelUsuario) {
+            if (usuarioApunte.getTipoDeAcceso() == TipoDeAcceso.EDITAR)
+                apuntesDeTodosLosUsuarios.add(usuarioApunte.getApunte());
+        }
+
+        return apuntesDeTodosLosUsuarios;
+    }
+
+
 
     @Override
     public Usuario obtenerVendedorPorApunte(Long id) {
@@ -61,27 +84,73 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
         if (comprador == null || vendedor == null || apunte == null) {
             return false;
         }
+        comprador = servicioUsuario.obtenerPorId(comprador.getId());
 
-        if (comprador.getPuntos() >= apunte.getPrecio()) {
-            comprador.setPuntos(comprador.getPuntos() - apunte.getPrecio());
-            vendedor.setPuntos(vendedor.getPuntos() + apunte.getPrecio());
-            servicioUsuario.actualizar(comprador);
-            servicioUsuario.actualizar(vendedor);
+            if (comprador.getPuntos() >= apunte.getPrecio() && !obtenerApuntesPorIdDeUsuario(comprador.getId()).contains(apunte)) {
+                comprador.setPuntos(comprador.getPuntos() - apunte.getPrecio());
+                vendedor.setPuntos(vendedor.getPuntos() + apunte.getPrecio());
+                servicioUsuario.actualizar(comprador);
+                servicioUsuario.actualizar(vendedor);
+                apunte.setActivo(true);
 
-            UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
-            usuarioApunte.setUsuario(comprador);
-            usuarioApunte.setApunte(apunte);
-            usuarioApunte.setTipoDeAcceso(TipoDeAcceso.LEER);
+                UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
+                usuarioApunte.setUsuario(comprador);
+                usuarioApunte.setApunte(apunte);
+                usuarioApunte.setTipoDeAcceso(TipoDeAcceso.LEER);
 
-            repositorioUsuarioApunte.registrar(usuarioApunte);
+                repositorioUsuarioApunte.registrar(usuarioApunte);
 
-            return true;
-        }
-
+                return true;
+            }
         return false;
     }
+
+    @Override
+    public void eliminarApunte(Long id) {
+        List<UsuarioApunte> relacionesUsuarioApunte = repositorioUsuarioApunte.obtenerRelacionesUsuarioApuntePorIdDeApunte(id);
+        boolean existeRelacionLeer = false;
+
+        for (UsuarioApunte relacion : relacionesUsuarioApunte) {
+            if (relacion.getTipoDeAcceso() == TipoDeAcceso.LEER) {
+                existeRelacionLeer = true;
+                break;
+            }
+        }
+
+        Apunte apunte = servicioApunte.obtenerPorId(id);
+
+        if (existeRelacionLeer) {
+            apunte.setActivo(false);
+            servicioApunte.actualizar(apunte);
+        } else {
+            for (UsuarioApunte relacion : relacionesUsuarioApunte) {
+                repositorioUsuarioApunte.eliminarRelacionUsuarioApuntePorId(relacion.getId());
+            }
+        }
+    }
+
     @Override
     public TipoDeAcceso obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(Long idUsuario, Long idApunte) {
         return repositorioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(idUsuario, idApunte);
     }
+
+    @Override
+    public boolean existeRelacionUsuarioApunteEditar(Long idUsuario, Long idApunte) {
+        return repositorioUsuarioApunte.existeRelacionUsuarioApunteEditar(idUsuario, idApunte);
+    }
+
+    @Override
+    public List<Apunte> obtenerApuntesPorIdDeUsuario(Long id){
+        List<UsuarioApunte> listaDeUsuariosApuntes = repositorioUsuarioApunte.obtenerApuntesPorIdUsuario(id);
+        List<Apunte> listaDeApuntes = new ArrayList<>();
+
+        for (UsuarioApunte usuarioApunte: listaDeUsuariosApuntes){
+            Apunte apunte = usuarioApunte.getApunte();
+            listaDeApuntes.add(apunte);
+        }
+
+        return listaDeApuntes;
+    }
+
+
 }

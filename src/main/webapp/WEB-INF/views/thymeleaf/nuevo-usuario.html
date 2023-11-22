@@ -90,6 +90,14 @@
         </div>
 
         <div class="mb-3">
+          <label for="codigoDeCreador" class="form-label">Código de Creador</label>
+          <input th:field="*{codigoDeCreador}" id="codigoDeCreador" class="form-control" placeholder="Ingrese su código de creador"/>
+          <div th:if="${#fields.hasErrors('codigoDeCreador')}" class="text-danger">
+            <p th:errors="*{codigoDeCreador}"></p>
+          </div>
+        </div>
+
+        <div class="mb-3">
           <label for="fotoPerfil" class="form-label">Foto de Perfil</label>
           <input name="fotoPerfil" type="file" id="fotoPerfil" class="form-control" accept="image/*" required/>
           <div th:if="${#fields.hasErrors('fotoPerfil')}" class="text-danger">

@@ -36,5 +36,15 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
     public List<Usuario> buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(Long id){
         return repositorioUsuario.buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(id);
     }
+
+    @Override
+    public boolean existeCodigoCreadorEnLaBaseDeDatos(String codigoCreador) {
+        return repositorioUsuario.existeCodigoCreadorEnLaBaseDeDatos(codigoCreador);
+    }
+
+    @Override
+    public Usuario buscarUsuarioPorCodigoDeCreador(String codigoDeCreador){
+        return repositorioUsuario.buscarUsuarioPorCodigoCreador(codigoDeCreador);
+    }
 }
 

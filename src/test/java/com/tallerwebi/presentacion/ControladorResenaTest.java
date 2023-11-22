@@ -4,18 +4,21 @@ import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.util.Date;
 
+import static junit.framework.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -31,6 +34,7 @@ public class ControladorResenaTest {
     private ControladorResena controladorResena;
     private HttpSession sessionMock;
     private BindingResult resultMock;
+    private RedirectAttributes redirectAttributesMock;
 
     @BeforeEach
     public void init() {
@@ -43,6 +47,7 @@ public class ControladorResenaTest {
         controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena);
         sessionMock = mock(HttpSession.class);
         resultMock = mock(BindingResult.class);
+        redirectAttributesMock = mock(RedirectAttributes.class);
 
     }
 
@@ -57,26 +62,27 @@ public class ControladorResenaTest {
     }
 
     @Test
-    void borrarResenaDeberiaLlamarMetodoBorrarDelServicio() {
+    void borrarResenaDeberiaLlamarMetodoBorrarDelServicioYRedireccionarAVistaApunteDetalle() {
         // Preparación
-        Long idResenaABorrar = 1L;
+        Usuario usuario = new Usuario(1L);
+        Apunte apunte = new Apunte(1L);
+        Resena resena = new Resena();
+        resena.setId(1L);
 
         // Configuración del servicioResena para evitar excepciones
-        doNothing().when(servicioResena).borrar(idResenaABorrar);
+        doNothing().when(servicioResena).borrar(1L);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
         when(sessionMock.getAttribute("idApunte")).thenReturn(1L);
+        when(servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(usuario.getId(), 1L)).thenReturn(resena);
 
         // Ejecución
-        ModelAndView modelAndView = controladorResena.borrar(idResenaABorrar, sessionMock);
+        ModelAndView modelAndView = controladorResena.borrar(1L, sessionMock, redirectAttributesMock);
 
         // Verificación de que el servicioResena.borrar se llamó una vez con el idResenaABorrar
-        verify(servicioResena, times(1)).borrar(idResenaABorrar);
+        verify(servicioResena, times(1)).borrar(eq(1L));
 
         // Verificación de la vista y modelo
-        assertEquals("redirect:/detalleApunte/{id}", modelAndView.getViewName());
-        ModelMap modelMap = modelAndView.getModelMap();
-        assertTrue(modelMap.containsKey("mensaje"));
-        assertEquals("Reseña borrada exitosamente", modelMap.get("mensaje"));
-        assertFalse(modelMap.containsKey("error"));
+        assertEquals("redirect:/detalleApunte/1", modelAndView.getViewName());
     }
     @Test
     void guardarResenaDeberiaGuardarResenaYAgregarPuntos() {
@@ -109,9 +115,44 @@ public class ControladorResenaTest {
         // Verificación
 
         // Verifica que la vista sea la esperada (listarResenas)
-        assertEquals("redirect:/misApuntes", modelAndView.getViewName());
+        assertEquals("redirect:/detalleApunte/1", modelAndView.getViewName());
 
     }
+
+    @Test
+    public void queNoDejeEliminarResenaSiNoEsTuya(){
+        Usuario usuario = new Usuario(1L);
+        Apunte apunte = new Apunte(1L);
+        Resena resena = new Resena();
+        resena.setId(1L);
+
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(sessionMock.getAttribute("idApunte")).thenReturn(1L);
+        when(servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(1L, 1L)).thenReturn(null);
+
+        controladorResena.borrar(1L, sessionMock, redirectAttributesMock);
+
+        verify(servicioResena, never()).borrar(1L);
+    }
+
+    @Test
+    public void queDejeEliminarResenaSiEsTuya(){
+        Usuario usuario = new Usuario(1L);
+        Apunte apunte = new Apunte(1L);
+        Resena resena = new Resena();
+        resena.setId(1L);
+
+
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(sessionMock.getAttribute("idApunte")).thenReturn(1L);
+        when(servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(1L, 1L)).thenReturn(resena);
+
+        controladorResena.borrar(1L, sessionMock, redirectAttributesMock);
+
+        verify(servicioResena, times(1)).borrar(1L);
+    }
+
 }
 
 

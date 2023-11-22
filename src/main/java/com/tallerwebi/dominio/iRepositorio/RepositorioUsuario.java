@@ -14,5 +14,9 @@ public interface RepositorioUsuario {
     Usuario buscarPorId(Long id);
 
     List<Usuario> buscarPorIdATodosLosUsuariosMenosAlUsuarioActual(Long id);
+
+    boolean existeCodigoCreadorEnLaBaseDeDatos(String codigoCreador);
+
+    Usuario buscarUsuarioPorCodigoCreador(String codigoCreador);
 }
 
