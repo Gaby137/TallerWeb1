@@ -1,6 +1,8 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.excepcion.ApunteYaCompradoException;
+import com.tallerwebi.dominio.excepcion.PuntosInsuficientesException;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteImpl;
@@ -102,7 +104,7 @@ public class ServicioUsuarioApunteTest {
     }
 
     @Test
-    public void queElUsuarioPuedaComprarUnApunteYSeLeRestenLosPuntosQueCuestaYAlVendedorSeLeSumen() {
+    public void queElUsuarioPuedaComprarUnApunteYSeLeRestenLosPuntosQueCuestaYAlVendedorSeLeSumen() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario(1L);
         comprador.setPuntos(100);
 
@@ -123,7 +125,7 @@ public class ServicioUsuarioApunteTest {
 
 
     @Test
-    public void queElUsuarioNoPuedaComprarApunteSiNoTieneLosPuntosNecesarios() {
+    public void queElUsuarioNoPuedaComprarApunteSiNoTieneLosPuntosNecesarios() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario(1L);
         Apunte apunte = new Apunte();
         Usuario vendedor = new Usuario();
@@ -131,15 +133,40 @@ public class ServicioUsuarioApunteTest {
         apunte.setPrecio(50);
 
         when(servicioUsuarioMock.obtenerPorId(1L)).thenReturn(comprador);
-        boolean resultadoCompra = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
 
-        assertFalse(resultadoCompra);
+        PuntosInsuficientesException exception = assertThrows(PuntosInsuficientesException.class, () -> {
+            servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
+        });
+
         assertEquals(30, comprador.getPuntos());
         verify(repositorioUsuarioApunteMock, never()).registrar(any(UsuarioApunte.class));
+        assertEquals("No tenes los puntos suficientes para comprar el apunte", exception.getMessage());
     }
 
     @Test
-    public void queNoSePuedaComprarSiUsuarioEsNull() {
+    public void queElUsuarioNoPuedaComprarApunteSiYaLoTiene() throws PuntosInsuficientesException, ApunteYaCompradoException {
+        Usuario comprador = new Usuario(1L);
+        Apunte apunte = new Apunte();
+        Usuario vendedor = new Usuario();
+        comprador.setPuntos(30);
+        apunte.setPrecio(50);
+        UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
+
+        when(servicioUsuarioMock.obtenerPorId(1L)).thenReturn(comprador);
+        when(repositorioUsuarioApunteMock.obtenerApuntesPorIdUsuario(1L)).thenReturn(List.of(usuarioApunte));
+        servicioUsuarioApunte.obtenerApuntesPorIdDeUsuario(1L);
+
+        ApunteYaCompradoException exception = assertThrows(ApunteYaCompradoException.class, () -> {
+            servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
+        });
+
+        assertEquals(30, comprador.getPuntos());
+        verify(repositorioUsuarioApunteMock, never()).registrar(any(UsuarioApunte.class));
+        assertEquals("Ya tenes este apunte comprado", exception.getMessage());
+    }
+
+    @Test
+    public void queNoSePuedaComprarSiUsuarioEsNull() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Apunte apunte = new Apunte();
         apunte.setPrecio(50);
 

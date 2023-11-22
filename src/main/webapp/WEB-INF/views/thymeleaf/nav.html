@@ -42,7 +42,7 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mr-2">
-                    <p>Puntos disponibles  <span id="puntosUsuario" th:text="${session.usuario.puntos}"></span></p>
+                    <p>Puntos disponibles <span class="fs-4" th:text="${session.usuario.puntos}"></span></p>
                     <div>
                         <p style="display: inline-block;"> <span class="fs-4 codigo-de-creador" th:text="${session.usuario.codigoDeCreador}" ></span></p>
                         <button onclick="copiarAlPortapapeles()" style="display: inline-block;">
