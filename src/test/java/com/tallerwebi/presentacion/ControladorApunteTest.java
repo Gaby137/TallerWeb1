@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.excepcion.ApunteYaCompradoException;
+import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
 import com.tallerwebi.dominio.excepcion.PuntosInsuficientesException;
 import com.tallerwebi.dominio.servicio.*;
 
@@ -51,7 +52,7 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void testPublicarExitoso() {
+    public void testPublicarExitoso() throws ArchivoInexistenteException {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
         doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
@@ -62,7 +63,7 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void testPublicarFallo() {
+    public void testPublicarFallo() throws ArchivoInexistenteException {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
 
