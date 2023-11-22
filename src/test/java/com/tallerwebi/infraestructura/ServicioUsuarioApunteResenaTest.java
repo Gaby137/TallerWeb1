@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunteResena;
@@ -100,7 +101,7 @@ public class ServicioUsuarioApunteResenaTest {
     }
 
     @Test
-    public void unUsuarioPuedeSubirUnApunteExitosamente() {
+    public void unUsuarioPuedeSubirUnApunteExitosamente() throws ArchivoInexistenteException {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
 
@@ -119,12 +120,11 @@ public class ServicioUsuarioApunteResenaTest {
         verify(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
     }
     @Test
-    public void SiUnApunteSeSubeVacioDebeDarError() {
+    public void SiUnApunteSeSubeVacioDebeDarError() throws ArchivoInexistenteException {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
 
-        when(datosApunteMock.getPathArchivo()).thenReturn(pdf);
-        when(datosApunteMock.getPathArchivo().getOriginalFilename()).thenReturn("pdf.pdf");
+        when(datosApunteMock.getPathArchivo()).thenReturn(null);
         when(datosApunteMock.getNombre()).thenReturn("");
         when(datosApunteMock.getDescripcion()).thenReturn("");
         when(datosApunteMock.getPrecio()).thenReturn(100);
@@ -132,9 +132,13 @@ public class ServicioUsuarioApunteResenaTest {
         doNothing().when(repositorioApunteMock).registrarApunte(any(Apunte.class));
         doNothing().when(repositorioUsuarioApunteMock).registrar(any(UsuarioApunte.class));
 
-        servicioUsuarioApunteResena.registrarApunte(datosApunteMock, usuarioMock);
-        // Verificación
-        // assertFalse(resultado);
+        ArchivoInexistenteException thrown = assertThrows(
+           ArchivoInexistenteException.class,
+           () -> servicioUsuarioApunteResena.registrarApunte(datosApunteMock, usuarioMock),
+           "Expected registrarApunte() to throw, but it didn't"
+        );
+
+        assertTrue(thrown.getMessage().contains("Error al manipular el documento"));
 
     }
 

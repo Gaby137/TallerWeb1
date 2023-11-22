@@ -214,7 +214,7 @@ public class ControladorApunte {
 
 
     @RequestMapping(path = "/comprarApunte/{id}", method = RequestMethod.POST)
-    public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
+    public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) throws PuntosInsuficientesException, ApunteYaCompradoException {
         ModelMap model = new ModelMap();
 
         Usuario comprador = (Usuario) session.getAttribute("usuario");
@@ -252,7 +252,7 @@ public class ControladorApunte {
     }
 
     @RequestMapping(path = "/comprarApunteEnDetalleApunte/{id}", method = RequestMethod.POST)
-    public ModelAndView comprarApunteEnDetalleApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
+    public ModelAndView comprarApunteEnDetalleApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) throws PuntosInsuficientesException, ApunteYaCompradoException {
         ModelMap model = new ModelMap();
 
         Usuario comprador = (Usuario) session.getAttribute("usuario");
