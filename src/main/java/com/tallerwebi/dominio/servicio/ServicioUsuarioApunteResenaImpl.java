@@ -47,19 +47,16 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
             UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
             resena.setCreated_at(new Date());
-            usuario.setPuntos(usuario.getPuntos() + 3);
             servicioUsuario.actualizar(usuario);
             usuarioApunteResena.setResena(resena);
             usuarioApunteResena.setUsuario(usuario);
             usuarioApunteResena.setApunte(apunte);
             repositorioUsuarioApunteResena.guardar(usuarioApunteResena);
             dar100PuntosAlUsuarioPorBuenasResenas(apunte.getId());
-            List<Resena> resenasCreadas = obtenerResenasPorIdDeUsuario(usuario.getId());
-            if (resenasCreadas.size() % 5 == 0) {
-                darPuntosAlUsuarioPorParticipacionContinua(usuario);
-            }
-            return true;
+            darPuntosAlUsuarioPorParticipacionContinua(usuario);
+
         }
+        return true;
     }
 
     @Override
@@ -84,15 +81,11 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
                 apunte.setActivo(true);
                 repositorioApunte.registrarApunte(apunte);
                 repositorioUsuarioApunte.registrar(usuarioApunte);
+                darPuntosAlUsuarioPorParticipacionContinua(usuario);
 
             }
         }
 
-
-        List<Apunte> apuntesCreados = obtenerApuntesCreados(usuario);
-        if (apuntesCreados.size() % 5 == 0) {
-            darPuntosAlUsuarioPorParticipacionContinua(usuario);
-        }
     }
 
     @Override

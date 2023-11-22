@@ -1,6 +1,8 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.excepcion.ApunteYaCompradoException;
+import com.tallerwebi.dominio.excepcion.PuntosInsuficientesException;
 import com.tallerwebi.dominio.servicio.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +74,7 @@ public class ControladorApunteTest {
         assertEquals("altaApunte", modelAndView.getViewName());
     }
     @Test
-    public void queAlComprarUnApunteDesdeLaVistaDeApuntesEnVentaLleveALaVistaDetalleDelApunte(){
+    public void queAlComprarUnApunteDesdeLaVistaDeApuntesEnVentaLleveALaVistaDetalleDelApunte() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
@@ -112,7 +114,7 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDeApuntesEnVenta() {
+    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDeApuntesEnVenta() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
@@ -133,7 +135,7 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void queAlComprarUnApunteDesdeLaVistaDelPerfilDelVendedorLleveALaVistaDetalleDelApunte(){
+    public void queAlComprarUnApunteDesdeLaVistaDelPerfilDelVendedorLleveALaVistaDetalleDelApunte() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
@@ -173,7 +175,7 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDelPerfilDelVendedor() {
+    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDelPerfilDelVendedor() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario(1L);
         Apunte apunte = new Apunte(1L);
@@ -200,7 +202,7 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void queAlComprarUnApunteDesdeElHomeLleveALaVistaDetalleDelApunte(){
+    public void queAlComprarUnApunteDesdeElHomeLleveALaVistaDetalleDelApunte() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
@@ -228,7 +230,7 @@ public class ControladorApunteTest {
 
         when(servicioUsuarioApunteMock.comprarApunte(comprador, vendedor, apunte)).thenReturn(true);
 
-        ModelAndView modelAndView = controladorApunte.comprarApunteEnElHome(apunte.getId(), requestMock, sessionMock, redirectAttributesMock);
+        ModelAndView modelAndView = controladorApunte.comprarApunteEnElHome(apunte.getId(), requestMock, sessionMock);
 
         verify(sessionMock, atLeastOnce()).getAttribute("usuario");
 
@@ -240,7 +242,7 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDelHome() {
+    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaVistaDelHome() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte(1L);
@@ -254,7 +256,7 @@ public class ControladorApunteTest {
 
         when(controladorLogin.home(sessionMock)).thenReturn(new ModelAndView("home"));
 
-        ModelAndView modelAndView = controladorApunte.comprarApunteEnElHome(1L, requestMock, sessionMock, redirectAttributesMock);
+        ModelAndView modelAndView = controladorApunte.comprarApunteEnElHome(1L, requestMock, sessionMock);
 
         ModelMap modelMap = modelAndView.getModelMap();
 
@@ -264,7 +266,7 @@ public class ControladorApunteTest {
     }
 
     @Test
-    public void queAlComprarUnApunteDesdeElApunteDetalleLleveALaVistaDetalleDelApunte(){
+    public void queAlComprarUnApunteDesdeElApunteDetalleLleveALaVistaDetalleDelApunte() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
@@ -303,7 +305,7 @@ public class ControladorApunteTest {
         assertEquals("apunte-detalle", modelAndView.getViewName());
     }
     @Test
-    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaDetalleApunte() {
+    public void queAlComprarUnApunteConErrorAparezcaMensajeDeErrorEnLaDetalleApunte() throws PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte(1L);
