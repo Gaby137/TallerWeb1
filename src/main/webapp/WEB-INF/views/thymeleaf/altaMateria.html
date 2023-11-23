@@ -3,7 +3,7 @@
 <body>
 <main role="main" class="container">
     <div class="container">
-        <h1>Formulario de Registro de Carrera</h1>
+        <h1>Formulario de Registro de Materia</h1>
         <form th:action="@{/subirMateria}" method="post" th:object="${datosMateria}" class="needs-validation" novalidate enctype="multipart/form-data">
             <div class="form-group">
                 <label for="descripcion">Nombre de la Materia:</label>
@@ -19,7 +19,7 @@
                     <option th:each="carrera : ${listaCarreras}" th:value="${carrera.id}" th:text="${carrera.descripcion}"></option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Registrar Carrera</button>
+            <button type="submit" class="btn btn-primary">Registrar Materia</button>
         </form>
     </div>
 </main>
