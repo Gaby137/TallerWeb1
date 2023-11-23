@@ -53,8 +53,9 @@ public class ControladorResenaTest {
 
     @Test
     void irAFormularioAltaDeberiaDevolverVistaConResenaVacia() {
+        Usuario usuarioMock = mock(Usuario.class);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuarioMock);
         ModelAndView modelAndView = controladorResena.irAFormularioAlta(sessionMock);
-
         // validacion
         assertEquals("formulario-alta-resena", modelAndView.getViewName());
         Resena resena = (Resena) modelAndView.getModelMap().get("resena");

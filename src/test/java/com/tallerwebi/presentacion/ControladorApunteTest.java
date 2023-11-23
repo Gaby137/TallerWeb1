@@ -1,14 +1,18 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.entidad.*;
+
 import com.tallerwebi.dominio.excepcion.ApunteYaCompradoException;
 import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
 import com.tallerwebi.dominio.excepcion.PuntosInsuficientesException;
-import com.tallerwebi.dominio.servicio.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
+
+import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.servicio.*;
+
 import org.springframework.ui.ModelMap;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,7 +27,7 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 
 public class ControladorApunteTest {
-    private HttpServletRequest requestMock;
+  private HttpServletRequest requestMock;
     private ServicioUsuario servicioUsuarioMock;
     private ServicioUsuarioApunte servicioUsuarioApunteMock;
     private ServicioApunte servicioApunteMock;
@@ -31,12 +35,18 @@ public class ControladorApunteTest {
     private HttpSession sessionMock;
     private ControladorApunte controladorApunte;
     private BindingResult resultMock;
+    private Apunte apunteMock;
     private RedirectAttributes redirectAttributesMock;
     private ServicioAdministrador servicioAdministrador;
     private ControladorLogin controladorLogin;
+    private MockMultipartFile pdf;
 
     @BeforeEach
     public void init() {
+        apunteMock = mock(Apunte.class);
+        when(apunteMock.getId()).thenReturn(1L);
+        when(apunteMock.getNombre()).thenReturn("Apunte 1");
+        pdf = mock(MockMultipartFile.class);
         requestMock = mock(HttpServletRequest.class);
         sessionMock = mock(HttpSession.class);
         servicioApunteMock = mock(ServicioApunte.class);
@@ -55,6 +65,10 @@ public class ControladorApunteTest {
     public void testPublicarExitoso() throws ArchivoInexistenteException {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
+
+        when(datosApunteMock.getPathArchivo()).thenReturn(pdf);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuarioMock);
+
         doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
 
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock, resultMock, sessionMock);
@@ -67,6 +81,9 @@ public class ControladorApunteTest {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
 
+        when(datosApunteMock.getPathArchivo()).thenReturn(pdf);
+        when(pdf.isEmpty()).thenReturn(true);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuarioMock);
         when(resultMock.hasErrors()).thenReturn(true);
         doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
 
@@ -75,7 +92,7 @@ public class ControladorApunteTest {
         assertEquals("altaApunte", modelAndView.getViewName());
     }
     @Test
-    public void queAlComprarUnApunteDesdeLaVistaDeApuntesEnVentaLleveALaVistaDetalleDelApunte() throws PuntosInsuficientesException, ApunteYaCompradoException {
+    public void queAlComprarUnApunteDesdeLaVistaDeApuntesEnVentaLleveALaVistaDetalleDelApunte() throws PuntosInsuficientesException, ApunteYaCompradoException, PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
