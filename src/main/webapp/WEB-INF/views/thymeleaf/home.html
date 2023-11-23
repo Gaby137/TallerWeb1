@@ -96,7 +96,8 @@
                         <div class="novedad-descrip mb-2">
                             <p  th:text="${novedad.descripcion}" class="mb-2"></p>
                         </div>
-                        <a class="btn btn-primary boton-apunte"  th:href="@{/detalleApunte/{id}(id=${novedad.id})}">Ver Novedad</a>
+                        <a class="btn btn-verde-unlam"  th:href="@{/detalleApunte/{id}(id=${novedad.id})}">Ver Novedad</a>
+                        <p class="card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${novedad.precio}"></span></p>
                     </div>
                 </div>
             </div>

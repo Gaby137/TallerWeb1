@@ -39,9 +39,25 @@ button:hover {
     cursor: pointer;
 }
 
+.btn-verde-unlam{
+    background-color: #4caf50;
+    position: absolute;
+    bottom: 15px;
+    color: white;
+}
+.btn-verde-unlam:hover{
+    background-color: #2a792d;
+}
+
 .card-home {
     min-height: 250px;
     max-height: 250px;
+    background-color: #4caf5078!important;
+}
+.card-apunte-coins{
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
 }
 .card {
     background-color: var(--c-background);
