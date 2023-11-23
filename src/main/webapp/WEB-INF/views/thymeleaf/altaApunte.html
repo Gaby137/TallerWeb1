@@ -59,8 +59,14 @@
     </div>
 </main>
 <script th:inline="javascript">
-    // Script para manejar el cambio en el select de la carrera
     $(document).ready(function() {
+        // Ejecutar la carga de materias al cargar la página
+        (function() {
+            var idCarrera = $('#idCarrera').val();
+            cargarMaterias(idCarrera);
+        })();
+
+        // Manejar el cambio en el select de la carrera
         $('#idCarrera').change(function() {
             var idCarrera = $(this).val();
             cargarMaterias(idCarrera);

@@ -41,34 +41,38 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item mr-2">
+                    <p>Puntos disponibles <span class="fs-4" th:text="${session.usuario.puntos}"></span></p>
+                    <div>
+                        <p style="display: inline-block;"> <span class="fs-4 codigo-de-creador" th:text="${session.usuario.codigoDeCreador}" ></span></p>
+                        <button onclick="copiarAlPortapapeles()" style="display: inline-block;">
+                            <i class="fa-regular fa-copy" style="color: black;"></i>
+                        </button>
+                    </div>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img th:src="@{'/img/' + ${session.usuario.fotoPerfil}}" height="50" width="50" class="rounded-circle">
+                        <span th:text="${session.usuario.nombre}"></span>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <span class="dropdown-item small disabled">Código de creador:</span>
-                        <li><div class="dropdown-item">
-                            <p style="display: inline-block;"> <span class="codigo-de-creador" th:text="${session.usuario.codigoDeCreador}" ></span></p>
-                            <button onclick="copiarAlPortapapeles()" style="display: inline-block;">
-                                <i class="fa-regular fa-copy" style="color: black;"></i>
-                            </button>
-                        </div></li>
-                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" th:href="@{'/miPerfil'}">Perfil</a></li>
                         <li><a class="dropdown-item" th:href="@{'/misApuntes'}">Mis Apuntes</a></li>
+
+                        <li th:if="${session.usuario.rol.name() == 'ADMIN'}">
+                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" th:href="@{'/formMateria'}">Subir materia</a>
+                            <a class="dropdown-item" th:href="@{'/formCarrera'}">Subir carrera</a>
+                        </li>
+
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" th:href="@{'/cerrarSesion'}">Cerrar Sesión</a></li>
                     </ul>
                 </li>
                 <li class="nav-item mr-2">
-                    <ul>
-                        <a href="/spring/packs">
-                            <img alt="Packs" style="height: 32px" src="/spring/img/coin.png">
-                        </a>
-                    </ul>
-                    <ul>
-                        <span class="small">100</span>
-                    </ul>
+                    <a th:href="@{'/packs'}">
+                        <img alt="Packs" style="height: 32px"
+                             th:src="@{/img/coin.png}" />
+                    </a>
                 </li>
             </ul>
         </div>
