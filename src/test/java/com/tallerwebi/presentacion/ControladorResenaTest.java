@@ -123,7 +123,6 @@ public class ControladorResenaTest {
     @Test
     public void queNoDejeEliminarResenaSiNoEsTuya(){
         Usuario usuario = new Usuario(1L);
-        Apunte apunte = new Apunte(1L);
         Resena resena = new Resena();
         resena.setId(1L);
 
@@ -140,7 +139,6 @@ public class ControladorResenaTest {
     @Test
     public void queDejeEliminarResenaSiEsTuya(){
         Usuario usuario = new Usuario(1L);
-        Apunte apunte = new Apunte(1L);
         Resena resena = new Resena();
         resena.setId(1L);
 
