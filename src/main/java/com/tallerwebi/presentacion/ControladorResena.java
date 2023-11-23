@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.OptimisticLockException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -58,6 +59,8 @@ public class ControladorResena {
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
     public ModelAndView guardarResena(@Valid Resena resena, BindingResult result, HttpSession session) {
         if (session.getAttribute("usuario") != null){
+            try {
+
             if (result.hasErrors()) {
                 ModelMap modelo = new ModelMap();
                 modelo.put("resena", resena);
@@ -69,17 +72,20 @@ public class ControladorResena {
                 Apunte apunte = servicioApunte.obtenerPorId(id);
                 modelo.put("id", id);
                 if (resena != null) {
-                    if(servicioUsuarioApunteResena.registrarResena(usuario ,apunte, resena)){
-                        return new ModelAndView("redirect:/detalleApunte/"+id);
-                    }else {
+                    if (servicioUsuarioApunteResena.registrarResena(usuario, apunte, resena)) {
+                        return new ModelAndView("redirect:/detalleApunte/" + id);
+                    } else {
                         modelo.put("error", "No puede dar mas de una reseña");
                         return new ModelAndView("formulario-alta-resena", modelo);
                     }
-
+                }
 
                 }
+            }catch (OptimisticLockException e){
+                ModelMap modelo = new ModelMap();
+                modelo.put("error", "Error inesperado");
+                return new ModelAndView("formulario-alta-resena", modelo);
             }
-
             return new ModelAndView("redirect:/detalleApunte");
         }else{
             return new ModelAndView("redirect:/login");

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class ControladorApunte {
@@ -188,7 +189,8 @@ public class ControladorApunte {
             model.put("apuntesCreadosPorUsuarioActual", apuntesCreadosPorUsuarioActual);
 
             double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(id);
-            model.put("promedioDeResenas", promedioPuntajeResenas);
+            String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+            model.put("promedioDeResenas", promedioFormateado);
 
             TipoDeAcceso tipoDeAcceso = servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
 
@@ -371,7 +373,6 @@ public class ControladorApunte {
                 return perfilUsuarioView;
             }
 
-       
 
         } catch (ApunteYaCompradoException e){
             ModelAndView perfilUsuarioView = verPerfilUsuario(vendedor.getId(), session);
