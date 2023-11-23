@@ -402,7 +402,7 @@ public class ControladorApunte {
 
             Usuario vendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(apunte.getId());
 
-            boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
+          
 
         try {
 
