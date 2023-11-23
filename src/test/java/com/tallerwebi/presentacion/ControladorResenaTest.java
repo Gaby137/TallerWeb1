@@ -7,7 +7,8 @@ import com.tallerwebi.dominio.servicio.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +22,7 @@ import java.util.Date;
 import static junit.framework.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class ControladorResenaTest {
@@ -44,23 +46,13 @@ public class ControladorResenaTest {
         servicioApunte = mock(ServicioApunte.class);
         servicioUsuarioApunte = mock(ServicioUsuarioApunte.class);
         servicioUsuarioApunteResena = mock(ServicioUsuarioApunteResena.class);
-        controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena);
         sessionMock = mock(HttpSession.class);
         resultMock = mock(BindingResult.class);
+        controladorResena = new ControladorResena(servicioResena, servicioUsuario, servicioApunte, servicioUsuarioApunte, servicioUsuarioApunteResena, sessionMock);
         redirectAttributesMock = mock(RedirectAttributes.class);
 
     }
-
-    @Test
-    void irAFormularioAltaDeberiaDevolverVistaConResenaVacia() {
-        ModelAndView modelAndView = controladorResena.irAFormularioAlta(sessionMock);
-
-        // validacion
-        assertEquals("formulario-alta-resena", modelAndView.getViewName());
-        Resena resena = (Resena) modelAndView.getModelMap().get("resena");
-        assertEquals(null, resena.getId());
-    }
-
+    
     @Test
     void borrarResenaDeberiaLlamarMetodoBorrarDelServicioYRedireccionarAVistaApunteDetalle() {
         // Preparación
@@ -85,37 +77,110 @@ public class ControladorResenaTest {
         assertEquals("redirect:/detalleApunte/1", modelAndView.getViewName());
     }
     @Test
-    void guardarResenaDeberiaGuardarResenaYAgregarPuntos() {
-        // Preparación
+    void queAlEnviarFormularioDeResenaConParametrosCorrectosSeGuardeYDevuelvaStatusOK() {
         Long APUNTE_ID = 1L;
-        Resena resena = new Resena();
-        resena.setDescripcion("lalalal");
-        resena.setCantidadDeEstrellas(4);
         Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20, new Date(), new Date());
         apunteMock.setId(APUNTE_ID);
-        Usuario usuario = new Usuario();  // Asegúrate de ajustar esto según tus necesidades
+        Usuario usuario = new Usuario();
         UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
         usuarioApunteResena.setUsuario(usuario);
-        resena.setUsuarioResenaApunte(usuarioApunteResena);
 
-        // Configuración del servicioResena para evitar excepciones
 
         when(servicioUsuarioApunteResena.registrarResena(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
-
-        // Configuración del servicioUsuario para evitar excepciones
         when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);
+        when(servicioApunte.obtenerPorId(APUNTE_ID)).thenReturn(apunteMock);
         when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
         when(sessionMock.getAttribute("idApunte")).thenReturn(APUNTE_ID);
+
+        ResponseEntity response = controladorResena.guardarResena("Parametro de descripcion correcto", "5");
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void queAlEnviarFormularioDeResenaSinDescripcionDevuelvaMensajeYStatusCorrecto() {
+        Long APUNTE_ID = 1L;
+        Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20, new Date(), new Date());
+        apunteMock.setId(APUNTE_ID);
+        Usuario usuario = new Usuario();
+        UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
+        usuarioApunteResena.setUsuario(usuario);
+
+        when(servicioUsuarioApunteResena.registrarResena(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
+        when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);
         when(servicioApunte.obtenerPorId(APUNTE_ID)).thenReturn(apunteMock);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(sessionMock.getAttribute("idApunte")).thenReturn(APUNTE_ID);
 
+        ResponseEntity response = controladorResena.guardarResena("", "5");
 
-        // Ejecución
-        ModelAndView modelAndView = controladorResena.guardarResena(resena, resultMock, sessionMock);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Campo Comentario no puede estar vacio", response.getBody());
 
-        // Verificación
+    }
 
-        // Verifica que la vista sea la esperada (listarResenas)
-        assertEquals("redirect:/detalleApunte/1", modelAndView.getViewName());
+    @Test
+    void queAlEnviarFormularioDeResenaSinValoracionDevuelvaMensajeYStatusCorrecto() {
+        Long APUNTE_ID = 1L;
+        Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20, new Date(), new Date());
+        apunteMock.setId(APUNTE_ID);
+        Usuario usuario = new Usuario();
+        UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
+        usuarioApunteResena.setUsuario(usuario);
+
+        when(servicioUsuarioApunteResena.registrarResena(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
+        when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);
+        when(servicioApunte.obtenerPorId(APUNTE_ID)).thenReturn(apunteMock);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(sessionMock.getAttribute("idApunte")).thenReturn(APUNTE_ID);
+
+        ResponseEntity response = controladorResena.guardarResena("Deslalal", "");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Campo Valoración no puede estar vacio", response.getBody());
+    }
+
+    @Test
+    void queAlEnviarFormularioDeResenaConFormatoDeValoracionIncorrectoDevuelvaMensajeYStatusCorrecto() {
+        Long APUNTE_ID = 1L;
+        Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20, new Date(), new Date());
+        apunteMock.setId(APUNTE_ID);
+        Usuario usuario = new Usuario();
+        UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
+        usuarioApunteResena.setUsuario(usuario);
+
+        when(servicioUsuarioApunteResena.registrarResena(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
+        when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);
+        when(servicioApunte.obtenerPorId(APUNTE_ID)).thenReturn(apunteMock);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(sessionMock.getAttribute("idApunte")).thenReturn(APUNTE_ID);
+
+        ResponseEntity response = controladorResena.guardarResena("Deslalal", "t7t8");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Campo Valoración debe ser un número", response.getBody());
+
+    }
+
+    @Test
+    void queAlEnviarFormularioDeResenaConValorDeValoracionIncorrectoDevuelvaMensajeYStatusCorrecto() {
+        Long APUNTE_ID = 1L;
+        Apunte apunteMock = new Apunte("archivo.pdf", "Apunte de prueba", "Descripción de prueba", 20, new Date(), new Date());
+        apunteMock.setId(APUNTE_ID);
+        Usuario usuario = new Usuario();
+        UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
+        usuarioApunteResena.setUsuario(usuario);
+
+        when(servicioUsuarioApunteResena.registrarResena(any(Usuario.class), any(Apunte.class),any(Resena.class))).thenReturn(true);
+        when(servicioUsuario.actualizar(any(Usuario.class))).thenReturn(true);
+        when(servicioApunte.obtenerPorId(APUNTE_ID)).thenReturn(apunteMock);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuario);
+        when(sessionMock.getAttribute("idApunte")).thenReturn(APUNTE_ID);
+
+        ResponseEntity response = controladorResena.guardarResena("Deslalal", "0");
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Campo Valoración tiene que ser un numero entre 1 y 5", response.getBody());
 
     }
 

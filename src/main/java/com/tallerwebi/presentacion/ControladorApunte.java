@@ -2,10 +2,6 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
-import com.tallerwebi.dominio.servicio.ServicioApunte;
-import com.tallerwebi.dominio.servicio.ServicioUsuario;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
-import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -150,6 +146,7 @@ public class ControladorApunte {
         Usuario usuarioVendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(id);
 
         model.put("apunte", apunte);
+        // model.put("error", "error");
         model.put("usuarioVendedor", usuarioVendedor);
 
         List<Resena> resenas = servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(id);
@@ -176,11 +173,13 @@ public class ControladorApunte {
         }
 
         if (TipoDeAcceso.LEER.equals(tipoDeAcceso) || TipoDeAcceso.EDITAR.equals(tipoDeAcceso)){
+            model.put("urlPdf", "/pdf/" + apunte.getPathArchivo());
             model.put("pdfComprado", true);
         } else {
+            model.put("urlPdf", "/pdf/" + apunte.getPathArchivo() + "#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&view=Fit");
             model.put("pdfComprado", false);
         }
-
+        model.put("resena", new Resena());
         boolean hayResena = servicioUsuarioApunteResena.existeResena(usuario.getId(), id);
         model.put("hayResena", hayResena);
         return new ModelAndView("apunte-detalle", model);
@@ -225,8 +224,6 @@ public class ControladorApunte {
 
     @RequestMapping(path = "/comprarApunte/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
-        ModelMap model = new ModelMap();
-
         Usuario comprador = (Usuario) session.getAttribute("usuario");
 
         Apunte apunte = servicioApunte.obtenerPorId(id);
@@ -246,8 +243,6 @@ public class ControladorApunte {
 
     @RequestMapping(path = "/comprarApunteEnDetalleApunte/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApunteEnDetalleApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
-        ModelMap model = new ModelMap();
-
         Usuario comprador = (Usuario) session.getAttribute("usuario");
 
         Apunte apunte = servicioApunte.obtenerPorId(id);
@@ -267,8 +262,6 @@ public class ControladorApunte {
 
     @RequestMapping(path = "/comprarApuntePorPerfil/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApuntePorPerfil(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
-        ModelMap model = new ModelMap();
-
         Usuario comprador = (Usuario) session.getAttribute("usuario");
 
         Apunte apunte = servicioApunte.obtenerPorId(id);
@@ -287,8 +280,6 @@ public class ControladorApunte {
     }
     @RequestMapping(path = "/comprarApunteEnElHome/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApunteEnElHome(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
-        ModelMap model = new ModelMap();
-
         Usuario comprador = (Usuario) session.getAttribute("usuario");
 
         Apunte apunte = servicioApunte.obtenerPorId(id);

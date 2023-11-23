@@ -9,9 +9,9 @@
     --c-background: #e3f2fd;
 }
 
-body, html {
+/* body, html {
     height: 100%;
-}
+} */
 
 p {
     margin: 0 !important;

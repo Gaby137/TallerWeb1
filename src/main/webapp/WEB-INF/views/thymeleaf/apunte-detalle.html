@@ -3,10 +3,10 @@
 <script src="apunte-detalle.js" defer></script>
 <div th:insert="~{nav}"></div>
 <body>
-    <main class="container mt-5">
+    <main class="container my-5">
         <div class="row">
             <div class="col-12 col-sm-9">
-                <iframe th:src="@{'/pdf/' + ${apunte.pathArchivo}}"
+                <iframe th:src="@{${urlPdf}}"
                         frameborder="0" height="500px" width="100%"
                         th:classappend="${pdfComprado} ? '' : 'pdf-no-comprado'"></iframe>
                 <form th:action="@{/comprarApunteEnDetalleApunte/{id}(id=${apunte.id})}" method="post">
@@ -20,40 +20,80 @@
                 <p class="fw-bold">Descripción: <span class="fw-normal" th:text="${apunte.descripcion}"></span></p>
                 <p class="fw-bold">Path: <span class="fw-normal" th:text="${apunte.pathArchivo}"></span></p>
                 <a th:href="@{'/perfilUsuario/' + ${usuarioVendedor.id}}" class="btn btn-primary">Ver perfil y apuntes</a>
-                <div th:if="${tipoDeAcceso}">
-                    <a id="btn-resena" th:if="${!hayResena}" th:href="@{'/formulario-alta-resena'}" class="btn btn-primary">Agregar Reseña</a>
-                </div>
 
             </div>
         </div>
         <hr>
         <h3>Reseñas</h3>
         <h4>Promedio de reseñas: <span th:text="${promedioDeResenas}"></span></h4>
-        <table class="w-100">
-            <thead>
-                <tr>
-                    <th>Comentario</th>
-                    <th>Valoración</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="resena : ${resenas}">
-                    <td th:text="${resena.descripcion}"></td>
-                    <td th:text="${resena.cantidadDeEstrellas}"></td>
-                    <td>
-                         <span th:if="${resenasDelUsuarioActual.contains(resena)}">
-                            <form th:action="@{'/borrarResena/'+${resena.id}}" method="post">
-                                <input type="hidden" name="_method" value="DELETE" />
-                                <button type="submit" class="btn btn-danger m-1">Borrar</button>
-                            </form>
-                        </span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
+        <div class="container w-100 mb-2" id="containerResenas">
+            <div class="row">
+                <div class="col-8">
+                    <p>Comentario</p>
+                </div>
+                <div class="col-2">
+                    <p>Valoración</p>
+                </div>
+            </div>
+            <div class="row mb-2 p-3 bg-light rounded" th:each="resena : ${resenas}">
+                <div class="col-8">
+                    <p th:text="${resena.descripcion}"></p>
+                </div>
+                <div class="col-2">
+                    <p th:text="${resena.cantidadDeEstrellas}"></p>
+                </div>
+                <div class="col-2">
+                    <span th:if="${resenasDelUsuarioActual.contains(resena)}">
+                        <form th:action="@{'/borrarResena/'+${resena.id}}" method="post">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button type="submit" class="btn btn-danger m-1">Borrar</button>
+                        </form>
+                    </span>
+                </div>
+            </div>
+            <hr>
+            <div th:if="${tipoDeAcceso}">
+                <form id="formularioResena" class="form-control row d-inline-flex align-items-center" method="POST" th:object="${resena}">
+                    <div class="col-sm-8 col-10" >
+                        <textarea class="form-control" th:field="*{descripcion}" id="descripcion" rows="2" required></textarea>
+                    </div>
+                    <div class="col-2">
+                        <select class="form-select" id="cantidadDeEstrellas" name="cantidadDeEstrellas" th:field="*{cantidadDeEstrellas}" required>
+                            <option value="1">1 - Muy Malo</option>
+                            <option value="2">2 - Malo</option>
+                            <option value="3">3 - Regular</option>
+                            <option value="4">4 - Bueno</option>
+                            <option value="5">5 - Excelente</option>
+                        </select>
+                    </div>
+
+                    <div class="col-2">
+                        <input type="submit" class="btn btn-primary" value="Agregar Reseña" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <p th:if="${mensaje}" style="color: green;" th:text="${mensaje}"></p>
-        <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+        <p id="error" style="color: red;"></p>
     </main>
 </body>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $("#formularioResena").submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/spring/guardarResena",
+                data: $(this).serialize(),
+                success: function (res) {
+                    window.location.reload();
+                },
+                error: function (res) {
+                    $('#error').text(res.responseText);
+                }
+            });
+        });
+    });
+</script>
