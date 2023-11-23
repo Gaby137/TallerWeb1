@@ -41,20 +41,19 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item mr-2">
-                    <p>Puntos disponibles  <span id="puntosUsuario" th:text="${session.usuario.puntos}"></span></p>
-                    <div>
-                        <p style="display: inline-block;"> <span class="fs-4 codigo-de-creador" th:text="${session.usuario.codigoDeCreador}" ></span></p>
-                        <button onclick="copiarAlPortapapeles()" style="display: inline-block;">
-                            <i class="fa-regular fa-copy" style="color: black;"></i>
-                        </button>
-                    </div>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span th:text="${session.usuario.nombre}"></span>
+                        <img th:src="@{'/img/' + ${session.usuario.fotoPerfil}}" height="50" width="50" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <span class="dropdown-item small disabled">Código de creador:</span>
+                        <li><div class="dropdown-item">
+                            <p style="display: inline-block;"> <span class="codigo-de-creador" th:text="${session.usuario.codigoDeCreador}" ></span></p>
+                            <button onclick="copiarAlPortapapeles()" style="display: inline-block;">
+                                <i class="fa-regular fa-copy" style="color: black;"></i>
+                            </button>
+                        </div></li>
+                        <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" th:href="@{'/miPerfil'}">Perfil</a></li>
                         <li><a class="dropdown-item" th:href="@{'/misApuntes'}">Mis Apuntes</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -62,10 +61,14 @@
                     </ul>
                 </li>
                 <li class="nav-item mr-2">
-                    <a th:href="@{'/packs'}">
-                        <img alt="Packs" style="height: 32px"
-                             th:src="@{/img/coin.png}" />
-                    </a>
+                    <ul>
+                        <a href="/spring/packs">
+                            <img alt="Packs" style="height: 32px" src="/spring/img/coin.png">
+                        </a>
+                    </ul>
+                    <ul>
+                        <span class="small">100</span>
+                    </ul>
                 </li>
             </ul>
         </div>
