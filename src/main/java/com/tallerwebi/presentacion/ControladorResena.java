@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.OptimisticLockException;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -88,7 +89,7 @@ public class ControladorResena {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         Long idApunte = (Long) session.getAttribute("idApunte");
 
-
+        if (session.getAttribute("usuario") != null){
             Resena resenaExistente = servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(usuario.getId(), idApunte);
 
             if (resenaExistente != null && resenaExistente.getId().equals(id)) {
@@ -100,7 +101,11 @@ public class ControladorResena {
                 redirectAttributes.addFlashAttribute("modelo", modelo);
             }
 
-        return new ModelAndView("redirect:/detalleApunte/" + idApunte, modelo);
+            return new ModelAndView("redirect:/detalleApunte/" + idApunte, modelo);
+        }else{
+            return new ModelAndView("redirect:/login");
+        }
+
     }
 
 }

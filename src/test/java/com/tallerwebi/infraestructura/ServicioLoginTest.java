@@ -10,6 +10,7 @@ import com.tallerwebi.dominio.servicio.ServicioUsuario;
 import com.tallerwebi.presentacion.DatosRegistro;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockMultipartFile;
@@ -67,7 +68,7 @@ public class ServicioLoginTest {
     }
 
 
-   /* @Test
+    @Test
     public void queAlRegistrarseUnUsuarioSeLeAsigneUnCodigoDeCreador() throws IOException, UsuarioExistente {
 
         MockMultipartFile archivoSimulado = mock(MockMultipartFile.class);
@@ -76,20 +77,18 @@ public class ServicioLoginTest {
 
         when(archivoSimulado.getOriginalFilename()).thenReturn("nombreDeArchivo.jpg");
 
+        DatosRegistro datosRegistro = new DatosRegistro("Tomas", "Cernik", "sdadsads", "sadasdasd", archivoSimulado);
+
         when(repositorioUsuarioMock.buscarUsuario(anyString())).thenReturn(null);
 
         when(servicioUsuarioMock.existeCodigoCreadorEnLaBaseDeDatos(anyString())).thenReturn(false);
 
-        servicioLogin.generarCodigoCreador();
+        servicioLogin.registrar(datosRegistro);
 
-        Usuario usuarioRegistrado = new Usuario();
+        ArgumentCaptor<Usuario> usuarioCaptor = ArgumentCaptor.forClass(Usuario.class);
+        verify(repositorioUsuarioMock, times(1)).guardar(usuarioCaptor.capture());
 
-        doNothing().when(repositorioUsuarioMock).guardar(eq(usuarioRegistrado));
-
-        servicioLogin.registrar(new DatosRegistro("Tomas", "Cernik", "sdadsads", "sadasdasd", archivoSimulado));
-
-        verify(repositorioUsuarioMock, times(1)).guardar(eq(usuarioRegistrado));
-        verify(servicioUsuarioMock, times(1)).existeCodigoCreadorEnLaBaseDeDatos(anyString());
-        verify(servicioUsuarioMock, times(0)).actualizar(any(Usuario.class));
-    }*/
+        Usuario usuarioGuardado = usuarioCaptor.getValue();
+        assertNotNull(usuarioGuardado.getCodigoDeCreador());
+    }
 }

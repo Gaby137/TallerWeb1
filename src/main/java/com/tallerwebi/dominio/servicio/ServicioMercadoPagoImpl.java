@@ -5,16 +5,23 @@ import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.presentacion.DatosMPResponse;
 import com.tallerwebi.presentacion.DatosPago;
 import com.tallerwebi.presentacion.DatosPreferenciaRespuesta;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.core.env.Environment;
 
 import javax.transaction.Transactional;
 
 @Service("servicioMercadoPago")
 @Transactional
 public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
+
+    @Value("${urlMercadopago}")
+    private String urlMercadopago;
+    @Value("${authMercadopago}")
+    private String authMercadopago;
     public DatosPreferenciaRespuesta crearPreferencia(String pack){
         DatosPago datosPago = null;
         DatosPreferenciaRespuesta responsePago = null;
@@ -27,10 +34,10 @@ public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
             datosPago = new DatosPago(20, pack);
         }
 
-        String url = "https://api.mercadopago.com/checkout/preferences";
+        String url = urlMercadopago;
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization","Bearer TEST-4819727839399270-102609-725d10a1fcb0916df6b613a36ef4188d-1524389727");
+        headers.set("Authorization",authMercadopago);
         headers.set("Content-Type","application/json");
 
         Gson gson = new Gson();

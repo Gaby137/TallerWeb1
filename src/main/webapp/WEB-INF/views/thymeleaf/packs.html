@@ -7,17 +7,17 @@
         <form th:action="@{/crear-orden}" method="post" class="needs-validation" novalidate>
             <fieldset class="form-group">
                 <legend>Seleccione un pack:</legend>
-                <div class="btn-group" data-toggle="buttons">
+                <div class="btn-group packs-btn-group" data-toggle="buttons">
                     <div>
-                        <label class="btn" for="packBronce" style="background-color: #a97142; color: white"><input type="radio" id="packBronce" name="pack" value="bronce" /> <img alt="Packs" style="height: 24px" th:src="@{/img/coin.png}"> x 20</label>
+                        <label class="btn btn-bronce" for="packBronce"><input type="radio" id="packBronce" name="pack" value="bronce" /> <img alt="Packs" style="height: 24px" th:src="@{/img/coin.png}"> x 20</label>
                     </div>
 
                     <div>
-                        <label class="btn mx-2" for="packPlata" style="background-color: #ccd0d3; color: white"><input type="radio" id="packPlata" name="pack" value="plata" /> <img alt="Packs" style="height: 24px" th:src="@{/img/coin.png}"> x 50</label>
+                        <label class="btn btn-plata" for="packPlata"><input type="radio" id="packPlata" name="pack" value="plata" /> <img alt="Packs" style="height: 24px" th:src="@{/img/coin.png}"> x 50</label>
                     </div>
 
                     <div>
-                        <label class="btn" for="packOro" style="background-color: #ffd700; color: white"><input type="radio" id="packOro" name="pack" value="oro" /> <img alt="Packs" style="height: 24px" th:src="@{/img/coin.png}"> x 100</label>
+                        <label class="btn btn-oro" for="packOro"><input type="radio" id="packOro" name="pack" value="oro" /> <img alt="Packs" style="height: 24px" th:src="@{/img/coin.png}"> x 100</label>
                     </div>
                 </div>
             </fieldset>

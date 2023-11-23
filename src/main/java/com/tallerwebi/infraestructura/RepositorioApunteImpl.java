@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -75,7 +76,7 @@ public class RepositorioApunteImpl implements RepositorioApunte {
     public List<Apunte> obtenerApuntesEntreFechas(Date desde, Date hasta) {
         Session session = sessionFactory.getCurrentSession();
         Criteria criteria = session.createCriteria(Apunte.class)
-            .add(Restrictions.between("created_at", desde, hasta));
+            .add(Restrictions.between("created_at", desde, hasta)).addOrder(Order.desc("created_at"));
         return criteria.list();
     }
 }
