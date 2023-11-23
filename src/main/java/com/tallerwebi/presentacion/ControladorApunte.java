@@ -286,14 +286,9 @@ public class ControladorApunte {
 
        
 
-        } catch (ApunteYaCompradoException e){
+        } catch (ApunteYaCompradoException | PuntosInsuficientesException e){
             ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
-            apuntesEnVenta.getModelMap().put("error", "Ya tenes este apunte comprado");
-            return apuntesEnVenta;
-
-        } catch (PuntosInsuficientesException e){
-            ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
-            apuntesEnVenta.getModelMap().put("error", "Puntos insuficientes para adquirir el apunte");
+            apuntesEnVenta.getModelMap().put("error", e.getMessage());
             return apuntesEnVenta;
 
         } catch (Exception e){
@@ -331,17 +326,12 @@ public class ControladorApunte {
             }
         
 
-        }catch (ApunteYaCompradoException e){
+        }catch (ApunteYaCompradoException | PuntosInsuficientesException e){
             ModelAndView detalleApunte = getDetalleApunteConListadoDeSusResenas(apunte.getId(), request, session);
-            detalleApunte.getModelMap().put("error", "Ya tenes este apunte comprado");
+            detalleApunte.getModelMap().put("error", e.getMessage());
             return detalleApunte;
         }
-        catch (PuntosInsuficientesException e){
-            ModelAndView detalleApunte = getDetalleApunteConListadoDeSusResenas(apunte.getId(), request, session);
-            detalleApunte.getModelMap().put("error", "Puntos insuficientes para adquirir el apunte");
-            return detalleApunte;
-
-        } catch (Exception e){
+        catch (Exception e){
             ModelAndView detalleApunte = getDetalleApunteConListadoDeSusResenas(apunte.getId(), request, session);
             detalleApunte.getModelMap().put("error", "Error inesperado al intentar comprar el apunte");
             return detalleApunte;
@@ -374,14 +364,9 @@ public class ControladorApunte {
             }
 
 
-        } catch (ApunteYaCompradoException e){
+        } catch (ApunteYaCompradoException | PuntosInsuficientesException e){
             ModelAndView perfilUsuarioView = verPerfilUsuario(vendedor.getId(), session);
-            perfilUsuarioView.getModelMap().put("error", "Ya tenes este apunte comprado");
-            return perfilUsuarioView;
-
-        } catch (PuntosInsuficientesException e){
-            ModelAndView perfilUsuarioView = verPerfilUsuario(vendedor.getId(), session);
-            perfilUsuarioView.getModelMap().put("error", "Puntos insuficientes para adquirir el apunte");
+            perfilUsuarioView.getModelMap().put("error", e.getMessage());
             return perfilUsuarioView;
 
         } catch (Exception e){
@@ -404,8 +389,6 @@ public class ControladorApunte {
 
             Usuario vendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(apunte.getId());
 
-          
-
         try {
 
             boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
@@ -418,14 +401,9 @@ public class ControladorApunte {
                 return homeView;
             }
 
-        } catch (PuntosInsuficientesException e) {
+        } catch (PuntosInsuficientesException | ApunteYaCompradoException e) {
             ModelAndView homeView = controladorLogin.home(session);
-            homeView.getModelMap().put("error", "Puntos insuficientes para comprar el apunte");
-            return homeView;
-
-        } catch (ApunteYaCompradoException e) {
-            ModelAndView homeView = controladorLogin.home(session);
-            homeView.getModelMap().put("error", "Ya teenes este apunte comprado");
+            homeView.getModelMap().put("error", e.getMessage());
             return homeView;
 
         } catch (Exception e) {
