@@ -42,6 +42,7 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
+    @JsonIgnore
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private UsuarioApunteResena usuarioResenaApunte;
 
