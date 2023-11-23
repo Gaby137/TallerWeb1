@@ -42,39 +42,49 @@ public class ControladorResena {
         ModelMap model = new ModelMap();
 
         Usuario usuario=(Usuario) session.getAttribute("usuario");
-        model.put("usuario", usuario);
 
-        model.put("resena", new Resena());
-        model.put("title", "Nueva Reseña");
-        return new ModelAndView("formulario-alta-resena", model);
+        if (session.getAttribute("usuario") != null){
+            model.put("usuario", usuario);
+
+            model.put("resena", new Resena());
+            model.put("title", "Nueva Reseña");
+            return new ModelAndView("formulario-alta-resena", model);
+        }else{
+            return new ModelAndView("redirect:/login");
+        }
+
     }
 
     @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
     public ModelAndView guardarResena(@Valid Resena resena, BindingResult result, HttpSession session) {
-
-        if (result.hasErrors()) {
-            ModelMap modelo = new ModelMap();
-            modelo.put("resena", resena);
-            return new ModelAndView("formulario-alta-resena", modelo);
-        }else{
-            ModelMap modelo = new ModelMap();
-            Usuario usuario=(Usuario) session.getAttribute("usuario");
-            Long id = (Long) session.getAttribute("idApunte");
-            Apunte apunte = servicioApunte.obtenerPorId(id);
-            modelo.put("id", id);
-        if (resena != null) {
-            if(servicioUsuarioApunteResena.registrarResena(usuario ,apunte, resena)){
-                return new ModelAndView("redirect:/detalleApunte/"+id);
-            }else {
-                modelo.put("error", "No puede dar mas de una reseña");
+        if (session.getAttribute("usuario") != null){
+            if (result.hasErrors()) {
+                ModelMap modelo = new ModelMap();
+                modelo.put("resena", resena);
                 return new ModelAndView("formulario-alta-resena", modelo);
+            }else{
+                ModelMap modelo = new ModelMap();
+                Usuario usuario=(Usuario) session.getAttribute("usuario");
+                Long id = (Long) session.getAttribute("idApunte");
+                Apunte apunte = servicioApunte.obtenerPorId(id);
+                modelo.put("id", id);
+                if (resena != null) {
+                    if(servicioUsuarioApunteResena.registrarResena(usuario ,apunte, resena)){
+                        return new ModelAndView("redirect:/detalleApunte/"+id);
+                    }else {
+                        modelo.put("error", "No puede dar mas de una reseña");
+                        return new ModelAndView("formulario-alta-resena", modelo);
+                    }
+
+
+                }
             }
 
-
+            return new ModelAndView("redirect:/detalleApunte");
+        }else{
+            return new ModelAndView("redirect:/login");
         }
-        }
 
-        return new ModelAndView("redirect:/detalleApunte");
     }
 
     @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.POST)
@@ -83,7 +93,7 @@ public class ControladorResena {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         Long idApunte = (Long) session.getAttribute("idApunte");
 
-
+        if (session.getAttribute("usuario") != null){
             Resena resenaExistente = servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuarioYApunte(usuario.getId(), idApunte);
 
             if (resenaExistente != null && resenaExistente.getId().equals(id)) {
@@ -95,7 +105,11 @@ public class ControladorResena {
                 redirectAttributes.addFlashAttribute("modelo", modelo);
             }
 
-        return new ModelAndView("redirect:/detalleApunte/" + idApunte, modelo);
+            return new ModelAndView("redirect:/detalleApunte/" + idApunte, modelo);
+        }else{
+            return new ModelAndView("redirect:/login");
+        }
+
     }
 
 }

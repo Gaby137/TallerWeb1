@@ -53,32 +53,38 @@ public class ControladorMercadoPago {
         Usuario usuario=(Usuario) session.getAttribute("usuario");
         int puntosComprados = 0;
 
-        switch (external_reference){
-            case "oro":
-                puntosComprados = 100;
-                break;
-            case "plata":
-                puntosComprados = 50;
-                break;
-            case "bronce":
-                puntosComprados = 20;
-                break;
-            default:
-                puntosComprados = 0;
-        }
+        if(usuario != null){
+            switch (external_reference){
+                case "oro":
+                    puntosComprados = 100;
+                    break;
+                case "plata":
+                    puntosComprados = 50;
+                    break;
+                case "bronce":
+                    puntosComprados = 20;
+                    break;
+                default:
+                    puntosComprados = 0;
+            }
 
-        model.put("pack",external_reference);
+            model.put("pack",external_reference);
 
-        if(status.equals("approved")){
-            model.put("estado","Su pack " + external_reference + " fue comprado con éxito!");
+            if(status.equals("approved")){
+                model.put("estado","Su pack " + external_reference + " fue comprado con éxito!");
 
-            usuario.setPuntos(usuario.getPuntos() + puntosComprados);
-            servicioUsuario.actualizar(usuario);
+                usuario.setPuntos(usuario.getPuntos() + puntosComprados);
+                servicioUsuario.actualizar(usuario);
+            }else{
+                model.put("error","Hubo un inconveniente al procesar su pago. Por favor, intente de nuevo más tarde.");
+                return new ModelAndView("packs", model);
+            }
+
+            return new ModelAndView("resultadoCompra", model);
         }else{
-            model.put("error","Hubo un inconveniente al procesar su pago. Por favor, intente de nuevo más tarde.");
-            return new ModelAndView("packs", model);
+            return new ModelAndView("redirect:/login");
         }
 
-        return new ModelAndView("resultadoCompra", model);
+
     }
 }

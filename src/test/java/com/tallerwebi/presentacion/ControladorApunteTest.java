@@ -66,6 +66,7 @@ public class ControladorApunteTest {
         DatosApunte datosApunteMock = mock(DatosApunte.class);
         Usuario usuarioMock = mock(Usuario.class);
         when(datosApunteMock.getPathArchivo()).thenReturn(pdf);
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuarioMock);
         doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
 
         ModelAndView modelAndView = controladorApunte.publicar(datosApunteMock, resultMock, sessionMock);
@@ -81,7 +82,7 @@ public class ControladorApunteTest {
 
         when(datosApunteMock.getPathArchivo()).thenReturn(pdf);
         when(pdf.isEmpty()).thenReturn(true);
-
+        when(sessionMock.getAttribute("usuario")).thenReturn(usuarioMock);
         doNothing().when(servicioUsuarioApunteResenaMock).registrarApunte(datosApunteMock, usuarioMock);
         
         // Ejecución de la prueba
