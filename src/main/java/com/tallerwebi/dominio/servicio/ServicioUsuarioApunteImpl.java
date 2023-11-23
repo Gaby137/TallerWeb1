@@ -1,6 +1,8 @@
 package com.tallerwebi.dominio.servicio;
 
 import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.excepcion.ApunteYaCompradoException;
+import com.tallerwebi.dominio.excepcion.PuntosInsuficientesException;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,29 +82,36 @@ public class ServicioUsuarioApunteImpl implements ServicioUsuarioApunte {
 
     @Override
     @Transactional
-    public boolean comprarApunte(Usuario comprador, Usuario vendedor, Apunte apunte) {
+    public boolean comprarApunte(Usuario comprador, Usuario vendedor, Apunte apunte) throws ApunteYaCompradoException, PuntosInsuficientesException {
         if (comprador == null || vendedor == null || apunte == null) {
             return false;
         }
-        comprador = servicioUsuario.obtenerPorId(comprador.getId());
 
-            if (comprador.getPuntos() >= apunte.getPrecio() && !obtenerApuntesPorIdDeUsuario(comprador.getId()).contains(apunte)) {
-                comprador.setPuntos(comprador.getPuntos() - apunte.getPrecio());
-                vendedor.setPuntos(vendedor.getPuntos() + apunte.getPrecio());
-                servicioUsuario.actualizar(comprador);
-                servicioUsuario.actualizar(vendedor);
-                apunte.setActivo(true);
+        servicioUsuario.actualizar(comprador);
+        servicioApunte.actualizar(apunte);
 
-                UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
-                usuarioApunte.setUsuario(comprador);
-                usuarioApunte.setApunte(apunte);
-                usuarioApunte.setTipoDeAcceso(TipoDeAcceso.LEER);
+        if (obtenerApuntesPorIdDeUsuario(comprador.getId()).contains(apunte)) {
+            throw new ApunteYaCompradoException("Ya tenes este apunte comprado");
+        }
 
-                repositorioUsuarioApunte.registrar(usuarioApunte);
+        if (comprador.getPuntos() < apunte.getPrecio()) {
+            throw new PuntosInsuficientesException("No tenes los puntos suficientes para comprar el apunte");
+        }
 
-                return true;
-            }
-        return false;
+        comprador.setPuntos(comprador.getPuntos() - apunte.getPrecio());
+        vendedor.setPuntos(vendedor.getPuntos() + apunte.getPrecio());
+        servicioUsuario.actualizar(comprador);
+        servicioUsuario.actualizar(vendedor);
+        apunte.setActivo(true);
+
+        UsuarioApunte usuarioApunte = new UsuarioApunte(comprador, apunte);
+        usuarioApunte.setUsuario(comprador);
+        usuarioApunte.setApunte(apunte);
+        usuarioApunte.setTipoDeAcceso(TipoDeAcceso.LEER);
+
+        repositorioUsuarioApunte.registrar(usuarioApunte);
+
+        return true;
     }
 
     @Override

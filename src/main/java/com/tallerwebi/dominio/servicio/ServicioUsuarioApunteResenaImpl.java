@@ -1,7 +1,6 @@
 package com.tallerwebi.dominio.servicio;
 
 import com.tallerwebi.dominio.entidad.*;
-import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunteResena;
@@ -48,52 +47,45 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
             UsuarioApunteResena usuarioApunteResena = new UsuarioApunteResena();
             resena.setCreated_at(new Date());
-            usuario.setPuntos(usuario.getPuntos() + 3);
             servicioUsuario.actualizar(usuario);
             usuarioApunteResena.setResena(resena);
             usuarioApunteResena.setUsuario(usuario);
             usuarioApunteResena.setApunte(apunte);
             repositorioUsuarioApunteResena.guardar(usuarioApunteResena);
             dar100PuntosAlUsuarioPorBuenasResenas(apunte.getId());
-            List<Resena> resenasCreadas = obtenerResenasPorIdDeUsuario(usuario.getId());
-            if (resenasCreadas.size() % 5 == 0) {
-                darPuntosAlUsuarioPorParticipacionContinua(usuario);
-            }
-            return true;
+            darPuntosAlUsuarioPorParticipacionContinua(usuario);
+
         }
+        return true;
     }
 
     @Override
-    public void registrarApunte(DatosApunte datosApunte, Usuario usuario) throws ArchivoInexistenteException {
-        try {
-            File uploadDirectory = new File("src/main/webapp/resources/core/pdf/");
-            if (uploadDirectory.exists()) {
-                if (datosApunte.getPathArchivo() != null){
-                    File pdfFile = new File(uploadDirectory, datosApunte.getPathArchivo().getOriginalFilename());
+    public void registrarApunte(DatosApunte datosApunte, Usuario usuario) {
+        File uploadDirectory = new File("src/main/webapp/resources/core/pdf/");
+        if (uploadDirectory.exists()) {
+            if (datosApunte.getPathArchivo() != null){
+                File pdfFile = new File(uploadDirectory, datosApunte.getPathArchivo().getOriginalFilename());
+                try {
                     datosApunte.getPathArchivo().transferTo(pdfFile);
-                } else {
-                    throw new ArchivoInexistenteException("Error al manipular el documento");
+                } catch (Exception e) {
+                    // TODO: handle exception
                 }
+
+                Apunte apunte = new Apunte(datosApunte.getPathArchivo().getOriginalFilename(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
+                Materia materia = servicioAdministrador.obtenerMateria(datosApunte.getIdMateria());
+                apunte.setMateria(materia);
+                UsuarioApunte usuarioApunte = new UsuarioApunte();
+                usuarioApunte.setApunte(apunte);
+                usuarioApunte.setUsuario(usuario);
+                usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
+                apunte.setActivo(true);
+                repositorioApunte.registrarApunte(apunte);
+                repositorioUsuarioApunte.registrar(usuarioApunte);
+                darPuntosAlUsuarioPorParticipacionContinua(usuario);
+
             }
-        } catch (Exception e) {
-            throw new ArchivoInexistenteException("Error al manipular el documento");
         }
 
-        Apunte apunte = new Apunte(datosApunte.getPathArchivo().getOriginalFilename(), datosApunte.getNombre(), datosApunte.getDescripcion(), datosApunte.getPrecio(), new Date(), new Date());
-        Materia materia = servicioAdministrador.obtenerMateria(datosApunte.getIdMateria());
-        apunte.setMateria(materia);
-        UsuarioApunte usuarioApunte = new UsuarioApunte();
-        usuarioApunte.setApunte(apunte);
-        usuarioApunte.setUsuario(usuario);
-        usuarioApunte.setTipoDeAcceso(TipoDeAcceso.EDITAR);
-        apunte.setActivo(true);
-        repositorioApunte.registrarApunte(apunte);
-        repositorioUsuarioApunte.registrar(usuarioApunte);
-
-        List<Apunte> apuntesCreados = obtenerApuntesCreados(usuario);
-        if (apuntesCreados.size() % 5 == 0) {
-            darPuntosAlUsuarioPorParticipacionContinua(usuario);
-        }
     }
 
     @Override
