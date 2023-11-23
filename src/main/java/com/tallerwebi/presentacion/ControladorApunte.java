@@ -303,6 +303,7 @@ public class ControladorApunte {
 
 
     }
+    }
 
     @RequestMapping(path = "/comprarApunteEnDetalleApunte/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApunteEnDetalleApunte(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) throws PuntosInsuficientesException, ApunteYaCompradoException {
@@ -347,7 +348,7 @@ public class ControladorApunte {
 
 
     }
-
+    }
     @RequestMapping(path = "/comprarApuntePorPerfil/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApuntePorPerfil(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
         ModelMap model = new ModelMap();
@@ -436,4 +437,5 @@ public class ControladorApunte {
 
     }
 
+}
 }
