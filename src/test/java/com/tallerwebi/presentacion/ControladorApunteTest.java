@@ -1,7 +1,9 @@
 package com.tallerwebi.presentacion;
 
 
+import com.tallerwebi.dominio.excepcion.ApunteYaCompradoException;
 import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
+import com.tallerwebi.dominio.excepcion.PuntosInsuficientesException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -90,7 +92,7 @@ public class ControladorApunteTest {
         assertEquals("altaApunte", modelAndView.getViewName());
     }
     @Test
-    public void queAlComprarUnApunteDesdeLaVistaDeApuntesEnVentaLleveALaVistaDetalleDelApunte() throws PuntosInsuficientesException, ApunteYaCompradoException {
+    public void queAlComprarUnApunteDesdeLaVistaDeApuntesEnVentaLleveALaVistaDetalleDelApunte() throws PuntosInsuficientesException, ApunteYaCompradoException, PuntosInsuficientesException, ApunteYaCompradoException {
         Usuario comprador = new Usuario();
         Usuario vendedor = new Usuario();
         Apunte apunte = new Apunte();
