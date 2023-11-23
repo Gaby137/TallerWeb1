@@ -590,7 +590,7 @@ public class ServicioUsuarioApunteResenaTest {
 
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
 
-        Assert.assertEquals(25, usuario.getPuntos());
+        assertEquals(25, usuario.getPuntos());
     }
     @Test
     public void darle55PuntosAlUsuarioPorHaberSubido20Resenas() {
@@ -618,7 +618,7 @@ public class ServicioUsuarioApunteResenaTest {
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
 
         System.out.println("Banderas del Usuario: " + usuario.getFlagsDeParticipacionContinua());
-        Assert.assertEquals(55, usuario.getPuntos());
+        assertEquals(55, usuario.getPuntos());
     }
 
     @Test
@@ -637,7 +637,7 @@ public class ServicioUsuarioApunteResenaTest {
 
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
 
-        Assert.assertEquals(35, usuario.getPuntos());
+        assertEquals(35, usuario.getPuntos());
     }
 
     @Test
@@ -663,7 +663,7 @@ public class ServicioUsuarioApunteResenaTest {
 
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
 
-        Assert.assertEquals(80, usuario.getPuntos());
+        assertEquals(80, usuario.getPuntos());
     }
 
 
@@ -686,7 +686,7 @@ public class ServicioUsuarioApunteResenaTest {
         servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
-        Assert.assertEquals(0, usuario.getPuntos());
+        assertEquals(0, usuario.getPuntos());
     }
 
     @Test
@@ -707,7 +707,7 @@ public class ServicioUsuarioApunteResenaTest {
         servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
 
         servicioUsuarioApunteResena.darPuntosAlUsuarioPorParticipacionContinua(usuario);
-        Assert.assertEquals(0, usuario.getPuntos());
+        assertEquals(0, usuario.getPuntos());
     }
 
     @Test
@@ -754,10 +754,10 @@ public class ServicioUsuarioApunteResenaTest {
 
         servicioUsuarioApunteResena.obtenerApuntesCreadosYVerSiPuedeComprar(usuarioVendedor, usuarioActual);
 
-        Assert.assertFalse(apunte1.isSePuedeComprar());
-        Assert.assertFalse(apunte4.isSePuedeComprar());
-        Assert.assertTrue(apunte5.isSePuedeComprar());
-        Assert.assertTrue(apunte6.isSePuedeComprar());
+        assertFalse(apunte1.isSePuedeComprar());
+        assertFalse(apunte4.isSePuedeComprar());
+        assertTrue(apunte5.isSePuedeComprar());
+        assertTrue(apunte6.isSePuedeComprar());
     }
 
     @Test
