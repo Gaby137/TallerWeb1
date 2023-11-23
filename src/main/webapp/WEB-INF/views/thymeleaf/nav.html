@@ -57,6 +57,13 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" th:href="@{'/miPerfil'}">Perfil</a></li>
                         <li><a class="dropdown-item" th:href="@{'/misApuntes'}">Mis Apuntes</a></li>
+
+                        <li th:if="${session.usuario.rol.name() == 'ADMIN'}">
+                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" th:href="@{'/formMateria'}">Subir materia</a>
+                            <a class="dropdown-item" th:href="@{'/formCarrera'}">Subir carrera</a>
+                        </li>
+
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" th:href="@{'/cerrarSesion'}">Cerrar Sesión</a></li>
                     </ul>
