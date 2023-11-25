@@ -21,7 +21,7 @@
                 <hr class="my-4">
                 <div>
                     <p class="fw-bold">Vendedor: <span class="fw-normal" th:text="${usuarioVendedor.nombre}"></span></p>
-                    <a th:href="@{'/perfilUsuario/' + ${usuarioVendedor.id}}" class="btn btn-primary">Ver perfil y apuntes</a>
+                    <a th:href="@{'/perfilUsuario/' + ${usuarioVendedor.id}}" class="btn btn-primary">Ver apuntes del vendedor</a>
                 </div>
 
             </div>
@@ -54,27 +54,27 @@
                     </span>
                 </div>
             </div>
-            <hr>
-            <div th:if="${tipoDeAcceso}">
-                <form id="formularioResena" class="form-control row d-inline-flex align-items-center" method="POST" th:object="${resena}">
-                    <div class="col-sm-8 col-10" >
-                        <textarea class="form-control" th:field="*{descripcion}" id="descripcion" rows="2" required></textarea>
-                    </div>
-                    <div class="col-2">
-                        <select class="form-select" id="cantidadDeEstrellas" name="cantidadDeEstrellas" th:field="*{cantidadDeEstrellas}" required>
-                            <option value="1">1 - Muy Malo</option>
-                            <option value="2">2 - Malo</option>
-                            <option value="3">3 - Regular</option>
-                            <option value="4">4 - Bueno</option>
-                            <option value="5">5 - Excelente</option>
-                        </select>
-                    </div>
+        </div>
+        <hr >
+        <div class="container w-100 mb-2" th:if="${!hayResena}">
+            <form id="formularioResena" class="form-control row d-inline-flex align-items-center" method="POST" th:object="${resena}">
+                <div class="col-sm-8 col-10" >
+                    <textarea class="form-control" th:field="*{descripcion}" id="descripcion" rows="2" required></textarea>
+                </div>
+                <div class="col-2">
+                    <select class="form-select" id="cantidadDeEstrellas" name="cantidadDeEstrellas" th:field="*{cantidadDeEstrellas}" required>
+                        <option value="1">1 - Muy Malo</option>
+                        <option value="2">2 - Malo</option>
+                        <option value="3">3 - Regular</option>
+                        <option value="4">4 - Bueno</option>
+                        <option value="5">5 - Excelente</option>
+                    </select>
+                </div>
 
-                    <div class="col-2">
-                        <input type="submit" class="btn btn-primary" value="Agregar Reseña" />
-                    </div>
-                </form>
-            </div>
+                <div class="col-2">
+                    <input type="submit" class="btn btn-primary" value="Agregar Reseña" />
+                </div>
+            </form>
         </div>
 
         <p th:if="${mensaje}" style="color: green;" th:text="${mensaje}"></p>
@@ -91,7 +91,23 @@
                 url: "/spring/guardarResena",
                 data: $(this).serialize(),
                 success: function (res) {
-                    window.location.reload();
+                    $('#formularioResena').addClass('d-none');
+                    $('#containerResenas').append(`<div class="row mb-2 p-3 bg-light rounded">
+                        <div class="col-8">
+                            <p>${res.descripcion}</p>
+                        </div>
+                        <div class="col-2">
+                            <p>${res.cantidadDeEstrellas}</p>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <form action="/spring/borrarResena/${res.id}" method="post">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-danger m-1">Borrar</button>
+                                </form>
+                            </span>
+                        </div>
+                    </div>`);
                 },
                 error: function (res) {
                     $('#error').text(res.responseText);
