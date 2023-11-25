@@ -2,9 +2,3 @@
     filter: blur(5px);
     pointer-events: none;
 }
-
-.boton-apunte {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
