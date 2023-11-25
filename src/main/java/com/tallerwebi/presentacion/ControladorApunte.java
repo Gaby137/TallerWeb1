@@ -176,8 +176,12 @@ public class ControladorApunte {
             model.put("apunte", apunte);
             model.put("usuarioVendedor", usuarioVendedor);
 
+            model.put("apunte", apunte);
+            model.put("usuarioVendedor", usuarioVendedor);
+
             List<Resena> resenas = servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(id);
             model.put("resenas", resenas);
+
 
             List<Resena> resenasDelUsuarioActual = servicioUsuarioApunteResena.obtenerResenasPorIdDeUsuario(usuario.getId());
             model.put("resenasDelUsuarioActual", resenasDelUsuarioActual);
@@ -201,18 +205,19 @@ public class ControladorApunte {
             }
 
             if (TipoDeAcceso.LEER.equals(tipoDeAcceso) || TipoDeAcceso.EDITAR.equals(tipoDeAcceso)){
+                model.put("urlPdf", "/pdf/" + apunte.getPathArchivo());
                 model.put("pdfComprado", true);
             } else {
+                model.put("urlPdf", "/pdf/" + apunte.getPathArchivo() + "#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&view=Fit");
                 model.put("pdfComprado", false);
             }
-
+            model.put("resena", new Resena());
             boolean hayResena = servicioUsuarioApunteResena.existeResena(usuario.getId(), id);
             model.put("hayResena", hayResena);
             return new ModelAndView("apunte-detalle", model);
         }else{
             return new ModelAndView("redirect:/login");
         }
-
     }
 
     @RequestMapping(path = "/apuntesEnVenta", method = RequestMethod.GET)
@@ -345,6 +350,7 @@ public class ControladorApunte {
     @RequestMapping(path = "/comprarApuntePorPerfil/{id}", method = RequestMethod.POST)
     public ModelAndView comprarApuntePorPerfil(@PathVariable("id") Long id, HttpServletRequest request, HttpSession session) {
         ModelMap model = new ModelMap();
+
         Usuario comprador = (Usuario) session.getAttribute("usuario");
 
         if (session.getAttribute("usuario") != null){

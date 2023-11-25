@@ -5,12 +5,17 @@ import com.tallerwebi.dominio.entidad.Resena;
 import com.tallerwebi.dominio.entidad.Usuario;
 import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,78 +24,63 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 public class ControladorResena {
 
     private ServicioResena servicioResena;
     private ServicioUsuario servicioUsuario;
     private ServicioApunte servicioApunte;
+    private HttpSession session;
+
 
     private ServicioUsuarioApunte servicioUsuarioApunte;
     private ServicioUsuarioApunteResena servicioUsuarioApunteResena;
 
     @Autowired
-    public ControladorResena(ServicioResena servicioResena, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena) {
+    public ControladorResena(ServicioResena servicioResena, ServicioUsuario servicioUsuario, ServicioApunte servicioApunte, ServicioUsuarioApunte servicioUsuarioApunte, ServicioUsuarioApunteResena servicioUsuarioApunteResena, HttpSession session) {
         this.servicioResena = servicioResena;
         this.servicioUsuario = servicioUsuario;
         this.servicioApunte = servicioApunte;
+        this.session = session;
         this.servicioUsuarioApunte = servicioUsuarioApunte;
         this.servicioUsuarioApunteResena = servicioUsuarioApunteResena;
     }
 
-    @RequestMapping(path = "/formulario-alta-resena", method = RequestMethod.GET)
-    public ModelAndView irAFormularioAlta(HttpSession session) {
-        ModelMap model = new ModelMap();
-
-        Usuario usuario=(Usuario) session.getAttribute("usuario");
-
-        if (session.getAttribute("usuario") != null){
-            model.put("usuario", usuario);
-
-            model.put("resena", new Resena());
-            model.put("title", "Nueva Reseña");
-            return new ModelAndView("formulario-alta-resena", model);
-        }else{
-            return new ModelAndView("redirect:/login");
+    @PostMapping("/guardarResena")
+    public ResponseEntity guardarResena(@RequestParam String descripcion, @RequestParam String cantidadDeEstrellas) {
+        if(descripcion.isBlank()){
+            return new ResponseEntity<>("Campo Comentario no puede estar vacio", HttpStatus.BAD_REQUEST);
         }
 
-    }
-
-    @RequestMapping(path = "/guardarResena", method = RequestMethod.POST)
-    public ModelAndView guardarResena(@Valid Resena resena, BindingResult result, HttpSession session) {
-        if (session.getAttribute("usuario") != null){
+        if(cantidadDeEstrellas.isBlank()){
+            return new ResponseEntity<>("Campo Valoración no puede estar vacio", HttpStatus.BAD_REQUEST);
+        } else {
             try {
-
-            if (result.hasErrors()) {
-                ModelMap modelo = new ModelMap();
-                modelo.put("resena", resena);
-                return new ModelAndView("formulario-alta-resena", modelo);
-            }else{
-                ModelMap modelo = new ModelMap();
-                Usuario usuario=(Usuario) session.getAttribute("usuario");
-                Long id = (Long) session.getAttribute("idApunte");
-                Apunte apunte = servicioApunte.obtenerPorId(id);
-                modelo.put("id", id);
-                if (resena != null) {
-                    if (servicioUsuarioApunteResena.registrarResena(usuario, apunte, resena)) {
-                        return new ModelAndView("redirect:/detalleApunte/" + id);
-                    } else {
-                        modelo.put("error", "No puede dar mas de una reseña");
-                        return new ModelAndView("formulario-alta-resena", modelo);
-                    }
+                Integer valoracion = Integer.parseInt(cantidadDeEstrellas);
+                if(valoracion < 1 || valoracion > 5){
+                    return new ResponseEntity<>("Campo Valoración tiene que ser un numero entre 1 y 5", HttpStatus.BAD_REQUEST);        
                 }
-
-                }
-            }catch (OptimisticLockException e){
-                ModelMap modelo = new ModelMap();
-                modelo.put("error", "Error inesperado");
-                return new ModelAndView("formulario-alta-resena", modelo);
+            } catch (NumberFormatException e) {
+                return new ResponseEntity<>("Campo Valoración debe ser un número", HttpStatus.BAD_REQUEST);
             }
-            return new ModelAndView("redirect:/detalleApunte");
-        }else{
-            return new ModelAndView("redirect:/login");
+        }
+        
+        try {
+            Long id = (Long) this.session.getAttribute("idApunte");
+            Usuario usuario=(Usuario) this.session.getAttribute("usuario");
+            Apunte apunte = this.servicioApunte.obtenerPorId(id);
+            Resena resena = new Resena();
+            resena.setDescripcion(descripcion);
+            resena.setCantidadDeEstrellas(Integer.parseInt(cantidadDeEstrellas));
+
+            if (this.servicioUsuarioApunteResena.registrarResena(usuario, apunte, resena)) {
+                return new ResponseEntity<>(resena, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        return new ResponseEntity<>("No deberia nunca devolver esto", HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(path = "/borrarResena/{id}", method = RequestMethod.POST)

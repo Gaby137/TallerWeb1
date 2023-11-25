@@ -54,6 +54,25 @@
         </table>
         
         <p th:if="${mensaje}" style="color: green;" th:text="${mensaje}"></p>
-        <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+        <p id="error" style="color: red;"></p>
     </main>
 </body>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $("#formularioResena").submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/spring/guardarResena",
+                data: $(this).serialize(),
+                success: function (res) {
+                    window.location.reload();
+                },
+                error: function (res) {
+                    $('#error').text(res.responseText);
+                }
+            });
+        });
+    });
+</script>
