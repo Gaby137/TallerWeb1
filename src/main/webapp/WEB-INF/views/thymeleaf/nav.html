@@ -47,9 +47,9 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <span class="dropdown-item small disabled">Código de creador:</span>
-                        <li><div class="dropdown-item">
+                        <li><div class="dropdown-item" title="Invita a tus amigos con este codigo y ganá punos" onclick="copiarAlPortapapeles()" >
                             <p style="display: inline-block;"> <span class="codigo-de-creador" th:text="${session.usuario.codigoDeCreador}" ></span></p>
-                            <button onclick="copiarAlPortapapeles()" style="display: inline-block;">
+                            <button style="display: inline-block;">
                                 <i class="fa-regular fa-copy" style="color: black;"></i>
                             </button>
                         </div></li>
