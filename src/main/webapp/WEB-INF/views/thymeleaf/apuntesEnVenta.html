@@ -11,13 +11,15 @@
                     <div class="apunte-descrip mb-2">
                         <p  th:text="${apunte.descripcion}" class="mb-2"></p>
                     </div>
-                    <div>
-                        <a class="btn btn-verde-unlam" th:href="@{/detalleApunte/{id}(id=${apunte.id})}">Ver Detalle</a>
-                        <form th:action="@{/comprarApunte/{id}(id=${apunte.id})}" method="POST">
-                            <button id="botonComprar" th:unless="${#lists.contains(apuntesComprados, apunte) or #lists.contains(apuntesCreados, apunte)}" type="submit" class="btn btn-success boton-apunte">Comprar</button>
+                    <div class="d-flex boton-apunte">
+                        <a class="btn bg-verde-unlam btn-sm" th:href="@{/detalleApunte/{id}(id=${apunte.id})}">Mas Info</a>
+                        <form th:action="@{/comprarApunte/{id}(id=${apunte.id})}" style="margin-left: 4px;" method="POST">
+                            <button id="botonComprar" 
+                            th:unless="${#lists.contains(apuntesComprados, apunte) or #lists.contains(apuntesCreados, apunte)}"
+                            type="submit" class="btn btn-success btn-sm" title="Comprar apunte"><i class="fa-solid fa-shopping-cart"></i></button>
                         </form>
                     </div>
-                    <p class="card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${apunte.precio}"></span></p>
+                    <p class="d-inline-block card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${apunte.precio}"></span></p>
                 </div>
             </div>
         </div>

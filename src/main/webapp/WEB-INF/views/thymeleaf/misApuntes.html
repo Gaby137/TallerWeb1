@@ -6,38 +6,51 @@
 </div>
 <div class="container">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
+        <li class="nav-item" role="apuntes-comprados">
             <button class="nav-link active" id="apuntes-comprados-tab" data-bs-toggle="tab" data-bs-target="#apuntes-comprados" type="button" role="tab" aria-controls="apuntes-comprados" aria-selected="true">Apuntes Comprados</button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item" role="mis-apuntes">
             <button class="nav-link" id="mis-apuntes-tab" data-bs-toggle="tab" data-bs-target="#mis-apuntes" type="button" role="tab" aria-controls="mis-apuntes" aria-selected="false">Mis Apuntes</button>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade d-flex flex-wrap show active" id="apuntes-comprados" role="tabpanel" aria-labelledby="apuntes-comprados-tab">
-            <div th:each="apunte : ${apuntesComprados}" class="card m-2" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 th:text="${apunte.nombre}" class="card-title"></h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
-                    <p th:text="${apunte.descripcion}" class="card-text"></p>
-                    <h3 th:text="${apunte.precio}" class="card-text"></h3>
-                    <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
+        <div class="tab-pane fade show active" id="apuntes-comprados" role="apuntes-comprados" aria-labelledby="apuntes-comprados-tab">
+            <div class="row">
+                <div th:each="apunte : ${apuntesComprados}" class="col-12 col-sm-6 col-md-4 col-xl-3">
+                    <div class="card card-home my-2">
+                        <div class="card-body">
+                            <h5 th:text="${apunte.nombre}" class="card-title"></h5>
+                            <div class="apunte-descrip mb-2">
+                                <p  th:text="${apunte.descripcion}" class="mb-2"></p>
+                            </div>
+                            <a class="btn btn-unlam bg-verde-unlam"  th:href="@{/detalleApunte/{id}(id=${apunte.id})}">Ver Detalles</a>
+                            <p class="card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${apunte.precio}"></span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade d-flex flex-wrap" id="mis-apuntes" role="tabpanel" aria-labelledby="mis-apuntes-tab">
-            <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.activo}" class="card m-2" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 th:text="${apunte.nombre}" class="card-title"></h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
-                    <p th:text="${apunte.descripcion}" class="card-text"></p>
-                    <h3 th:text="${apunte.precio}" class="card-text"></h3>
-                    <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
-                    <a th:href="@{/editarApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Editar</a>
-                    <form th:action="@{/eliminarApunte/{id}(id=${apunte.id})}" method="post">
-                        <input type="hidden" name="_method" value="delete" />
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
+        <div class="tab-pane fade" id="mis-apuntes" role="tabpanel" aria-labelledby="mis-apuntes-tab">
+            <div class="row">
+                <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.activo}" class="col-12 col-sm-6 col-md-4 col-xl-3">
+                    <div class="card card-home my-2">
+                        <div class="card-body">
+                            <h5 th:text="${apunte.nombre}" class="card-title"></h5>
+                            <div class="apunte-descrip mb-2">
+                                <p  th:text="${apunte.descripcion}" class="mb-2"></p>
+                            </div>
+                            <div class="d-flex boton-apunte">
+                                <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn bg-verde-unlam btn-sm">Ver</a>
+                                <a th:href="@{/editarApunte/{id}(id=${apunte.id})}" class="btn btn-primary btn-sm mx-1"><i class="fa-solid fa-pen"></i></a>
+                                <form th:action="@{/eliminarApunte/{id}(id=${apunte.id})}" method="post">
+                                    <input type="hidden" name="_method" value="delete" />
+                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i></button>
+                                </form>
+                            </div>
+                            
+                            <p class="card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${apunte.precio}"></span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -47,44 +47,6 @@
         </div>
     </section>
 
-    <!-- Sección de Ofertas -->
-    <!-- <section class="my-5">
-        <h1 class="text-center">Ofertas Especiales</h1>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="oferta1.jpg" class="card-img-top" alt="Oferta 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Oferta 1</h5>
-                        <p class="card-text">Descripción de la oferta 1.</p>
-                        <a th:href="@{/oferta/1}" class="btn btn-primary">Ver Oferta</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="oferta2.jpg" class="card-img-top" alt="Oferta 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Oferta 2</h5>
-                        <p class="card-text">Descripción de la oferta 2.</p>
-                        <a th:href="@{/oferta/2}" class="btn btn-primary">Ver Oferta</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="oferta3.jpg" class="card-img-top" alt="Oferta 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Oferta 3</h5>
-                        <p class="card-text">Descripción de la oferta 3.</p>
-                        <a th:href="@{/oferta/3}" class="btn btn-primary">Ver Oferta</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr>
-    </section> -->
-
     <!-- Sección de Novedades -->
     <section class="my-5">
         <h1 class="text-center">Novedades</h1>
@@ -93,10 +55,10 @@
                 <div class="card card-home my-2">
                     <div class="card-body">
                         <h5 th:text="${novedad.nombre}" class="card-title"></h5>
-                        <div class="novedad-descrip mb-2">
+                        <div class="apunte-descrip mb-2">
                             <p  th:text="${novedad.descripcion}" class="mb-2"></p>
                         </div>
-                        <a class="btn btn-verde-unlam"  th:href="@{/detalleApunte/{id}(id=${novedad.id})}">Ver Novedad</a>
+                        <a class="btn btn-unlam bg-verde-unlam"  th:href="@{/detalleApunte/{id}(id=${novedad.id})}">Ver Novedad</a>
                         <p class="card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${novedad.precio}"></span></p>
                     </div>
                 </div>
