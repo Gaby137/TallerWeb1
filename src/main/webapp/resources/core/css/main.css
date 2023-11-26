@@ -39,14 +39,18 @@ button:hover {
     cursor: pointer;
 }
 
-.btn-verde-unlam{
+.bg-verde-unlam{
     background-color: #4caf50;
-    position: absolute;
-    bottom: 15px;
     color: white;
 }
-.btn-verde-unlam:hover{
+.bg-verde-unlam:hover{
     background-color: #2a792d;
+    color: white;
+}
+
+.btn-unlam{
+    position: absolute;
+    bottom: 15px;
 }
 
 .card-home {
@@ -66,11 +70,6 @@ button:hover {
 }
 
 .apunte-descrip {
-    overflow: hidden;
-    max-height: 120px;
-}
-
-.novedad-descrip {
     overflow: hidden;
     max-height: 145px;
 }

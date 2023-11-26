@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-</head>
 <div th:insert="~{nav}"></div>
 <body>
+    <div class="container">
         <div class="row">
             <h2>Apuntes creados por <span th:text="${usuario.nombre}"></span></h2>
             <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.activo}" class="card my-2" style="width: 18rem;">
@@ -20,5 +20,5 @@
             </div>
             <p th:if="${error}" style="color: red;" th:text="${error}"></p>
         </div>
-
+    </div>
 </body>
