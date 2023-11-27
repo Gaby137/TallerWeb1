@@ -176,9 +176,6 @@ public class ControladorApunte {
             model.put("apunte", apunte);
             model.put("usuarioVendedor", usuarioVendedor);
 
-            model.put("apunte", apunte);
-            model.put("usuarioVendedor", usuarioVendedor);
-
             List<Resena> resenas = servicioUsuarioApunteResena.obtenerListaDeResenasPorIdApunte(id);
             model.put("resenas", resenas);
 

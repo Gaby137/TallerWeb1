@@ -125,10 +125,9 @@ public class ControladorLogin {
             List<Apunte> apuntesCreadosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
             List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
             List<Apunte> apuntesNovedades = servicioApunte.obtenerApuntesNovedades();
-            Boolean mostrarPopUp = servicioUsuario.mostrarPopUp(usuario.getId());
 
 
-            model.put("mostrarPopUp", mostrarPopUp);
+            model.put("usuario", usuario);
             model.put("usuariosDestacados", usuariosDestacados);
             model.put("apuntesComprados", apuntesCompradosPorElUsuario);
             model.put("apuntesCreados", apuntesCreadosPorElUsuario);
@@ -144,13 +143,6 @@ public class ControladorLogin {
             return new ModelAndView("redirect:/login");
         }
     }
-    @RequestMapping(path = "/noMostrarPopUp", method = RequestMethod.POST)
-    public ModelAndView noMostrarPopUp(HttpSession session){
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        usuario.setQueAparezcaPopUpDeCodigoCreador(false);
-        return home(session);
-    }
-
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView inicio() {
         return new ModelAndView("redirect:/login");
