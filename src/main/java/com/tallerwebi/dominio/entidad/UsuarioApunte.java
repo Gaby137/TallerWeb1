@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio.entidad;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
-
 
 @Entity
 @Table(name = "usuario_apunte")
@@ -26,6 +23,7 @@ public class UsuarioApunte {
         this.usuario = usuario;
         this.apunte = apunte;
     }
+
     public UsuarioApunte() {
     }
 
@@ -66,4 +64,3 @@ public class UsuarioApunte {
         this.tipoDeAcceso = tipoDeAcceso;
     }
 }
-

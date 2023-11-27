@@ -124,3 +124,19 @@ button:hover {
     background-color: #bfb;
     border-color: #4c4;
 }
+
+.carousel-control-next, .carousel-control-prev {
+    width: 10%;
+}
+
+.section-title {
+    margin: 0 10%;
+}
+
+.carousel-control-next-icon, .carousel-control-prev-icon {
+    border-radius: 25px;
+    background-color: grey;
+    background-size: 70% 70%;
+    width: 2.5rem;
+    height: 2.5rem;
+}
