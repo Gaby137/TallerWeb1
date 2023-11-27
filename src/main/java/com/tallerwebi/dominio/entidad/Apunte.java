@@ -1,6 +1,9 @@
 package com.tallerwebi.dominio.entidad;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,19 +24,20 @@ public class Apunte {
     private boolean sePuedeComprar;
     private boolean activo;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "apunte")
     private List<UsuarioApunte> relacionesUsuarioApunte = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY )
-    @JoinColumn(name="materia_id",nullable = true)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "materia_id", nullable = true)
     private Materia materia;
-
 
     public Apunte(String pathArchivo, String nombre, String descripcion, int precio, Date created_at, Date updated_at) {
         this.pathArchivo = pathArchivo;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.precio=precio;
+        this.precio = precio;
         this.created_at = created_at;
         this.updated_at = updated_at;
     }
@@ -53,8 +57,10 @@ public class Apunte {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
         Apunte apunte = (Apunte) obj;
         return Objects.equals(id, apunte.id);
     }
@@ -115,6 +121,7 @@ public class Apunte {
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
     }
+
     public int getPrecio() {
         return precio;
     }
