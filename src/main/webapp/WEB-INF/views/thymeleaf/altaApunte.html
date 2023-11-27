@@ -30,7 +30,7 @@
 
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion" th:field="*{descripcion}" class="form-control" rows="4" required="required"></textarea>
+                <textarea id="descripcion" maxlength="255" th:field="*{descripcion}" class="form-control" rows="4" required="required"></textarea>
             </div>
             <div th:if="${#fields.hasErrors('descripcion')}" class="text-danger">
                 <p th:errors="*{descripcion}"></p>

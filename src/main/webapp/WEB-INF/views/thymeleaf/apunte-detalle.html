@@ -3,59 +3,60 @@
 <script src="apunte-detalle.js" defer></script>
 <div th:insert="~{nav}"></div>
 <body>
-<main class="container my-5">
-    <div class="row">
-        <div class="col-12 col-md-9">
-            <iframe th:src="@{${urlPdf}}"
-                    frameborder="0" height="500px" width="100%"
-                    th:classappend="${pdfComprado} ? '' : 'pdf-no-comprado'"></iframe>
-        </div>
-        <div class="col-12 col-md-3">
-            <h2 th:text="${apunte.nombre}"></h2>
-            <p class="fw-bold">Descripción: <span class="fw-normal" th:text="${apunte.descripcion}"></span></p>
-            <p class="fw-bold">Nombre de documento: <span class="fw-normal" th:text="${apunte.pathArchivo}"></span></p>
-
-            <form class="mt-4" th:action="@{/comprarApunteEnDetalleApunte/{id}(id=${apunte.id})}" method="post">
-                <button id="botonComprar" th:unless="${#lists.contains(apuntesCompradosPorUsuarioActual, apunte) or #lists.contains(apuntesCreadosPorUsuarioActual, apunte)}" type="submit" class="btn btn-success w-100">Comprar</button>
-            </form>
-            <hr class="my-4">
-            <div>
-                <p class="fw-bold">Vendedor: <span class="fw-normal" th:text="${usuarioVendedor.nombre}"></span></p>
-                <a th:href="@{'/perfilUsuario/' + ${usuarioVendedor.id}}" class="btn btn-primary">Ver perfil y apuntes</a>
-            </div>
-
-        </div>
-    </div>
-    <hr>
-    <h3>Reseñas</h3>
-    <h4>Promedio de reseñas: <span th:text="${promedioDeResenas}"></span></h4>
-    <div class="container w-100 mb-2" id="containerResenas">
+    <main class="container my-5">
         <div class="row">
-            <div class="col-8">
-                <p>Comentario</p>
+            <div class="col-12 col-md-9">
+                <iframe th:src="@{${urlPdf}}"
+                        frameborder="0" height="500px" width="100%"
+                        th:classappend="${pdfComprado} ? '' : 'pdf-no-comprado'"></iframe>
             </div>
-            <div class="col-2">
-                <p>Valoración</p>
+            <div class="col-12 col-md-3">
+                <h2 th:text="${apunte.nombre}"></h2>
+                <p class="fw-bold">Descripción: <span class="fw-normal" th:text="${apunte.descripcion}"></span></p>
+                <p class="fw-bold">Nombre de documento: <span class="fw-normal" th:text="${apunte.pathArchivo}"></span></p>
+
+                <form class="mt-4" th:action="@{/comprarApunteEnDetalleApunte/{id}(id=${apunte.id})}" method="post">
+                    <button id="botonComprar" th:unless="${#lists.contains(apuntesCompradosPorUsuarioActual, apunte) or #lists.contains(apuntesCreadosPorUsuarioActual, apunte)}" type="submit" class="btn btn-success w-100">Comprar</button>
+                </form>
+                <hr class="my-4">
+                <div>
+                    <p class="fw-bold">Vendedor: <span class="fw-normal" th:text="${usuarioVendedor.nombre}"></span></p>
+                    <a th:href="@{'/perfilUsuario/' + ${usuarioVendedor.id}}" class="btn btn-primary">Ver apuntes del vendedor</a>
+                </div>
+
             </div>
         </div>
-        <div class="row mb-2 p-3 bg-light rounded" th:each="resena : ${resenas}">
-            <div class="col-8">
-                <p th:text="${resena.descripcion}"></p>
+        <hr>
+        <h3>Reseñas</h3>
+        <h4>Promedio de reseñas: <span th:text="${promedioDeResenas}"></span></h4>
+        <div class="container w-100 mb-2" id="containerResenas">
+            <div class="row">
+                <div class="col-8">
+                    <p>Comentario</p>
+                </div>
+                <div class="col-2">
+                    <p>Valoración</p>
+                </div>
             </div>
-            <div class="col-2">
-                <p th:text="${resena.cantidadDeEstrellas}"></p>
-            </div>
-            <div class="col-2">
+            <div class="row mb-2 p-3 bg-light rounded" th:each="resena : ${resenas}">
+                <div class="col-8">
+                    <p th:text="${resena.descripcion}"></p>
+                </div>
+                <div class="col-2">
+                    <p th:text="${resena.cantidadDeEstrellas}"></p>
+                </div>
+                <div class="col-2">
                     <span th:if="${resenasDelUsuarioActual.contains(resena)}">
                         <form th:action="@{'/borrarResena/'+${resena.id}}" method="post">
                             <input type="hidden" name="_method" value="DELETE" />
                             <button type="submit" class="btn btn-danger m-1">Borrar</button>
                         </form>
                     </span>
+                </div>
             </div>
         </div>
-        <hr>
-        <div th:if="${tipoDeAcceso}">
+        <hr >
+        <div class="container w-100 mb-2" th:if="${!hayResena}">
             <form id="formularioResena" class="form-control row d-inline-flex align-items-center" method="POST" th:object="${resena}">
                 <div class="col-sm-8 col-10" >
                     <textarea class="form-control" th:field="*{descripcion}" id="descripcion" rows="2" required></textarea>
@@ -75,11 +76,10 @@
                 </div>
             </form>
         </div>
-    </div>
 
-    <p th:if="${mensaje}" style="color: green;" th:text="${mensaje}"></p>
-    <p id="error" style="color: red;"></p>
-</main>
+        <p th:if="${mensaje}" style="color: green;" th:text="${mensaje}"></p>
+        <p id="error" style="color: red;"></p>
+    </main>
 </body>
 
 <script th:inline="javascript">
@@ -91,7 +91,23 @@
                 url: "/spring/guardarResena",
                 data: $(this).serialize(),
                 success: function (res) {
-                    window.location.reload();
+                    $('#formularioResena').addClass('d-none');
+                    $('#containerResenas').append(`<div class="row mb-2 p-3 bg-light rounded">
+                        <div class="col-8">
+                            <p>${res.descripcion}</p>
+                        </div>
+                        <div class="col-2">
+                            <p>${res.cantidadDeEstrellas}</p>
+                        </div>
+                        <div class="col-2">
+                            <span>
+                                <form action="/spring/borrarResena/${res.id}" method="post">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="btn btn-danger m-1">Borrar</button>
+                                </form>
+                            </span>
+                        </div>
+                    </div>`);
                 },
                 error: function (res) {
                     $('#error').text(res.responseText);

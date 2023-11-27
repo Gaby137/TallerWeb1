@@ -3,24 +3,23 @@
 <body>
 <div class="container">
     <div class="row">
-        <div th:each="apunte : ${apuntes}"  th:if="${apunte.activo}" class="col">
-            <div class="card my-2" style="width: 18rem;">
+        <div th:each="apunte : ${apuntes}" th:if="${apunte.activo}"  class="col-12 col-sm-6 col-md-4 col-xl-3">
+            <div class="card card-home my-2">
                 <div class="card-body">
-
                     <h5 th:text="${apunte.nombre}" class="card-title"></h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
-                    <p th:text="${apunte.descripcion}" class="card-text" style="height: 6rem;"></p>
-                    <!--<a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a-->
-                    <p th:text="${apunte.precio}" class="card-text" style="height: 6rem;"></p>
-
-                    <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
-
-                    <form th:action="@{/comprarApunte/{id}(id=${apunte.id})}" method="POST" style="margin-top: 10px;">
-
-                        <button id="botonComprar" th:unless="${#lists.contains(apuntesComprados, apunte) or #lists.contains(apuntesCreados, apunte)}"
-                                type="submit" class="btn btn-success boton-apunte">Comprar</button>
-                    </form>
-
+                    <!-- <h6 class="card-subtitle mb-2 text-muted">Materia</h6> -->
+                    <div class="apunte-descrip mb-2">
+                        <p  th:text="${apunte.descripcion}" class="mb-2"></p>
+                    </div>
+                    <div class="d-flex boton-apunte">
+                        <a class="btn bg-verde-unlam btn-sm" th:href="@{/detalleApunte/{id}(id=${apunte.id})}">Mas Info</a>
+                        <form th:action="@{/comprarApunte/{id}(id=${apunte.id})}" style="margin-left: 4px;" method="POST">
+                            <button id="botonComprar" 
+                            th:unless="${#lists.contains(apuntesComprados, apunte) or #lists.contains(apuntesCreados, apunte)}"
+                            type="submit" class="btn btn-success btn-sm" title="Comprar apunte"><i class="fa-solid fa-shopping-cart"></i></button>
+                        </form>
+                    </div>
+                    <p class="d-inline-block card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${apunte.precio}"></span></p>
                 </div>
             </div>
         </div>
