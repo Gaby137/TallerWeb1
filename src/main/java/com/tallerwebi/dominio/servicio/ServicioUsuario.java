@@ -12,4 +12,6 @@ public interface ServicioUsuario {
     boolean existeCodigoCreadorEnLaBaseDeDatos(String codigoCreador);
 
     Usuario buscarUsuarioPorCodigoDeCreador(String codigoDeCreador);
+
+    boolean mostrarPopUp(Long id);
 }

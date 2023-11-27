@@ -46,5 +46,10 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
     public Usuario buscarUsuarioPorCodigoDeCreador(String codigoDeCreador){
         return repositorioUsuario.buscarUsuarioPorCodigoCreador(codigoDeCreador);
     }
+
+    @Override
+    public boolean mostrarPopUp(Long id){
+        return repositorioUsuario.obtenerEstadoPopupPorIdUsuario(id);
+    }
 }
 

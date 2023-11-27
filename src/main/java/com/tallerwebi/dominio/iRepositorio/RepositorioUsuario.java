@@ -18,5 +18,7 @@ public interface RepositorioUsuario {
     boolean existeCodigoCreadorEnLaBaseDeDatos(String codigoCreador);
 
     Usuario buscarUsuarioPorCodigoCreador(String codigoCreador);
+
+    boolean obtenerEstadoPopupPorIdUsuario(Long idUsuario);
 }
 

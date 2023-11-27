@@ -10,6 +10,7 @@ import com.tallerwebi.dominio.servicio.ServicioUsuarioApunte;
 import com.tallerwebi.dominio.servicio.ServicioUsuarioApunteResena;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -124,8 +125,10 @@ public class ControladorLogin {
             List<Apunte> apuntesCreadosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
             List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
             List<Apunte> apuntesNovedades = servicioApunte.obtenerApuntesNovedades();
+            Boolean mostrarPopUp = servicioUsuario.mostrarPopUp(usuario.getId());
 
 
+            model.put("mostrarPopUp", mostrarPopUp);
             model.put("usuariosDestacados", usuariosDestacados);
             model.put("apuntesComprados", apuntesCompradosPorElUsuario);
             model.put("apuntesCreados", apuntesCreadosPorElUsuario);
@@ -140,6 +143,12 @@ public class ControladorLogin {
         } else {
             return new ModelAndView("redirect:/login");
         }
+    }
+    @RequestMapping(path = "/noMostrarPopUp", method = RequestMethod.POST)
+    public ModelAndView noMostrarPopUp(HttpSession session){
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        usuario.setQueAparezcaPopUpDeCodigoCreador(false);
+        return home(session);
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)

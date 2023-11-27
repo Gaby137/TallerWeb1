@@ -139,4 +139,32 @@
 <footer class="bg-dark text-light text-center py-3">
     <p>&copy; Derechos - Privacidad - Etc.</p>
 </footer>
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Título del Pop-up</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Contenido del pop-up aquí...</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <!-- Puedes agregar más botones aquí si es necesario -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Muestra el pop-up cuando la página se carga
+    document.addEventListener('DOMContentLoaded', function () {
+        const myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+            keyboard: false
+        });
+        myModal.show();
+    });
+</script>
 </body>

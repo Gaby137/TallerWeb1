@@ -101,4 +101,19 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
 
         return query.setMaxResults(1).uniqueResult();
     }
+    @Override
+    public boolean obtenerEstadoPopupPorIdUsuario(Long idUsuario) {
+        Session session = sessionFactory.getCurrentSession();
+
+        String jpql = "SELECT u.queAparezcaPopUpDeCodigoCreador FROM Usuario u " +
+                "WHERE u.id = :idUsuario";
+
+        Query<Boolean> query = session.createQuery(jpql, Boolean.class);
+        query.setParameter("idUsuario", idUsuario);
+
+        Boolean estadoPopup = query.uniqueResult();
+
+        return estadoPopup != null ? estadoPopup : false;
+    }
+
 }

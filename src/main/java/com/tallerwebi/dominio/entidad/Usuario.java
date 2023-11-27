@@ -26,6 +26,7 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Rol rol;
     private Boolean activo = false;
+    private Boolean queAparezcaPopUpDeCodigoCreador;
     private String fotoPerfil;
     private Double latitud;
     private Double longitud;
@@ -203,5 +204,13 @@ public class Usuario {
 
     public void setCodigoDeCreador(String codigoDeCreador) {
         this.codigoDeCreador = codigoDeCreador;
+    }
+
+    public Boolean getQueAparezcaPopUpDeCodigoCreador() {
+        return queAparezcaPopUpDeCodigoCreador;
+    }
+
+    public void setQueAparezcaPopUpDeCodigoCreador(Boolean queAparezcaPopUpDeCodigoCreador) {
+        this.queAparezcaPopUpDeCodigoCreador = queAparezcaPopUpDeCodigoCreador;
     }
 }
