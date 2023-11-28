@@ -11,6 +11,9 @@
     <!-- custom style -->
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
     <link rel="stylesheet" th:href="@{/css/miPerfil.css}"/>
+    <link rel="stylesheet" th:href="@{/css/nav.css}"/>
+    <link rel="stylesheet" th:href="@{/css/footer.css}"/>
+
 
     <!-- scripts -->
     <script src="https://kit.fontawesome.com/1fc088d494.js" crossorigin="anonymous"></script>
@@ -22,9 +25,12 @@
     <script th:src="@{/js/nav.js}"></script>
 
 </head>
-<nav th:fragment="nav" class="navbar navbar-expand-sm navbar-light bg-light">
+<body>
+<nav th:fragment="nav" class="navbar navbar-expand-sm navbar-light bg-light nav">
     <div class="container">
-        <a class="navbar-brand" th:href="@{'/home'}">Unlam</a>
+        <a class="navbar-brand" th:href="@{'/home'}">
+            <img th:src="@{'/img/unlamlogo.png'}" alt="Logo Unlam" width="50" height="50">
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -81,4 +87,5 @@
         </div>
     </div>
 </nav>
+</body>
 </html>
