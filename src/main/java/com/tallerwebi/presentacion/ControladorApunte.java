@@ -397,6 +397,7 @@ public class ControladorApunte {
         } catch (ApunteYaCompradoException | PuntosInsuficientesException e){
             ModelAndView perfilUsuarioView = verPerfilUsuario(vendedor.getId(), session);
             perfilUsuarioView.getModelMap().put("error", e.getMessage());
+            perfilUsuarioView.getModelMap().put("mostrarModalPuntos", true);
             return perfilUsuarioView;
 
         } catch (Exception e){
@@ -434,6 +435,7 @@ public class ControladorApunte {
         } catch (PuntosInsuficientesException | ApunteYaCompradoException e) {
             ModelAndView homeView = controladorLogin.home(session);
             homeView.getModelMap().put("error", e.getMessage());
+            homeView.getModelMap().put("mostrarModalPuntos", true);
             return homeView;
 
         } catch (Exception e) {
