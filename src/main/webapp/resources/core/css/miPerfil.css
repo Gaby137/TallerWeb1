@@ -12,6 +12,7 @@
   border: none;
   cursor: pointer;
   transition: all 0.5s;
+  box-shadow: 10px 5px 5px #bbbbbb;
 }
 
 .card:hover .image img {
