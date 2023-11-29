@@ -145,3 +145,75 @@ button:hover {
     width: 2.5rem;
     height: 2.5rem;
 }
+.container-pack{
+    font-family: 'Poppins',sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.card-pack{
+    height: 150px;
+    width: 200px;
+    position: relative;
+    margin: 10px 0;
+    color: white;
+}
+.card-pack input[type="radio"]{
+    -webkit-appearance: none;
+    appearance: none;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    position: absolute;
+    box-shadow: 7px 7px 15px rgba(2,28,53,0.08);
+    cursor: pointer;
+    outline: none;
+}
+.card-pack input[type="radio"]:before{
+    content: "";
+    position: absolute;
+    height: 22px;
+    width: 22px;
+    background-color: #f9fafd;
+    border: 1px solid #e2e6f3;
+    border-radius: 50%;
+    top: 35px;
+    right: 20px;
+}
+.card-pack input[type="radio"]:after{
+    content: "";
+    position: absolute;
+    height: 13px;
+    width: 13px;
+    background-color: transparent;
+    border-radius: 50%;
+    top: 39.5px;
+    right: 24.5px;
+}
+.card-pack label{
+    position: absolute;
+    margin: 20px;
+    cursor: pointer;
+}
+.card-pack h5{
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    margin: 15px 0 20px 0;
+}
+.card-pack h2{
+    font-size: 28px;
+}
+.card-pack span{
+    font-weight: 400;
+    font-size: 18px;
+}
+.card-pack input[type="radio"]:hover{
+    transform: scale(1.05);
+}
+.card-pack input[type="radio"]:checked{
+    filter: drop-shadow(4px 4px 4px grey);
+}
+.card-pack input[type="radio"]:checked:after{
+    background-color: #4caf50;
+}

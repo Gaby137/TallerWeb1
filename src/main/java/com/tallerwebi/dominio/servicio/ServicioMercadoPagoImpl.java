@@ -27,11 +27,11 @@ public class ServicioMercadoPagoImpl implements ServicioMercadoPago {
         DatosPreferenciaRespuesta responsePago = null;
 
         if(pack.equals("oro")){
-            datosPago = new DatosPago(100, pack);
+            datosPago = new DatosPago(700, pack);
         } else if (pack.equals("plata")){
-            datosPago = new DatosPago(50, pack);
+            datosPago = new DatosPago(400, pack);
         } else {
-            datosPago = new DatosPago(20, pack);
+            datosPago = new DatosPago(200, pack);
         }
 
         String url = urlMercadopago;
