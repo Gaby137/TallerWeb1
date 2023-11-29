@@ -298,31 +298,35 @@ public class ControladorApunte {
 
         Usuario comprador = (Usuario) session.getAttribute("usuario");
 
-      if (session.getAttribute("usuario") != null){
-            Apunte apunte = servicioApunte.obtenerPorId(id);
+      if (session.getAttribute("usuario") != null) {
+          Apunte apunte = servicioApunte.obtenerPorId(id);
 
-            Usuario vendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(apunte.getId());
+          Usuario vendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(apunte.getId());
 
 
-        try {
-            boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
-            if (compraExitosa) {
-                return getDetalleApunteConListadoDeSusResenas(id, request, session);
-            } else {
-                ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
-                apuntesEnVenta.getModelMap().put("error", "Error al realizar la compra");
-                return apuntesEnVenta;
-            }
+          try {
+              boolean compraExitosa = servicioUsuarioApunte.comprarApunte(comprador, vendedor, apunte);
+              if (compraExitosa) {
+                  return getDetalleApunteConListadoDeSusResenas(id, request, session);
+              } else {
+                  ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
+                  apuntesEnVenta.getModelMap().put("error", "Error al realizar la compra");
+                  return apuntesEnVenta;
+              }
 
-       
 
-        } catch (ApunteYaCompradoException | PuntosInsuficientesException e){
-            ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
-            apuntesEnVenta.getModelMap().put("error", e.getMessage());
-            apuntesEnVenta.getModelMap().put("mostrarModalPuntos", true);
-            return apuntesEnVenta;
+          } catch (PuntosInsuficientesException e) {
+              ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
+              apuntesEnVenta.getModelMap().put("error", e.getMessage());
+              apuntesEnVenta.getModelMap().put("mostrarModalPuntos", true);
+              return apuntesEnVenta;
 
-        } catch (Exception e){
+          } catch (ApunteYaCompradoException e){
+              ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
+              apuntesEnVenta.getModelMap().put("error", e.getMessage());
+              return apuntesEnVenta;
+
+          }catch (Exception e){
             ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
             apuntesEnVenta.getModelMap().put("error", "Error inesperado al intentar comprar el apunte");
             return apuntesEnVenta;
@@ -357,10 +361,16 @@ public class ControladorApunte {
             }
         
 
-        }catch (ApunteYaCompradoException | PuntosInsuficientesException e){
+        }catch (PuntosInsuficientesException e){
             ModelAndView detalleApunte = getDetalleApunteConListadoDeSusResenas(apunte.getId(), request, session);
             detalleApunte.getModelMap().put("error", e.getMessage());
             detalleApunte.getModelMap().put("mostrarModalPuntos", true);
+            return detalleApunte;
+        }
+
+        catch (ApunteYaCompradoException e){
+            ModelAndView detalleApunte = getDetalleApunteConListadoDeSusResenas(apunte.getId(), request, session);
+            detalleApunte.getModelMap().put("error", e.getMessage());
             return detalleApunte;
         }
         catch (Exception e){
@@ -397,13 +407,20 @@ public class ControladorApunte {
             }
 
 
-        } catch (ApunteYaCompradoException | PuntosInsuficientesException e){
+        } catch (PuntosInsuficientesException e){
             ModelAndView perfilUsuarioView = verPerfilUsuario(vendedor.getId(), session);
             perfilUsuarioView.getModelMap().put("error", e.getMessage());
             perfilUsuarioView.getModelMap().put("mostrarModalPuntos", true);
             return perfilUsuarioView;
 
-        } catch (Exception e){
+        }
+        catch (ApunteYaCompradoException e){
+            ModelAndView perfilUsuarioView = verPerfilUsuario(vendedor.getId(), session);
+            perfilUsuarioView.getModelMap().put("error", e.getMessage());
+            return perfilUsuarioView;
+        }
+
+        catch (Exception e){
             ModelAndView perfilUsuarioView = verPerfilUsuario(vendedor.getId(), session);
             perfilUsuarioView.getModelMap().put("error", "Error inesperado al intentar comprar el apunte");
             return perfilUsuarioView;
@@ -435,13 +452,20 @@ public class ControladorApunte {
                 return homeView;
             }
 
-        } catch (PuntosInsuficientesException | ApunteYaCompradoException e) {
+        } catch (PuntosInsuficientesException e) {
             ModelAndView homeView = controladorLogin.home(session);
             homeView.getModelMap().put("error", e.getMessage());
             homeView.getModelMap().put("mostrarModalPuntos", true);
             return homeView;
 
-        } catch (Exception e) {
+        }
+        catch (ApunteYaCompradoException e) {
+            ModelAndView homeView = controladorLogin.home(session);
+            homeView.getModelMap().put("error", e.getMessage());
+            return homeView;
+
+        }
+        catch (Exception e) {
             ModelAndView homeView = controladorLogin.home(session);
             homeView.getModelMap().put("error", "Error inesperado al realizar la compra");
             return homeView;
