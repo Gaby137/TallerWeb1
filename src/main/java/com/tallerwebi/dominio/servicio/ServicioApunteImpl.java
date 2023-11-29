@@ -3,8 +3,6 @@ package com.tallerwebi.dominio.servicio;
 import com.tallerwebi.dominio.entidad.*;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioUsuarioApunte;
-import com.tallerwebi.presentacion.DatosApunte;
-import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,5 +74,10 @@ public class ServicioApunteImpl implements ServicioApunte {
         LocalDate haceUnaSemana = LocalDate.now().minusDays(7);
         Date dateHaceUnaSemana = Date.from(haceUnaSemana.atStartOfDay(ZoneId.systemDefault()).toInstant());
         return repositorioApunte.obtenerApuntesEntreFechas(dateHaceUnaSemana, now);
+    }
+
+    @Override
+    public Materia obtenerMateriaPorIdDeApunte(Long id){
+        return repositorioApunte.obtenerMateriaPorIdApunte(id);
     }
 }

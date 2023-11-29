@@ -328,7 +328,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
     }
 
     //SIN USO
-    @Override
+    /*@Override
     public List<Apunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual) {
         List<Apunte> apuntesCreados = obtenerApuntesCreados(usuario);
 
@@ -345,7 +345,8 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
         }
 
         return apuntesCreados;
-    }
+    }*/
+
     @Override
     public boolean existeResena(Long idUsuario, Long idApunte) {
         return repositorioUsuarioApunteResena.existeResenaConApunteYUsuario(idUsuario, idApunte).size()>0;

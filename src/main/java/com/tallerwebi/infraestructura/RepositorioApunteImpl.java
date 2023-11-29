@@ -1,7 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.entidad.Apunte;
-import com.tallerwebi.dominio.entidad.UsuarioApunte;
+import com.tallerwebi.dominio.entidad.Materia;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import org.hibernate.Criteria;
@@ -110,5 +110,17 @@ public class RepositorioApunteImpl implements RepositorioApunte {
             query.setParameter("idMateria", idMateria);
             return query.getResultList();
         }
+    }
+
+    public Materia obtenerMateriaPorIdApunte(Long idApunte) {
+        Session session = sessionFactory.getCurrentSession();
+
+        String jpql = "SELECT a.materia FROM Apunte a WHERE a.id = :idApunte";
+
+        Query<Materia> query = session.createQuery(jpql, Materia.class);
+        query.setParameter("idApunte", idApunte);
+        query.setMaxResults(1); // Limitar a un solo resultado
+
+        return query.uniqueResult(); // Devolver el resultado único o null si no hay resultados
     }
 }

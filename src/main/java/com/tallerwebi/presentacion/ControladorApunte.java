@@ -207,6 +207,9 @@ public class ControladorApunte {
 
             TipoDeAcceso tipoDeAcceso = servicioUsuarioApunte.obtenerTipoDeAccesoPorIdsDeUsuarioYApunte(usuario.getId(), apunte.getId());
 
+            Materia materia = servicioApunte.obtenerMateriaPorIdDeApunte(id);
+            model.put("materia", materia);
+
             if (TipoDeAcceso.LEER.equals(tipoDeAcceso)) {
                 model.put("tipoDeAcceso", true);
             } else {
