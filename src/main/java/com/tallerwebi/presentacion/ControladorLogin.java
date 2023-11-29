@@ -133,13 +133,19 @@ public class ControladorLogin {
                 apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
             }
 
+            for (Apunte apunte : apuntesNovedades) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
+
             model.put("usuario", usuario);
             model.put("usuariosDestacados", usuariosDestacados);
             model.put("apuntesComprados", apuntesCompradosPorElUsuario);
             model.put("apuntesCreados", apuntesCreadosPorElUsuario);
             model.put("apuntes", mejoresApuntes);
             model.put("novedades", apuntesNovedades);
-            model.put("title", "Apuntes Destacados");
+            model.put("title", "Inicio");
 
             if (errorAlComprarApunteDesdeElHome != null) {
                 model.addAttribute("error", errorAlComprarApunteDesdeElHome);
