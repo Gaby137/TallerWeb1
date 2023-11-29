@@ -2,11 +2,11 @@ const fragment = document.createDocumentFragment();
 const novedades = document.getElementById("novedades");
 const apuntesDes = document.getElementById("apuntesDes");
 const usuariosDes = document.getElementById("usuariosDes");
-const templateCard = document.getElementById("template-card").content;
+const templateCardApunte = document.getElementById("template-card").content;
+const templateCardUsuario = document.getElementById("template-card-usuario").content;
 const templateCarousel = document.getElementById("template-carousel").content;
 
 /**
- * 
  * @param {HTMLElement} mainContainer 
  * @param {*} data 
  * @param {string} idCarousel 
@@ -35,18 +35,33 @@ const pintarSlider = (mainContainer, data, idCarousel, cantidadDeElementosPorSli
 
         arraySlice = data.slice(initialPos, initialPos+cantidadDeElementosPorSlide);
 
-        arraySlice.forEach((apunte) => {
-            templateCard.querySelector('#card-base').classList.remove('col-3', 'col-4', 'col-6');
-            templateCard.querySelector('#card-base').classList.add(`col-${12/cantidadDeElementosPorSlide}`);
-            templateCard.querySelector("#apunte-nombre").textContent = apunte.nombre;
-            templateCard.querySelector("#apunte-descripcion").textContent = apunte.descripcion;
-            templateCard.querySelector("a").href = `/spring/detalleApunte/${apunte.id}`;
-            templateCard.querySelector("#apunte-precio").textContent = apunte.precio;
-            templateCard.querySelector("#apunte-promedio").textContent = apunte.promedioResenas;
-        
-            const clone = templateCard.cloneNode(true);
-            fragment.appendChild(clone);
-        });
+        if(idCarousel == "carousel-usuariosDesData"){ // los usuarios tienen otro template
+            arraySlice.forEach((usuario) => {
+                templateCardUsuario.querySelector('#card-base-usuario').classList.remove('col-3', 'col-4', 'col-6');
+                templateCardUsuario.querySelector('#card-base-usuario').classList.add(`col-${12/cantidadDeElementosPorSlide}`);
+                templateCardUsuario.querySelector("#usuario-nombre").textContent = usuario.nombre;
+                templateCardUsuario.querySelector("#usuario-email").textContent = usuario.email;
+                templateCardUsuario.querySelector("#usuario-foto").src = `/spring/img/${usuario.fotoPerfil}`;
+                templateCardUsuario.querySelector("#usuario-perfil").href = `/spring/perfilUsuario/${usuario.id}`;
+            
+                const clone = templateCardUsuario.cloneNode(true);
+                fragment.appendChild(clone);
+            });
+        } else{
+            arraySlice.forEach((apunte) => {
+                templateCardApunte.querySelector('#card-base-apunte').classList.remove('col-3', 'col-4', 'col-6');
+                templateCardApunte.querySelector('#card-base-apunte').classList.add(`col-${12/cantidadDeElementosPorSlide}`);
+                templateCardApunte.querySelector("#apunte-nombre").textContent = apunte.nombre;
+                templateCardApunte.querySelector("#apunte-descripcion").textContent = apunte.descripcion;
+                templateCardApunte.querySelector("a").href = `/spring/detalleApunte/${apunte.id}`;
+                templateCardApunte.querySelector("#apunte-precio").textContent = apunte.precio;
+                templateCardApunte.querySelector("#apunte-promedio").textContent = apunte.promedioResenas;
+            
+                const clone = templateCardApunte.cloneNode(true);
+                fragment.appendChild(clone);
+            });
+        }
+
     
         carouselItemInner.appendChild(fragment)
         if(initialPos == 0) carouselItem.classList.add('active');

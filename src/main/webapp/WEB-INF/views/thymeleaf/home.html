@@ -49,21 +49,33 @@
 </main>
 
 <template id="template-card">
-    <div id="card-base">
+    <div id="card-base-apunte">
         <div class="card card-home my-2">
             <div class="card-body">
-                <h5 id="apunte-nombre" class="card-title"></h5> <!-- apunte.nombre -->
+                <h5 id="apunte-nombre" class="card-title"></h5>
                 <div class="apunte-descrip mb-2">
-                    <p id="apunte-descripcion" class="mb-2"></p> <!-- apunte.descripcion -->
+                    <p id="apunte-descripcion" class="mb-2"></p>
                 </div>
-                <a class="btn btn-unlam bg-verde-unlam btn-sm">Ver Detalle</a> <!-- href="/detalleApunte/${apunte.id} -->
+                <a class="btn btn-unlam bg-verde-unlam btn-sm">Ver Detalle</a>
                 <p class="card-apunte-coins">
-                    <img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"><span id="apunte-precio"></span> <!-- apunte.precio -->
+                    <img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"><span id="apunte-precio"></span>
                 </p>
                 <p class="d-inline-block card-apunte-promedio">
                     <i class="fa-solid fa-star" style="color: #e7e00d; margin-right: 5px; font-size: 1.5em;"></i>
                     <span id="apunte-promedio"></span>
                 </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="template-card-usuario">
+    <div id="card-base-usuario">
+        <div class="card card-home my-2" style="max-height: fit-content;" >
+            <div class="card-body text-center">
+                <img id="usuario-foto" alt="Foto de perfil" width="150" height="150">
+                <h5 id="usuario-nombre" class="card-title" th:text="${usuario.nombre}"></h5>
+                <p id="usuario-email" class="card-text" th:text="${usuario.email}"></p>
+                <a id="usuario-perfil" class="btn bg-verde-unlam btn-sm">Ver perfil y apuntes</a>
             </div>
         </div>
     </div>
