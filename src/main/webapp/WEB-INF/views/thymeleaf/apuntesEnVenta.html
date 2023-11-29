@@ -48,6 +48,7 @@
             </div>
         </div>
     </div>
+    <p th:if="${error != null}" style="margin-top: 10px; margin-bottom: 10px; padding: 10px; background-color: #f8d7da; border-color: #f5c6cb; color: #721c24;" th:text="${error}"></p>
 </div>
 <script th:inline="javascript">
     $(document).ready(function() {
