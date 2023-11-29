@@ -26,6 +26,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class ControladorLogin {
@@ -126,6 +127,17 @@ public class ControladorLogin {
             List<Usuario> usuariosDestacados = servicioUsuarioApunteResena.obtenerUsuariosDestacados(usuario.getId());
             List<Apunte> apuntesNovedades = servicioApunte.obtenerApuntesNovedades();
 
+            for (Apunte apunte : mejoresApuntes) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
+
+            for (Apunte apunte : apuntesNovedades) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
 
             model.put("usuario", usuario);
             model.put("usuariosDestacados", usuariosDestacados);
@@ -133,7 +145,7 @@ public class ControladorLogin {
             model.put("apuntesCreados", apuntesCreadosPorElUsuario);
             model.put("apuntes", mejoresApuntes);
             model.put("novedades", apuntesNovedades);
-            model.put("title", "Apuntes Destacados");
+            model.put("title", "Inicio");
 
             if (errorAlComprarApunteDesdeElHome != null) {
                 model.addAttribute("error", errorAlComprarApunteDesdeElHome);
