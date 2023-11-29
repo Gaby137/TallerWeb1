@@ -26,7 +26,7 @@ public interface ServicioUsuarioApunteResena {
     List<Usuario> obtenerUsuariosDestacados(Long usuarioId);
     List<Apunte> obtenerApuntesComprados(Usuario usuario);
     List<Apunte> obtenerApuntesCreados(Usuario usuario);
-    List<Apunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual);
+    //List<Apunte> obtenerApuntesCreadosYVerSiPuedeComprar(Usuario usuario, Usuario usuarioActual);
     boolean existeResena(Long idUsuario, Long idApunte);
 
     Resena obtenerResenasPorIdDeUsuarioYApunte(Long idUsuario, Long idApunte);

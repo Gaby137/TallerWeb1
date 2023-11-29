@@ -710,7 +710,7 @@ public class ServicioUsuarioApunteResenaTest {
         assertEquals(0, usuario.getPuntos());
     }
 
-    @Test
+    /*@Test
     public void saberSiUnApuntePuedeSerCompradoPorUnUsuarioEnCasoDeNoTenerloCompradoYVisceversa(){
         Apunte apunte1 = new Apunte(1L);
         Apunte apunte4 = new Apunte(2L);
@@ -758,7 +758,7 @@ public class ServicioUsuarioApunteResenaTest {
         assertFalse(apunte4.isSePuedeComprar());
         assertTrue(apunte5.isSePuedeComprar());
         assertTrue(apunte6.isSePuedeComprar());
-    }
+    }*/
 
     @Test
     public void queNoSePuedaDarUnaResenaSiYaDioUna(){
