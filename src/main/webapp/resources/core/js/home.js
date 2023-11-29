@@ -42,6 +42,7 @@ const pintarSlider = (mainContainer, data, idCarousel, cantidadDeElementosPorSli
             templateCard.querySelector("#apunte-descripcion").textContent = apunte.descripcion;
             templateCard.querySelector("a").href = `/spring/detalleApunte/${apunte.id}`;
             templateCard.querySelector("#apunte-precio").textContent = apunte.precio;
+            templateCard.querySelector("#apunte-promedio").textContent = apunte.promedioResenas;
         
             const clone = templateCard.cloneNode(true);
             fragment.appendChild(clone);
