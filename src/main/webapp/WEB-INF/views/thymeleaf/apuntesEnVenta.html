@@ -124,6 +124,18 @@
 
                         // Construir la estructura del card
                         cardBody.append(titulo).append(descripcion).append(botonApunte.append(masInfoButton).append(comprarForm)).append(precioParrafo);
+                        // Agregar el bloque HTML al final de cada tarjeta
+                        var promedioBlock = $('<p>').addClass('d-inline-block card-apunte-promedio');
+                        var starIcon = $('<i>').addClass('fa-solid fa-star').css({
+                            'color': '#e7e00d',
+                            'margin-right': '5px',
+                            'font-size': '1.5em'
+                        });
+                        var promedioSpan = $('<span>').text(apunte.promedioResenas);
+
+                        promedioBlock.append(starIcon).append(promedioSpan);
+                        cardBody.append(promedioBlock);
+
                         card.append(cardBody);
                         columnWrapper.append(card);
 
