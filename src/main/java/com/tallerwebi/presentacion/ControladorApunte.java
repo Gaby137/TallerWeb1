@@ -294,6 +294,7 @@ public class ControladorApunte {
         } catch (ApunteYaCompradoException | PuntosInsuficientesException e){
             ModelAndView apuntesEnVenta = apuntesDeOtrosUsuarios(session);
             apuntesEnVenta.getModelMap().put("error", e.getMessage());
+            apuntesEnVenta.getModelMap().put("mostrarModalPuntos", true);
             return apuntesEnVenta;
 
         } catch (Exception e){
@@ -327,6 +328,7 @@ public class ControladorApunte {
             } else {
                 ModelAndView detalleApunte = getDetalleApunteConListadoDeSusResenas(apunte.getId(), request, session);
                 detalleApunte.getModelMap().put("error", "Error al realizar la compra");
+                detalleApunte.getModelMap().put("mostrarModalPuntos", true);
                 return detalleApunte;
             }
         
