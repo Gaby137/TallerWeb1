@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -462,6 +464,8 @@ public class ControladorApunte {
             String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
             apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
         }
+        // Ordenar la lista de apuntes por el promedio de reseñas de mayor a menor
+        Collections.sort(apuntes, Comparator.comparing(Apunte::getPromedioResenas).reversed());
         return ResponseEntity.ok(apuntes);
     }
 }
