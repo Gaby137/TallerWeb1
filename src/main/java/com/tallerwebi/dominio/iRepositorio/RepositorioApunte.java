@@ -16,4 +16,5 @@ public interface RepositorioApunte {
     void eliminarApunte(Apunte apunte);
     List<Apunte> obtenerApuntes();
     List<Apunte> obtenerApuntesEntreFechas(Date desde, Date hasta);
+    List<Apunte> filtrar(Long idCarrera, Long idMateria);
 }

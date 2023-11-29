@@ -1,142 +1,172 @@
 <!DOCTYPE html>
 <div th:insert="~{nav}"></div>
 <body>
-<main class="container">
+<main>
     <!-- Sección de Destacados -->
     <section class="my-5">
-        <h1 class="text-center">Apuntes Destacados</h1>
-        <div class="container">
-            <div class="row">
-                <div th:each="apunte : ${apuntes}" th:if="${apunte.activo}" class="col-12 col-sm-6 col-md-4 col-xl-3">
-                    <div class="card card-home my-2">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <span>
-                                    <h5 th:text="${apunte.nombre}" class="card-title"></h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">Materia</h6>
-                                </span>
-                                <span>
-                                    <h5 th:text="${apunte.precio}" class="card-text"></h5>
-                                </span>
-                                <span>
-                                <a th:href="@{/detalleApunte/{id}(id=${apunte.id})}" class="btn btn-primary">Detalles</a>
-                                </span>
-                            </div>
-                            <div class="apunte-descrip mb-2">
-                                <p th:text="${apunte.descripcion}" class="mb-2"></p>
-                            </div>
-                            <form th:action="@{/comprarApunteEnElHome/{id}(id=${apunte.id})}" method="post">
-
-                                <button id="botonComprar" th:unless="${#lists.contains(apuntesComprados, apunte) or #lists.contains(apuntesCreados, apunte)}"
-                                        type="submit" class="btn btn-success boton-apunte">Comprar</button>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-                <p th:if="${error}" style="color: red;" th:text="${error}"></p>
-                <div  th:if="${#lists.isEmpty(apuntes)}" class="col-12">
-                    <div class="card card-home my-2">
-                        <div class="card-body d-flex justify-content-center align-items-center">
-                            <h3 class="text-muted fw-light">Nada para ver</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
+        <div class="my-2 section-title">
+            <h4 class="text-left m-0">Apuntes Destacados</h4>
         </div>
-    </section>
-
-    <!-- Sección de Ofertas -->
-    <!-- <section class="my-5">
-        <h1 class="text-center">Ofertas Especiales</h1>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="oferta1.jpg" class="card-img-top" alt="Oferta 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Oferta 1</h5>
-                        <p class="card-text">Descripción de la oferta 1.</p>
-                        <a th:href="@{/oferta/1}" class="btn btn-primary">Ver Oferta</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="oferta2.jpg" class="card-img-top" alt="Oferta 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Oferta 2</h5>
-                        <p class="card-text">Descripción de la oferta 2.</p>
-                        <a th:href="@{/oferta/2}" class="btn btn-primary">Ver Oferta</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="oferta3.jpg" class="card-img-top" alt="Oferta 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Oferta 3</h5>
-                        <p class="card-text">Descripción de la oferta 3.</p>
-                        <a th:href="@{/oferta/3}" class="btn btn-primary">Ver Oferta</a>
-                    </div>
+        <div id="apuntesDes"></div>
+        <div th:if="${#lists.isEmpty(apuntes)}" class="section-title">
+            <div class="card card-home my-2">
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <h3 class="text-muted fw-light">Nada para ver</h3>
                 </div>
             </div>
         </div>
-        <hr>
-    </section> -->
+    </section>
 
     <!-- Sección de Novedades -->
     <section class="my-5">
-        <h1 class="text-center">Novedades</h1>
-        <div class="row">
-            <div th:each="novedad : ${novedades}" class="col-12 col-sm-6 col-md-4 col-xl-3">
-                <div class="card card-home my-2">
-                    <div class="card-body">
-                        <h5 th:text="${novedad.nombre}" class="card-title"></h5>
-                        <div class="novedad-descrip mb-2">
-                            <p  th:text="${novedad.descripcion}" class="mb-2"></p>
-                        </div>
-                        <a class="btn btn-verde-unlam"  th:href="@{/detalleApunte/{id}(id=${novedad.id})}">Ver Novedad</a>
-                        <p class="card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${novedad.precio}"></span></p>
-                    </div>
-                </div>
-            </div>
-            <div  th:if="${#lists.isEmpty(novedades)}" class="col-12">
-                <div class="card card-home my-2">
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <h3 class="text-muted fw-light">Nada para ver</h3>
-                    </div>
+        <div class="my-2 section-title">
+            <h4 class="text-left m-0">Novedades</h4>
+        </div>
+        <div id="novedades"></div>
+        <div th:if="${#lists.isEmpty(novedades)}" class="section-title">
+            <div class="card card-home my-2">
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <h3 class="text-muted fw-light">Nada para ver</h3>
                 </div>
             </div>
         </div>
-        <hr>
     </section>
 
+    <!-- Sección de Usuarios Destacados -->
     <section class="my-5">
-        <h1 class="text-center">Usuarios Destacados</h1>
-        <div class="row">
-            <div th:each="usuario : ${usuariosDestacados}" class="col-md-4 text-center mb-2">
-                <div class="card d-flex align-items-center p-2">
-                    <img th:src="@{'/img/' + ${usuario.fotoPerfil}}" alt="Foto de perfil" width="150" height="150">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${usuario.nombre}"></h5>
-                        <p class="card-text" th:text="${usuario.email}"></p>
-                        <a th:href="@{'/perfilUsuario/' + ${usuario.id}}" class="btn btn-primary">Ver perfil y apuntes</a>
-                    </div>
-                </div>
-            </div>
-            <div  th:if="${#lists.isEmpty(usuariosDestacados)}" class="col-12">
-                <div class="card card-home my-2">
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <h3 class="text-muted fw-light">Nada para ver</h3>
-                    </div>
+        <div class="my-2 section-title">
+            <h4 class="text-left m-0">Usuarios Destacados</h4>
+        </div>
+        <div id="usuariosDes"></div>
+        <div th:if="${#lists.isEmpty(usuariosDestacados)}" class="section-title">
+            <div class="card card-home my-2">
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <h3 class="text-muted fw-light">Nada para ver</h3>
                 </div>
             </div>
         </div>
     </section>
 </main>
 
-<footer class="bg-dark text-light text-center py-3">
-    <p>&copy; Derechos - Privacidad - Etc.</p>
+<template id="template-card">
+    <div id="card-base">
+        <div class="card card-home my-2">
+            <div class="card-body">
+                <h5 id="apunte-nombre" class="card-title"></h5> <!-- apunte.nombre -->
+                <div class="apunte-descrip mb-2">
+                    <p id="apunte-descripcion" class="mb-2"></p> <!-- apunte.descripcion -->
+                </div>
+                <a class="btn btn-unlam bg-verde-unlam btn-sm">Ver Detalle</a> <!-- href="/detalleApunte/${apunte.id} -->
+                <p class="card-apunte-coins">
+                    <img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"><span id="apunte-precio"></span> <!-- apunte.precio -->
+                </p>
+                <p class="d-inline-block card-apunte-promedio">
+                    <i class="fa-solid fa-star" style="color: #e7e00d; margin-right: 5px; font-size: 1.5em;"></i>
+                    <span id="apunte-promedio"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>
+<template id="template-carousel">
+    <div id="carousel-id" class="carousel slide" data-ride="carousel" data-interval="false">
+        <div class="carousel-inner" style="padding: 0px 10%;">
+        </div>
+        <button class="carousel-control-prev" type="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Siguiente</span>
+        </button>
+    </div>
+</template>
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bienvenido <span th:text="${usuario.nombre}"></span> al Ecommerce de apuntes de  la UNLAM</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    ¡Comparte tu código de creador y gana puntos juntos!
+                </p>
+                <ol>
+                    <li>Dirígete a la esquina superior derecha de la pantalla.</li>
+                    <li>Presiona sobre tu nombre de usuario.</li>
+                    <li>En el despegable que se abrirá, encontrarás tu código de creador. Clickea en él para copiarlo y poder compartirlo con tus amigos.</li>
+                </ol>
+                <p>
+                    Invita a tus amigos a registrarse utilizando tu código de creador y ambos recibirán 50 puntos.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-unlam bg-verde-unlam btn-sm" id="noMostrarBtn">Cerrar y no volver a mostrar</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<footer class="text-light text-center py-3 footer">
+    <div class="container">
+        <div class="row justify-content-center align-items-stretch text-center">
+            <!-- Columna 1: Datos de contacto -->
+            <div class="col-md-4 mb-3 d-flex flex-column align-items-start">
+                <h5>Contacto</h5>
+                <p class="mb-2"> <i class="fa-solid fa-phone" style="color: #8edc86; font-size: 22px; margin-right: 5px;"></i> (123) 4531-0912</p>
+                <p class=" mb-2"> <i class="fa-regular fa-envelope" style="color: #8edc86; font-size: 22px; margin-right: 5px;"></i> apuntesunlam@gmail.com </p>
+            </div>
+
+            <!-- Columna 2: Redes sociales -->
+            <div class="col-md-4 mb-3 d-flex flex-column align-items-start">
+                <h5>Redes Sociales</h5>
+
+                <p class="mb-2"><i class="fa-brands fa-square-facebook" style="color: #8edc86; font-size: 22px; margin-right: 5px;"></i> https://www.facebook.com/unlamapuntes</p>
+                <p class="mb-2"><i class="fa-brands fa-x-twitter" style="color: #8edc86; font-size: 22px; margin-right: 5px;"></i>https://twitter.com/unlamapuntes</p>
+                <p><i class="fa-brands fa-instagram" style="color: #8edc86; font-size: 22px; margin-right: 5px;"></i>https://instagram.com/unlamapuntes</p>
+            </div>
+
+            <div class="col-md-4 mb-3 d-flex flex-column align-items-start">
+                <h5>UNLAM</h5>
+                <p class="mb-2"><img th:src="@{'/img/unlamlogo.png'}" alt="Logo Unlam" width="26" height="26" style="margin-right: 5px;">https://www.unlam.edu.ar</p>
+                <p class="mb-2"><img th:src="@{'/img/unlamlogo.png'}" alt="Logo Unlam" width="26" height="26" style="margin-right: 5px;">https://alumno2.unlam.edu.ar</p>
+                <p><img th:src="@{'/img/miel.unlam.edu.ar.ico'}" alt="Logo Miel" width="26" height="26" style="margin-right: 5px;">https://miel.unlam.edu.ar</p>
+            </div>
+        </div>
+    </div>
+    <p class="mt-3" style="justify-content: center">&copy; UnlamApuntes V2.1.0. Todos los derechos reservados.</p>
 </footer>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = new bootstrap.Modal(document.getElementById('myModal'), {
+            keyboard: false
+        });
+
+        if (localStorage.getItem('noMostrarModal') !== 'true') {
+            modal.show();
+        }
+
+        document.getElementById('noMostrarBtn').addEventListener('click', function () {
+            localStorage.setItem('noMostrarModal', 'true');
+            modal.hide();
+        });
+    });
+</script>
 </body>
+
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var apuntesDesData = /*[[${apuntes}]]*/ null;
+    var novedadesData = /*[[${novedades}]]*/ null;
+    var usuariosDesData = /*[[${usuariosDestacados}]]*/ null;
+/*]]>*/
+</script>
+
+<script th:src="@{/js/home.js}"></script>

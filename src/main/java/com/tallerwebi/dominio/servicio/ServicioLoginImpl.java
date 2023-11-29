@@ -50,6 +50,7 @@ public class ServicioLoginImpl implements ServicioLogin {
                 Usuario u1 = new Usuario(usuario.getNombre(), usuario.getApellido(), 100, usuario.getEmail(), usuario.getPassword(), Rol.USUARIO, false, usuario.getFotoPerfil().getOriginalFilename(), usuario.getLatitud(), usuario.getLongitud(), usuario.getCodigoDeCreador(), new Date(), new Date());
                 String codigoCreador = generarCodigoCreador();
                 u1.setCodigoDeCreador(codigoCreador);
+                u1.setQueAparezcaPopUpDeCodigoCreador(true);
                 servicioLoginDao.guardar(u1);
 
                 if (usuario.getCodigoDeCreador() != null && !usuario.getCodigoDeCreador().isEmpty()) {

@@ -245,8 +245,6 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
             }
         }
 
-        mejoresApuntes = mejoresApuntes.subList(0, Math.min(mejoresApuntes.size(), 6));
-
         return mejoresApuntes;
     }
 
@@ -298,8 +296,7 @@ public class ServicioUsuarioApunteResenaImpl implements ServicioUsuarioApunteRes
 
         usuariosDestacados.sort((usuario1, usuario2) -> Double.compare(usuariosConPromedios.get(usuario2), usuariosConPromedios.get(usuario1)));
 
-        int numeroUsuariosAMostrar = 6;
-        return usuariosDestacados.subList(0, Math.min(numeroUsuariosAMostrar, usuariosDestacados.size()));
+        return usuariosDestacados;
     }
 
     @Override

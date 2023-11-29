@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
 import com.tallerwebi.dominio.excepcion.PuntosInsuficientesException;
 import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -153,6 +154,17 @@ public class ControladorApunte {
             List<Apunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
             List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
+            for (Apunte apunte : apuntesComprados) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
+
+            for (Apunte apunte : apuntesCreados) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
 
             model.put("apuntesComprados", apuntesComprados);
             model.put("apuntesCreados", apuntesCreados);
@@ -172,9 +184,6 @@ public class ControladorApunte {
             Apunte apunte = servicioApunte.obtenerPorId(id);
             request.getSession().setAttribute("idApunte", apunte.getId());
             Usuario usuarioVendedor = servicioUsuarioApunte.obtenerVendedorPorApunte(id);
-
-            model.put("apunte", apunte);
-            model.put("usuarioVendedor", usuarioVendedor);
 
             model.put("apunte", apunte);
             model.put("usuarioVendedor", usuarioVendedor);
@@ -226,12 +235,19 @@ public class ControladorApunte {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         if (session.getAttribute("usuario") != null){
-            List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerTodosLosApuntes(usuario.getId());
+            List<Carrera> listadoCarrera = servicioAdministrador.listadoCarreras();
+            model.put("listaCarreras", listadoCarrera);
+
             List<Apunte> apuntesCreadosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
             List<Apunte> apuntesCompradosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
 
+        /*    for (Apunte apunte : todosLosApuntes) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
+            */
 
-            model.put("apuntes", todosLosApuntes);
             model.put("apuntesCreados", apuntesCreadosPorElUsuario);
             model.put("apuntesComprados", apuntesCompradosPorElUsuario);
             model.put("title", "Apuntes");
@@ -253,6 +269,12 @@ public class ControladorApunte {
             List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
             List<Apunte> apuntesCompradosPorUsuarioActual = servicioUsuarioApunteResena.obtenerApuntesComprados(usuarioActual);
             List<Apunte> apuntesCreadosPorUsuarioActual = servicioUsuarioApunteResena.obtenerApuntesCreados(usuarioActual);
+
+            for (Apunte apunte : apuntesCreados) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
 
             model.put("apuntesCreados", apuntesCreados);
             model.put("apuntesCompradosPorUsuarioActual", apuntesCompradosPorUsuarioActual);
@@ -426,4 +448,10 @@ public class ControladorApunte {
     }
 
 }
+    @RequestMapping(path = "/filtrarApuntesPorCarreraYMateria/{idCarrera}/{idMateria}", method = RequestMethod.GET)
+    public ResponseEntity<List<Apunte>> obtenerMateriasPorCarrera(@PathVariable("idCarrera") Long idCarrera, @PathVariable("idMateria") Long idMateria, HttpSession session) {
+        Long  idUsuario = ((Usuario) session.getAttribute("usuario")).getId();
+        List<Apunte> apuntes = servicioAdministrador.filtrado(idCarrera, idMateria, idUsuario);
+        return ResponseEntity.ok(apuntes);
+    }
 }

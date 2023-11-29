@@ -9,9 +9,9 @@
     --c-background: #e3f2fd;
 }
 
-/* body, html {
+body, html {
     height: 100%;
-} */
+}
 
 p {
     margin: 0 !important;
@@ -39,14 +39,18 @@ button:hover {
     cursor: pointer;
 }
 
-.btn-verde-unlam{
+.bg-verde-unlam{
     background-color: #4caf50;
-    position: absolute;
-    bottom: 15px;
     color: white;
 }
-.btn-verde-unlam:hover{
+.bg-verde-unlam:hover{
     background-color: #2a792d;
+    color: white;
+}
+
+.btn-unlam{
+    position: absolute;
+    bottom: 15px;
 }
 
 .card-home {
@@ -59,6 +63,11 @@ button:hover {
     right: 15px;
     bottom: 15px;
 }
+.card-apunte-promedio{
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
 .card {
     background-color: var(--c-background);
     border: none;
@@ -66,11 +75,6 @@ button:hover {
 }
 
 .apunte-descrip {
-    overflow: hidden;
-    max-height: 120px;
-}
-
-.novedad-descrip {
     overflow: hidden;
     max-height: 145px;
 }
@@ -83,17 +87,17 @@ button:hover {
 .btn-bronce{
     background-color: #a97142;
     color: white;
-    border: 4px solid #c18b60;
+    border: 2px solid #c18b60;
 }
 .btn-plata{
     background-color: #ccd0d3;
     color: white;
-    border: 4px solid #e8e8e8;
+    border: 2px solid #e8e8e8;
 }
 .btn-oro{
     background-color: #ffd700;
     color: white;
-    border: 4px solid #fde16d;
+    border: 2px solid #fde16d;
 }
 .packs-btn-group {
     margin: 10px;
@@ -125,75 +129,19 @@ button:hover {
     background-color: #bfb;
     border-color: #4c4;
 }
-.container-pack{
-    font-family: 'Poppins',sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+
+.carousel-control-next, .carousel-control-prev {
+    width: 10%;
 }
-.card-pack{
-    height: 150px;
-    width: 200px;
-    position: relative;
-    margin: 10px 0;
-    color: white;
+
+.section-title {
+    margin: 0 10%;
 }
-.card-pack input[type="radio"]{
-    -webkit-appearance: none;
-    appearance: none;
-    height: 100%;
-    width: 100%;
-    border-radius: 10px;
-    position: absolute;
-    box-shadow: 7px 7px 15px rgba(2,28,53,0.08);
-    cursor: pointer;
-    outline: none;
-}
-.card-pack input[type="radio"]:before{
-    content: "";
-    position: absolute;
-    height: 22px;
-    width: 22px;
-    background-color: #f9fafd;
-    border: 1px solid #e2e6f3;
-    border-radius: 50%;
-    top: 35px;
-    right: 20px;
-}
-.card-pack input[type="radio"]:after{
-    content: "";
-    position: absolute;
-    height: 13px;
-    width: 13px;
-    background-color: transparent;
-    border-radius: 50%;
-    top: 39.5px;
-    right: 24.5px;
-}
-.card-pack label{
-    position: absolute;
-    margin: 20px;
-    cursor: pointer;
-}
-.card-pack h5{
-    font-weight: 600;
-    font-size: 18px;
-    letter-spacing: 0.5px;
-    margin: 15px 0 20px 0;
-}
-.card-pack h2{
-    font-size: 28px;
-}
-.card-pack span{
-    font-weight: 400;
-    font-size: 18px;
-}
-.card-pack input[type="radio"]:hover{
-    transform: scale(1.05);
-}
-.card-pack input[type="radio"]:checked{
-    filter: drop-shadow(4px 4px 4px grey);
-}
-.card-pack input[type="radio"]:checked:after{
-    background-color: #4caf50;
+
+.carousel-control-next-icon, .carousel-control-prev-icon {
+    border-radius: 25px;
+    background-color: grey;
+    background-size: 70% 70%;
+    width: 2.5rem;
+    height: 2.5rem;
 }

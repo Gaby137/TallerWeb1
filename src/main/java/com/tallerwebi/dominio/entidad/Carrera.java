@@ -14,7 +14,7 @@ public class Carrera {
     private Date created_at;
     private Date updated_at;
 
-    @OneToMany(mappedBy = "carrera")
+    @OneToMany(mappedBy = "carrera", fetch = FetchType.LAZY)
     private List<MateriaCarrera> relacionesMateriaCarrera = new ArrayList<>();
 
 

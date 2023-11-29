@@ -3,6 +3,7 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.entidad.Carrera;
 import com.tallerwebi.dominio.entidad.Materia;
 import com.tallerwebi.dominio.entidad.MateriaCarrera;
+import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import com.tallerwebi.dominio.iRepositorio.RepositorioCarrera;
 import com.tallerwebi.dominio.iRepositorio.RepositorioMateria;
 import com.tallerwebi.dominio.iRepositorio.RepositorioMateriaCarrera;
@@ -25,6 +26,7 @@ public class ServicioAdministradorTest {
     private RepositorioMateria repositorioMateriaMock;
     private RepositorioCarrera repositorioCarreraMock;
     private RepositorioMateriaCarrera repositorioMateriaCarreraMock;
+    private RepositorioApunte repositorioApunteMock;
 
     @BeforeEach
     public void init(){
@@ -32,7 +34,8 @@ public class ServicioAdministradorTest {
         repositorioMateriaMock = mock(RepositorioMateria.class);
         repositorioCarreraMock = mock(RepositorioCarrera.class);
         repositorioMateriaCarreraMock = mock(RepositorioMateriaCarrera.class);
-        servicioAdministrador = new ServicioAdministradorImpl(repositorioCarreraMock, repositorioMateriaMock, repositorioMateriaCarreraMock);
+        repositorioApunteMock = mock(RepositorioApunte.class);
+        servicioAdministrador = new ServicioAdministradorImpl(repositorioCarreraMock, repositorioMateriaMock, repositorioMateriaCarreraMock, repositorioApunteMock);
     }
 
 
