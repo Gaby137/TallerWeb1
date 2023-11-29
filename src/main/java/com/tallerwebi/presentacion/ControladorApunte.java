@@ -453,6 +453,11 @@ public class ControladorApunte {
     public ResponseEntity<List<Apunte>> obtenerMateriasPorCarrera(@PathVariable("idCarrera") Long idCarrera, @PathVariable("idMateria") Long idMateria, HttpSession session) {
         Long  idUsuario = ((Usuario) session.getAttribute("usuario")).getId();
         List<Apunte> apuntes = servicioAdministrador.filtrado(idCarrera, idMateria, idUsuario);
+        for (Apunte apunte : apuntes)   {
+            double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+            String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+            apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+        }
         return ResponseEntity.ok(apuntes);
     }
 }
