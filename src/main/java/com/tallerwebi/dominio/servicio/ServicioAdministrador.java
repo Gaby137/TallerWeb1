@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio.servicio;
 
+import com.tallerwebi.dominio.entidad.Apunte;
 import com.tallerwebi.dominio.entidad.Carrera;
 import com.tallerwebi.dominio.entidad.Materia;
 import com.tallerwebi.dominio.entidad.Usuario;
@@ -13,8 +14,8 @@ public interface ServicioAdministrador {
     void registrarMateria(DatosMateria datosMateria);
     List<Carrera> listadoCarreras();
     List<Materia> listadoMaterias();
-
     List<Materia> obtenerMateriasPorCarrera(Long idCarrera);
     Materia obtenerMateria(Long idMateria);
 
+    List<Apunte> filtrado(Long idCarrera, Long idMateria, Long idUsuario);
 }

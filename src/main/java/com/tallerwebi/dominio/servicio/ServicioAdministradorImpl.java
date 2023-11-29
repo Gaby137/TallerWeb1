@@ -1,13 +1,7 @@
 package com.tallerwebi.dominio.servicio;
 
-import com.tallerwebi.dominio.entidad.Carrera;
-import com.tallerwebi.dominio.entidad.Materia;
-import com.tallerwebi.dominio.entidad.MateriaCarrera;
-import com.tallerwebi.dominio.entidad.Usuario;
-import com.tallerwebi.dominio.iRepositorio.RepositorioCarrera;
-import com.tallerwebi.dominio.iRepositorio.RepositorioMateria;
-import com.tallerwebi.dominio.iRepositorio.RepositorioMateriaCarrera;
-import com.tallerwebi.dominio.iRepositorio.RepositorioUsuario;
+import com.tallerwebi.dominio.entidad.*;
+import com.tallerwebi.dominio.iRepositorio.*;
 import com.tallerwebi.presentacion.DatosCarrera;
 import com.tallerwebi.presentacion.DatosMateria;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +18,14 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     private RepositorioCarrera repositorioCarrera;
     private RepositorioMateria repositorioMateria;
     private RepositorioMateriaCarrera repositorioMateriaCarrera;
+    private RepositorioApunte repositorioApunte;
 
     @Autowired
-    public ServicioAdministradorImpl(RepositorioCarrera repositorioCarrera, RepositorioMateria repositorioMateria, RepositorioMateriaCarrera repositorioMateriaCarrera) {
+    public ServicioAdministradorImpl(RepositorioCarrera repositorioCarrera, RepositorioMateria repositorioMateria, RepositorioMateriaCarrera repositorioMateriaCarrera, RepositorioApunte repositorioApunte) {
         this.repositorioCarrera = repositorioCarrera;
         this.repositorioMateria = repositorioMateria;
         this.repositorioMateriaCarrera = repositorioMateriaCarrera;
+        this.repositorioApunte = repositorioApunte;
     }
 
 
@@ -88,6 +84,28 @@ public class ServicioAdministradorImpl implements ServicioAdministrador {
     @Override
     public Materia obtenerMateria(Long idMateria) {
         return repositorioMateria.obtenerMateria(idMateria);
+    }
+
+    @Override
+    public List<Apunte> filtrado(Long idCarrera, Long idMateria, Long idUsuario) {
+        List<Apunte> apuntes = repositorioApunte.filtrar(idCarrera, idMateria);
+        List<Apunte> apuntesActivos = new ArrayList<>();
+
+        for (Apunte apunte : apuntes) {
+            if (apunte.isActivo()) {
+                apuntesActivos.add(apunte);
+                // Verificar si existe una relación con el usuario específico
+                boolean tieneRelacionConUsuario = apunte.getRelacionesUsuarioApunte().stream()
+                        .anyMatch(relacion -> relacion.getUsuario().getId().equals(idUsuario));
+
+                // Establecer sePuedeComprar basado en la existencia de la relación
+                apunte.setSePuedeComprar(!tieneRelacionConUsuario);
+            }
+        }
+
+
+
+        return apuntesActivos;
     }
 }
 

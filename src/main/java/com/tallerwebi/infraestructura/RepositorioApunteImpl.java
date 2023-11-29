@@ -1,6 +1,7 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.UsuarioApunte;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 import com.tallerwebi.dominio.iRepositorio.RepositorioApunte;
 import org.hibernate.Criteria;
@@ -8,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -78,5 +80,35 @@ public class RepositorioApunteImpl implements RepositorioApunte {
         Criteria criteria = session.createCriteria(Apunte.class)
             .add(Restrictions.between("created_at", desde, hasta)).addOrder(Order.desc("created_at"));
         return criteria.list();
+    }
+
+    @Override
+    public List<Apunte> filtrar(Long idCarrera, Long idMateria) {
+        Session session = sessionFactory.getCurrentSession();
+        if (idCarrera == 0 && idMateria == 0){
+            String jpql = "SELECT apunte FROM Apunte apunte";
+            Query<Apunte> query = session.createQuery(jpql, Apunte.class);
+            return query.getResultList();
+        }else if (idCarrera != 0 && idMateria == 0){
+            String jpql = "SELECT apunte FROM Apunte apunte " +
+                    "JOIN apunte.materia materia " +
+                    "JOIN materia.relacionesMateriaCarrera relacion " +
+                    "WHERE relacion.carrera.id = :idCarrera";
+
+            Query<Apunte> query = session.createQuery(jpql, Apunte.class);
+            query.setParameter("idCarrera", idCarrera);
+            return query.getResultList();
+        }else {
+            // Obtener todos los apuntes relacionados con una carrera y materia específicas
+            String jpql = "SELECT apunte FROM Apunte apunte " +
+                    "JOIN apunte.materia materia " +
+                    "JOIN materia.relacionesMateriaCarrera relacionCarrera " +
+                    "WHERE relacionCarrera.carrera.id = :idCarrera AND materia.id = :idMateria";
+
+            Query<Apunte> query = session.createQuery(jpql, Apunte.class);
+            query.setParameter("idCarrera", idCarrera);
+            query.setParameter("idMateria", idMateria);
+            return query.getResultList();
+        }
     }
 }
