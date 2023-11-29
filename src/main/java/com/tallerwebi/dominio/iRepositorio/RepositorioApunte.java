@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio.iRepositorio;
 
 import com.tallerwebi.dominio.entidad.Apunte;
+import com.tallerwebi.dominio.entidad.Materia;
 import com.tallerwebi.dominio.entidad.UsuarioApunteResena;
 
 import java.util.Date;
@@ -17,4 +18,6 @@ public interface RepositorioApunte {
     List<Apunte> obtenerApuntes();
     List<Apunte> obtenerApuntesEntreFechas(Date desde, Date hasta);
     List<Apunte> filtrar(Long idCarrera, Long idMateria);
+
+    Materia obtenerMateriaPorIdApunte(Long idApunte);
 }
