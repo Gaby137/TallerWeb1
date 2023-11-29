@@ -3,22 +3,25 @@
 <main>
 <body>
 <div class="container">
-        <label for="idCarrera">Selecciona una carrera:</label>
-        <select id="idCarrera" class="form-control">
-            <option value="0">Todos</option>
-            <option th:each="carrera : ${listaCarreras}"
-                    th:value="${carrera.id}"
-                    th:text="${carrera.descripcion}">
-            </option>
-        </select>
+    <div class="row">
+        <!-- Columna para el select de Carrera -->
+        <div class="col-md-6">
+            <label for="idCarrera">Selecciona una carrera:</label>
+            <select id="idCarrera" class="form-control">
+                <option value="0">Todos</option>
+                <option th:each="carrera : ${listaCarreras}" th:value="${carrera.id}" th:text="${carrera.descripcion}"></option>
+            </select>
+        </div>
 
-        <label for="idMateria">Selecciona una Materia:</label>
-        <select id="idMateria" class="form-control">
-            <option value="0">Todos</option>
-            <!-- Opciones de materia se cargarán dinámicamente aquí -->
-
-        </select>
-
+        <!-- Columna para el select de Materia -->
+        <div class="col-md-6">
+            <label for="idMateria">Selecciona una Materia:</label>
+            <select id="idMateria" class="form-control">
+                <option value="0">Todos</option>
+                <!-- Opciones de materia se cargarán dinámicamente aquí -->
+            </select>
+        </div>
+    </div>
 
         <div id="listaApuntes" class="row" style="margin-top: 20px;">
         </div>
