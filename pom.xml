@@ -169,6 +169,8 @@
             <version>2.10.1</version>
         </dependency>
 
+
+
         <!-- compile only, deployed container will provide this -->
         <!--
         <dependency>
@@ -218,6 +220,7 @@
                     </webApp>
                 </configuration>
             </plugin>
+
 
         </plugins>
     </build>

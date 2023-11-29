@@ -23,6 +23,7 @@ public class Apunte {
     private boolean cienPuntosPorBuenPromedioDeResenas;
     private boolean sePuedeComprar;
     private boolean activo;
+    private double promedioResenas;
 
     @JsonIgnore
     @OneToMany(mappedBy = "apunte")
@@ -168,5 +169,13 @@ public class Apunte {
 
     public void setActivo(boolean activo) {
         this.activo = activo;
+    }
+
+    public double getPromedioResenas() {
+        return promedioResenas;
+    }
+
+    public void setPromedioResenas(double promedioResenas) {
+        this.promedioResenas = promedioResenas;
     }
 }
