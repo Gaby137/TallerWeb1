@@ -1,29 +1,144 @@
 <!DOCTYPE html>
 <div th:insert="~{nav}"></div>
+<main>
 <body>
 <div class="container">
-    <div class="row">
-        <div th:each="apunte : ${apuntes}" th:if="${apunte.activo}"  class="col-12 col-sm-6 col-md-4 col-xl-3">
-            <div class="card card-home my-2">
-                <div class="card-body">
-                    <h5 th:text="${apunte.nombre}" class="card-title"></h5>
-                    <!-- <h6 class="card-subtitle mb-2 text-muted">Materia</h6> -->
-                    <div class="apunte-descrip mb-2">
-                        <p  th:text="${apunte.descripcion}" class="mb-2"></p>
-                    </div>
-                    <div class="d-flex boton-apunte">
-                        <a class="btn bg-verde-unlam btn-sm" th:href="@{/detalleApunte/{id}(id=${apunte.id})}">Mas Info</a>
-                        <form th:action="@{/comprarApunte/{id}(id=${apunte.id})}" style="margin-left: 4px;" method="POST">
-                            <button id="botonComprar" 
-                            th:unless="${#lists.contains(apuntesComprados, apunte) or #lists.contains(apuntesCreados, apunte)}"
-                            type="submit" class="btn btn-success btn-sm" title="Comprar apunte"><i class="fa-solid fa-shopping-cart"></i></button>
-                        </form>
-                    </div>
-                    <p class="d-inline-block card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${apunte.precio}"></span></p>
-                </div>
-            </div>
+        <label for="idCarrera">Selecciona una carrera:</label>
+        <select id="idCarrera" class="form-control">
+            <option value="0">Todos</option>
+            <option th:each="carrera : ${listaCarreras}"
+                    th:value="${carrera.id}"
+                    th:text="${carrera.descripcion}">
+            </option>
+        </select>
+
+        <label for="idMateria">Selecciona una Materia:</label>
+        <select id="idMateria" class="form-control">
+            <option value="0">Todos</option>
+            <!-- Opciones de materia se cargarán dinámicamente aquí -->
+
+        </select>
+
+
+        <div id="listaApuntes" class="row">
+
+
         </div>
-    </div>
-    <p th:if="${error}" style="color: red;" th:text="${error}"></p>
+
+
+    <!-- Contenedor para mostrar la lista de apuntes -->
+
 </div>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        // Ejecutar la carga de materias al cargar la página
+        (function() {
+            var idCarrera = $('#idCarrera').val();
+            cargarMaterias(idCarrera);
+        })();
+
+        // Manejar el cambio en el select de la carrera
+        $('#idCarrera').change(function() {
+            var idCarrera = $(this).val();
+            cargarMaterias(idCarrera);
+        });
+
+        // Manejar el cambio en el select de la materia
+        $('#idMateria').change(function() {
+            var idCarrera = $('#idCarrera').val();
+            var idMateria = $(this).val();
+            cargarApuntes(idCarrera, idMateria);
+        });
+
+        function cargarMaterias(idCarrera) {
+            // Realizar una solicitud AJAX para obtener las materias asociadas a la carrera
+            $.ajax({
+                url: '/spring/materiasPorCarrera/' + idCarrera,
+                type: 'GET',
+                success: function(data) {
+                    // Limpiar y cargar las nuevas opciones en el select de materias
+                    console.log(data);
+                    var selectMateria = $('#idMateria');
+                    selectMateria.empty();
+
+                    // Agregar la opción por defecto "Todos"
+                    selectMateria.append('<option value="0">Todos</option>');
+
+                    $.each(data, function(index, materia) {
+                        selectMateria.append('<option value="' + materia.id + '">' + materia.descripcion + '</option>');
+                    });
+                    selectMateria.val('0').change();
+                },
+                error: function() {
+                    console.log('Error al cargar las materias.');
+                }
+            });
+        }
+
+        function cargarApuntes(idCarrera, idMateria) {
+            // Realizar una solicitud AJAX para obtener la lista de apuntes
+            $.ajax({
+                url: '/spring/filtrarApuntesPorCarreraYMateria/' + idCarrera + '/' + idMateria,
+                type: 'GET',
+                success: function(data) {
+                    // Mostrar los apuntes en el contenedor
+                    console.log(data);
+                    var listaApuntes = $('#listaApuntes');
+                    listaApuntes.empty();
+
+                    $.each(data, function(index, apunte) {
+                        var columnWrapper = $('<div>').addClass('col-4 col-sm-6 col-md-4 col-xl-3');
+                        var card = $('<div>').addClass('card card-home my-2');
+                        var cardBody = $('<div>').addClass('card-body');
+
+                        var titulo = $('<h5>').addClass('card-title').text(apunte.nombre);
+                        var descripcion = $('<p>').addClass('mb-2 apunte-descrip').text(apunte.descripcion);
+
+                        var botonApunte = $('<div>').addClass('d-flex boton-apunte');
+                        var masInfoButton = $('<a>').addClass('btn bg-verde-unlam btn-sm')
+                            .attr('href', '/spring/detalleApunte/' + apunte.id)
+                            .text('Mas Info');
+
+                        var comprarForm = $('<form>').attr({
+                            'action': '/spring/comprarApunte/' + apunte.id,
+                            'method': 'POST'
+                        }).css('margin-left', '4px');
+
+                        var comprarButton = $('<button>').addClass('btn btn-success btn-sm')
+                            .attr('type', 'submit')
+                            .attr('title', 'Comprar apunte');
+
+                        var coinImage = $('<img>').attr({
+                            'alt': 'coins',
+                            'style': 'height: 32px',
+                            'src': /*[[ @{/img/coin.png} ]]*/
+                        });
+
+                        var coinSpan = $('<span>').text(apunte.precio);
+                        var precioParrafo = $('<p>').addClass('d-inline-block card-apunte-coins').append(coinImage).append(coinSpan);
+
+                        // Verificar si el apunte está en las listas apuntesCreados o apuntesComprados
+                        if(apunte.sePuedeComprar) {
+                            comprarButton.append($('<i>').addClass('fa-solid fa-shopping-cart'));
+                            comprarForm.append(comprarButton);
+                        }
+
+
+                        // Construir la estructura del card
+                        cardBody.append(titulo).append(descripcion).append(botonApunte.append(masInfoButton).append(comprarForm)).append(precioParrafo);
+                        card.append(cardBody);
+                        columnWrapper.append(card);
+
+                        // Agregar el columnWrapper al contenedor listaApuntes
+                        listaApuntes.append(columnWrapper);
+                    });
+                },
+                error: function() {
+                    console.log('Error al cargar los apuntes.');
+                }
+            });
+        }
+    });
+</script>
 </body>
+</main>

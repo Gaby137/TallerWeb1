@@ -6,6 +6,7 @@ import com.tallerwebi.dominio.excepcion.ArchivoInexistenteException;
 import com.tallerwebi.dominio.excepcion.PuntosInsuficientesException;
 import com.tallerwebi.dominio.servicio.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -223,12 +224,13 @@ public class ControladorApunte {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         if (session.getAttribute("usuario") != null){
-            List<Apunte> todosLosApuntes = servicioUsuarioApunte.obtenerTodosLosApuntes(usuario.getId());
+            List<Carrera> listadoCarrera = servicioAdministrador.listadoCarreras();
+            model.put("listaCarreras", listadoCarrera);
+
             List<Apunte> apuntesCreadosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
             List<Apunte> apuntesCompradosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
 
 
-            model.put("apuntes", todosLosApuntes);
             model.put("apuntesCreados", apuntesCreadosPorElUsuario);
             model.put("apuntesComprados", apuntesCompradosPorElUsuario);
             model.put("title", "Apuntes");
@@ -421,4 +423,10 @@ public class ControladorApunte {
     }
 
 }
+    @RequestMapping(path = "/filtrarApuntesPorCarreraYMateria/{idCarrera}/{idMateria}", method = RequestMethod.GET)
+    public ResponseEntity<List<Apunte>> obtenerMateriasPorCarrera(@PathVariable("idCarrera") Long idCarrera, @PathVariable("idMateria") Long idMateria, HttpSession session) {
+        Long  idUsuario = ((Usuario) session.getAttribute("usuario")).getId();
+        List<Apunte> apuntes = servicioAdministrador.filtrado(idCarrera, idMateria, idUsuario);
+        return ResponseEntity.ok(apuntes);
+    }
 }
