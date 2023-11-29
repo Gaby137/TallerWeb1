@@ -25,7 +25,26 @@
 
 
     <!-- Contenedor para mostrar la lista de apuntes -->
-
+    <div th:if="${mostrarModalPuntos}" class="modal show" id="modalPuntos" tabindex="-1" role="dialog" aria-labelledby="modalPuntosLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPuntosLabel">¡Ups!</h5>
+                    <button type="button" id="cerrarModalPuntosBtn" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Parece que no tenés puntos suficientes para comprar este apunte.<br>
+                        Pero tranquilo... Tenemos la solución a tus problemas! &#128522;</p><br>
+                    <p>¡Adquirí alguno de nuestros packs y seguí comprando!</p>
+                </div>
+                <div class="modal-footer">
+                    <a th:href="@{'/packs'}" class="btn btn-success" data-dismiss="modal">Comprar packs</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script th:inline="javascript">
     $(document).ready(function() {
@@ -149,6 +168,20 @@
             });
         }
     });
+    document.addEventListener('DOMContentLoaded', function() {
+
+        var mostrarModal = [[${mostrarModalPuntos}]];
+
+        if (mostrarModal) {
+            $('#modalPuntos').modal('show');
+        }
+    });
+    document.getElementById('cerrarModalPuntosBtn').addEventListener('click', function() {
+        cerrarModalPuntos();
+    });
+    function cerrarModalPuntos() {
+        $('#modalPuntos').modal('hide');
+    }
 </script>
 
 </body>
