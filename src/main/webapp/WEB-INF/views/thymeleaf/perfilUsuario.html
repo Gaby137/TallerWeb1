@@ -3,7 +3,7 @@
 <main>
 <body>
     <div class="container">
-        <h2>Apuntes creados por <span th:text="${usuario.nombre}"></span></h2>
+        <h2 style="margin-top: 20px;">Apuntes creados por <span th:text="${usuario.nombre}"></span></h2>
         <div class="row">
             <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.activo}"  class="col-12 col-sm-6 col-md-4 col-xl-3">
                 <div class="card card-home my-2">
@@ -21,6 +21,10 @@
                             </form>
                         </div>
                         <p class="d-inline-block card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${apunte.precio}"></span></p>
+                        <p class="d-inline-block card-apunte-promedio">
+                            <i class="fa-solid fa-star" style="color: #e7e00d; margin-right: 5px; font-size: 1.5em;"></i>
+                            <span th:text="${apunte.promedioResenas}"></span>
+                        </p>
                     </div>
                 </div>
             </div>

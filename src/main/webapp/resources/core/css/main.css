@@ -63,6 +63,11 @@ button:hover {
     right: 15px;
     bottom: 15px;
 }
+.card-apunte-promedio{
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
 .card {
     background-color: var(--c-background);
     border: none;

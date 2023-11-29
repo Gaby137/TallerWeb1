@@ -153,6 +153,17 @@ public class ControladorApunte {
             List<Apunte> apuntesComprados = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
             List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
 
+            for (Apunte apunte : apuntesComprados) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
+
+            for (Apunte apunte : apuntesCreados) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
 
             model.put("apuntesComprados", apuntesComprados);
             model.put("apuntesCreados", apuntesCreados);
@@ -227,6 +238,12 @@ public class ControladorApunte {
             List<Apunte> apuntesCreadosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
             List<Apunte> apuntesCompradosPorElUsuario = servicioUsuarioApunteResena.obtenerApuntesComprados(usuario);
 
+            for (Apunte apunte : todosLosApuntes) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
+
 
             model.put("apuntes", todosLosApuntes);
             model.put("apuntesCreados", apuntesCreadosPorElUsuario);
@@ -250,6 +267,12 @@ public class ControladorApunte {
             List<Apunte> apuntesCreados = servicioUsuarioApunteResena.obtenerApuntesCreados(usuario);
             List<Apunte> apuntesCompradosPorUsuarioActual = servicioUsuarioApunteResena.obtenerApuntesComprados(usuarioActual);
             List<Apunte> apuntesCreadosPorUsuarioActual = servicioUsuarioApunteResena.obtenerApuntesCreados(usuarioActual);
+
+            for (Apunte apunte : apuntesCreados) {
+                double promedioPuntajeResenas = servicioUsuarioApunteResena.calcularPromedioPuntajeResenas(apunte.getId());
+                String promedioFormateado = String.format(Locale.US, "%.1f", promedioPuntajeResenas);
+                apunte.setPromedioResenas(Double.parseDouble(promedioFormateado));
+            }
 
             model.put("apuntesCreados", apuntesCreados);
             model.put("apuntesCompradosPorUsuarioActual", apuntesCompradosPorUsuarioActual);

@@ -16,7 +16,7 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="apuntes-comprados" role="apuntes-comprados" aria-labelledby="apuntes-comprados-tab">
-            <div class="row">
+            <div style="margin-top: 20px;" class="row">
                 <div th:each="apunte : ${apuntesComprados}" class="col-12 col-sm-6 col-md-4 col-xl-3">
                     <div class="card card-home my-2">
                         <div class="card-body">
@@ -26,13 +26,17 @@
                             </div>
                             <a class="btn btn-unlam bg-verde-unlam"  th:href="@{/detalleApunte/{id}(id=${apunte.id})}">Ver Detalles</a>
                             <p class="card-apunte-coins"><img alt="coins" style="height: 32px" th:src="@{/img/coin.png}"> <span th:text="${apunte.precio}"></span></p>
+                            <p class="d-inline-block card-apunte-promedio">
+                                <i class="fa-solid fa-star" style="color: #e7e00d; margin-right: 5px; font-size: 1.5em;"></i>
+                                <span th:text="${apunte.promedioResenas}"></span>
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="tab-pane fade" id="mis-apuntes" role="tabpanel" aria-labelledby="mis-apuntes-tab">
-            <div class="row">
+            <div class="row" style="margin-top: 20px;">
                 <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.activo}" class="col-12 col-sm-6 col-md-4 col-xl-3">
                     <div class="card card-home my-2">
                         <div class="card-body">

@@ -23,7 +23,7 @@ public class ServicioResenaImpl implements ServicioResena {
         this.servicioUsuario = servicioUsuario;
     }
 
-    // ... (otros métodos)
+
 
     @Override
     public void guardar(Resena resena) {
