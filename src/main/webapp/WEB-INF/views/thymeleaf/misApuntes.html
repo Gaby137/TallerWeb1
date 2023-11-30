@@ -20,7 +20,13 @@
                 <div th:each="apunte : ${apuntesComprados}" class="col-12 col-sm-6 col-md-4 col-xl-3">
                     <div class="card card-home my-2">
                         <div class="card-body">
-                            <h5 th:text="${apunte.nombre}" class="card-title"></h5>
+                            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                <h5 th:text="${apunte.nombre}" class="card-title" style="margin-right: 45px;"></h5>
+                                <p class="d-inline-block card-apunte-promedio" style="margin-bottom: 0;">
+                                    <i class="fa-solid fa-star" style="color: #e7e00d; margin-right: 5px; font-size: 1.5em;"></i>
+                                    <span th:text="${apunte.promedioResenas}"></span>
+                                </p>
+                            </div>
                             <div class="apunte-descrip mb-2">
                                 <p  th:text="${apunte.descripcion}" class="mb-2"></p>
                             </div>
@@ -40,7 +46,13 @@
                 <div th:each="apunte : ${apuntesCreados}" th:if="${apunte.activo}" class="col-12 col-sm-6 col-md-4 col-xl-3">
                     <div class="card card-home my-2">
                         <div class="card-body">
-                            <h5 th:text="${apunte.nombre}" class="card-title"></h5>
+                            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                                <h5 th:text="${apunte.nombre}" class="card-title" style="margin-right: 45px;"></h5>
+                                <p class="d-inline-block card-apunte-promedio" style="margin-bottom: 0;">
+                                    <i class="fa-solid fa-star" style="color: #e7e00d; margin-right: 5px; font-size: 1.5em;"></i>
+                                    <span th:text="${#strings.substringBefore(apunte.promedioResenas, '.')}"></span>
+                                </p>
+                            </div>
                             <div class="apunte-descrip mb-2">
                                 <p  th:text="${apunte.descripcion}" class="mb-2"></p>
                             </div>
