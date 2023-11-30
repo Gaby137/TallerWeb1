@@ -156,11 +156,19 @@
                         });
                         var promedioSpan = $('<span>').text(apunte.promedioResenas);
 
+
                         promedioBlock.append(starIcon).append(promedioSpan);
                         cardBody.append(promedioBlock);
 
                         card.append(cardBody);
                         columnWrapper.append(card);
+
+                        titulo.css({
+                            'display': 'inline-block',
+                            'margin-right': '30px'
+                        });
+
+                        promedioBlock.css('display', 'inline-block');
 
                         // Agregar el columnWrapper al contenedor listaApuntes
                         listaApuntes.append(columnWrapper);

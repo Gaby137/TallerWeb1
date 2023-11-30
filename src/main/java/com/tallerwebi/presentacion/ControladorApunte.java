@@ -492,4 +492,5 @@ public class ControladorApunte {
         Collections.sort(apuntes, Comparator.comparing(Apunte::getPromedioResenas).reversed());
         return ResponseEntity.ok(apuntes);
     }
+
 }
